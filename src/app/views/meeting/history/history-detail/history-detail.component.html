@@ -1,0 +1,133 @@
+<div class="page-heading">{{appointType==1?'历史会议':'历史预约'}} - 详情</div>
+<div id="MeetingDetails" style="overflow: hidden;">
+  <div class="white-bg meetingDetailMsg " style="width:850px;">
+    <div class="widget-title">
+      <div class=" pull-right" *ngIf="detailsData.conference.appointmentStatus!=8">
+        <a href="javascript:;" class="btn btn-svoc" [class.disabled]="roleId==8"
+           (click)="checkLogFn(detailsData.conference.cid)">会议日志</a>
+      </div>
+      <div class="clearfix"></div>
+    </div>
+    <div class="widget-box marginTB10">
+      <div class="schedule-Details">
+        <ul class="list-group copy-content" id="copy-content">
+          <li class="detail-list-item" *ngIf="appointType==2">
+            <div class="view-title pull-left"><i class="fa fa-align-left font14 color-svoc marginLR10"></i>会议状态:</div>
+            <div class="col-lg-8 col-xs-8">
+              <span
+                *ngIf="detailsData.conference.appointmentStatus!=5&&detailsData.conference.appointmentStatus!=6&&detailsData.conference.appointmentStatus!=7&&detailsData.conference.appointmentStatus!=8">未召开</span>
+              <span
+                *ngIf="detailsData.conference.appointmentStatus==6||detailsData.conference.appointmentStatus==7">已召开</span>
+              <span
+                *ngIf="detailsData.conference.appointmentStatus==8">被 <b>{{detailsData.conference.deleteUserName}}</b> 取消</span>
+              <span *ngIf="detailsData.conference.appointmentStatus==5">进行中</span>
+            </div>
+          </li>
+          <li class="detail-list-item">
+            <div class="view-title pull-left"><i class="fa fa-bookmark font14 color-svoc marginLR10"></i>会议名称:</div>
+            <div class="col-lg-8 col-xs-8"><span
+              class="meetingName-view">{{detailsData.conference.conferenceName}}</span></div>
+          </li>
+          <li class="detail-list-item"
+              *ngIf="detailsData.conference.appointmentStatus==5||detailsData.conference.appointmentStatus==6||detailsData.conference.appointmentStatus==7">
+            <div class="view-title pull-left"><i class="fa fa-clock-o font14 color-svoc marginLR10"></i>会议实际开始时间:</div>
+            <div class="col-lg-4 col-xs-6">北京时间 <span class="startTimeDate-view">{{detailsData.conference.startTime | date:'yyyy-MM-dd HH:mm'}}</span>（{{viewWeeks}}）
+            </div>
+            <!-- <div class="view-title pull-left">会议时长: <span class="meetingTimeLong-view">{{detailsData.conference.appointmentPeriod}}</span>小时</div> -->
+          </li>
+          <!-- <li class="detail-list-item" *ngIf="appointType==2 && (detailsData.conference.appointmentStatus==6||detailsData.conference.appointmentStatus==7)">
+              <div class="view-title pull-left"><i class="fa fa-hourglass-end font14 color-svoc marginLR10"></i>实际开始时间:</div>
+              <div class="col-lg-4 col-xs-6">北京时间  <span class="endTimeDate-view">{{detailsData.conference.startTime | date:'yyyy-MM-dd HH:mm'}}</span>（{{viewWeeks}}）</div>
+          </li> -->
+          <li class="detail-list-item"
+              *ngIf="appointType==1 || (detailsData.conference.appointmentStatus==6||detailsData.conference.appointmentStatus==7)">
+            <div class="view-title pull-left"><i class="fa fa-hourglass-end font14 color-svoc marginLR10"></i>会议实际结束时间:
+            </div>
+            <div class="col-lg-4 col-xs-6">北京时间 <span class="endTimeDate-view">{{detailsData.conference.endTime | date:'yyyy-MM-dd HH:mm'}}</span>（{{endviewWeeks}}）
+            </div>
+          </li>
+
+          <li class="detail-list-item">
+            <div class="view-title pull-left"><i class="fa fa-users font14 color-svoc marginLR10"></i>参会方数:</div>
+            <div class="col-lg-8 col-xs-8"><span class="attendnode-view">{{detailsData.conference.attendNode}}</span>
+            </div>
+          </li>
+          <li class="detail-list-item">
+            <div class="view-title pull-left"><i class="fa fa-th font14 color-svoc marginLR10"></i>会议号:</div>
+            <div class="col-lg-4 col-xs-6"><span class="meetingNum-view">{{detailsData.conference.vmrNumber}}</span>
+            </div>
+          </li>
+          <li class="detail-list-item">
+            <div class="">
+              <div class="view-title pull-left"><i class="fa fa-play-circle-o font14 color-svoc marginLR10"></i>开启会议直播:
+              </div>
+              <div class="col-lg-6 col-xs-8">
+                <span class="metu-view" *ngIf="detailsData.conference.isLive==true">开启</span>
+                <span class="metu-view" *ngIf="detailsData.conference.isLive==false">未开启</span>
+              </div>
+            </div>
+            <div class="" style="margin:5px 0 0 30px;" *ngIf="detailsData.conference.isLive==true">
+              <span
+                style="margin-right:40px;">直播流量: <span>{{detailsData.conference.liveFlow | bateBySize}}</span></span>
+              <span>总播放量(人 次): <span>{{detailsData.conference.livePlayPerson}}</span></span>
+            </div>
+          </li>
+          <li class="detail-list-item">
+            <div class="view-title pull-left"><i class="fa fa-video-camera font14 color-svoc marginLR10"></i>开启会议录制：
+            </div>
+            <div class="col-lg-8 col-xs-8">
+              <span class="metu-view" *ngIf="detailsData.conference.isRecord==true">开启</span>
+              <span class="metu-view" *ngIf="detailsData.conference.isRecord==false">未开启</span>
+            </div>
+          </li>
+
+          <li class="detail-list-item">
+            <div class="view-title pull-left"><i class="fa fa-edit font14 color-svoc marginLR10"></i>会议描述:</div>
+            <div class="col-lg-8 col-xs-8"><span
+              class="meetingDesc-view">{{detailsData.conference.appointmentDesc}}</span></div>
+          </li>
+          <li class="detail-list-item">
+            <div class="view-title pull-left"><i class="fa fa-user font14 color-svoc marginLR10"></i>参会人员:</div>
+            <div class="col-lg-8 col-xs-8"><span class="attendMember-view"
+                                                 *ngFor="let repeatUsers of detailsData.users">{{repeatUsers.realName}}<span
+              *ngIf="repeatUsers.subdeptName"> - </span>{{repeatUsers.subdeptName}}；</span></div>
+          </li>
+          <li class="detail-list-item">
+            <div class="view-title pull-left"><i class="fa fa-user font14 color-svoc marginLR10"></i>投票结果:</div>
+            <div class="col-lg-8 col-xs-8">
+              <div class="vote-view" *ngFor="let vote of detailsData.vote">
+                <span class="voteitem">主题：{{vote.voteTheme}}</span>
+                <span class="voteitem">发起人：{{vote.createUserName}}</span>
+                <span class="voteitem">投票结果：
+												<span *ngFor="let option of vote.options"> {{option.content}} - {{option.count}}票； </span>
+												<span>{{vote.waivers.length}}人弃权;</span>
+											</span>
+              </div>
+            </div>
+          </li>
+        </ul>
+        <div class="text-center">
+          <!-- <a href="javascript:;" *ngIf="appointType==2" class="btn btn-svoc" [routerLink]="['/page/book',detailsData.conference.cid,2]">发起会议</a> -->
+          <a href="javascript:history.back(-1)" id="editMeeting" class="btn btn-svoc btn-svoc-lg">返 回</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!--已结束会议log日志  会议记录-->
+
+<nz-modal [nzVisible]="historyLogModal" [nzTitle]="'会议记录'" [nzContent]="historyLogContent" [nzFooter]="historyLogFooter"
+          (nzOnCancel)="historyLogModal=false">
+  <ng-template #historyLogContent>
+    <div class="log-content">
+      <p *ngFor="let list of logData">
+        <span class="log-time"><span class="color-svoc">{{list.Date | date:'yyyy-MM-dd HH:mm:ss'}}</span>：</span>{{list.result}}
+      </p>
+    </div>
+  </ng-template>
+  <ng-template #historyLogFooter>
+    <button nz-button [nzType]="'primary'" [nzSize]="'large'" (click)="downloadLogFn(downCid)"> 下载会议记录</button>
+  </ng-template>
+</nz-modal>

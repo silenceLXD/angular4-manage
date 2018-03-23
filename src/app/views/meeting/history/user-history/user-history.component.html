@@ -1,0 +1,67 @@
+<div class="page-heading">历史会议</div>
+
+<div class="white-bg">
+  <div id="" class="clearfix">
+    <!-- 查询 -->
+    <form class="form-inline" name="searchForm">
+      <div class="pull-left">
+        <div class="form-group-inline">
+          <nz-datepicker style="width: 40%;" name="startTime" (ngModelChange)="_startDate=$event;_startValueChange()"
+                         [(ngModel)]="_startDate" [nzDisabledDate]="_disabledStartDate" [nzPlaceHolder]="'开始时间'"
+                         [nzAllowClear]="false"></nz-datepicker>
+          <nz-datepicker style="width: 40%;" name="endTime" (ngModelChange)="_endDate=$event;_endValueChange()"
+                         [(ngModel)]="_endDate" [nzDisabledDate]="_disabledEndDate" [nzPlaceHolder]="'结束时间'"
+                         [nzAllowClear]="false"></nz-datepicker>
+        </div>
+      </div>
+      <div class="pull-right has-feedback">
+        <input type="text" class="form-radius" name="appointmentName" [(ngModel)]="searchData.keywords"
+               placeholder="会议名称、发起人" (keyup)="dataSearchFn()">
+      </div>
+    </form>
+    <div class="clearfix"></div>
+    <!-- 表格 -->
+    <div class="table-list ">
+      <table class="table ">
+        <thead>
+        <tr>
+          <th>会议名称</th>
+          <th>会议号</th>
+          <th>发起人</th>
+          <th>会议实际开始时间</th>
+          <th>实际会议时长</th>
+          <th>参会方数</th>
+          <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let list of tableData.list">
+          <td><a [routerLink]="['/page/history-detail',list.cid,1]">{{list.conferenceName}}</a></td>
+          <td>{{list.vmrNumber}}</td>
+          <td>{{list.realName}}</td>
+          <td>{{list.startTime | date:'yyyy-MM-dd HH:mm'}}</td>
+          <td>{{list.endTime-list.startTime | toSwitchTime}}</td>
+          <td>{{list.maxNumber}}</td>
+          <td>
+            <button *ngIf="roleId!=8" class='btn btn-svoc radius20' [class.disabled]="isAvailableOne"
+                    [routerLink]="['/page/book',list.appointId,2]">发起会议
+            </button>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- 分页 -->
+    <div class="text-right">
+      <!-- <pagination [totalItems]="tableData.totalPages" [(ngModel)]="tableData.currentPage" [maxSize]="maxSize" class="pagination-sm m-t-none m-b"
+              boundaryLinks="true" [rotate]="false" (pageChanged)="pageChanged($event)" nextText="下一页" previousText="上一页" firstText="第一页" lastText="最后一页"></pagination>
+      <span class="table-page-total">共{{tableData.totalPages}}条数据</span> -->
+      <nz-pagination [(nzPageIndex)]="tableData.currentPage" [nzTotal]="tableData.totalPages"
+                     (click)="pageChanged(tableData.currentPage)" [nzShowTotal]="tableData.totalPages"
+                     [nzPageSize]="searchData.pageSize"></nz-pagination>
+    </div>
+  </div>
+
+
+</div>

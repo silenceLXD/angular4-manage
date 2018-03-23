@@ -1,0 +1,103 @@
+<div class="page-heading">进行中会议管理</div>
+
+<div class="white-bg">
+  <div id="usermanager">
+    <!-- 进行中会议管理 -->
+    <div id="ongoing" class="tab-pane active ">
+      <h4 class="marginTB10 font16">资源实时状态</h4>
+      <div class="border3" style="overflow:hidden;">
+        <div class="col-xs-4">
+          <!-- <div id="onlineCire" style="width: 400px;height:300px;padding: 20px;"></div> -->
+          <div echarts [options]="onlineCireOption" [loading]="showloading" class=""
+               style="width: 400px;height:300px;padding: 20px;"></div>
+
+          <div style="margin-left: 30px;color: #b1afaf;">提示：锁定会议可释放预留占用资源</div>
+          <div class="meeting-timeout" style=" display: none">
+            <div class="timeout-bg">
+              <div class="circle"></div>
+              <div class="circle2"></div>
+              <p class="text-center">会议已超时2小时</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-xs-4">
+          <!-- <div id="numberCire" style="width: 400px;height:300px;padding: 20px;"></div> -->
+          <div echarts [options]="numberCireOption" [loading]="showloading" class=""
+               style="width: 400px;height:300px;padding: 20px;"></div>
+        </div>
+        <div class="col-xs-3">
+          <h5>超时会议前5个：</h5>
+          <table class="table ">
+            <thead>
+            <tr>
+              <th>会议号</th>
+              <th>超时时间</th>
+              <th>操作</th>
+            </tr>
+            </thead>
+            <tbody id="outTimeTbody">
+            <tr *ngFor="let outtime of outTimeData">
+              <td>{{outtime.vmrNumber}}</td>
+              <td><span class='error'>{{outtime.timeOut | toSwitchTime:'hours'}}</span></td>
+              <td class="text-left">
+                <!-- <a [routerLink]="['/page/meeting-control',outtime.cid]" class='btn btn-svoc more-btn contorl-btn' >会议控制</a> -->
+                <meeting-control-btn [meetingData]="outtime.cid"></meeting-control-btn>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <h4 class="marginTB10 font16">进行中的会议</h4>
+      <div class="table-list">
+        <table class="table ">
+          <thead>
+          <tr>
+            <th>会议名称</th>
+            <!-- <th>虚拟会议室名称</th> -->
+            <th>会议号</th>
+            <th>发起人</th>
+            <th>会议占用</th>
+            <th>实际在线方</th>
+            <th>预约时长</th>
+            <th>会议开始时间</th>
+            <th>会议状态</th>
+            <th>是否锁定</th>
+            <th>操作</th>
+          </tr>
+          </thead>
+
+          <tbody id="tbody">
+          <tr *ngFor="let meeting of manageData">
+            <td>{{meeting.conferenceName}}</td><!-- 会议名称 -->
+            <!-- <td>{{meeting.vmrName}}</td> --><!-- 虚拟会议室名称 -->
+            <td>{{meeting.vmrNumber}}</td><!-- 会议号 -->
+            <td><!-- 发起人 -->
+              <span>{{meeting.realName?meeting.realName:'无'}}</span>
+            </td>
+            <td>{{meeting.appointmentOccupa}}</td><!-- 会议占用 -->
+            <td ng-class="{error: meeting.actualOnLine==0}">{{meeting.actualOnLine}}</td><!-- 实际在线方 -->
+            <td>{{meeting.appointmentPeriod}}</td><!-- 预约时长 -->
+            <td>{{meeting.startTime | date:'yyyy-MM-dd HH:mm'}}</td><!-- 会议开始时间 -->
+            <!-- 会议状态 -->
+            <td *ngIf="meeting.timeoutMsg==null">正常</td>
+            <td *ngIf="meeting.timeoutMsg!=null"><span class='error'>超时</span></td>
+            <!-- 是否锁定 -->
+            <td *ngIf="meeting.isLocked==0">否</td>
+            <td *ngIf="meeting.isLocked!=0">是</td>
+            <!-- 操作 -->
+            <!-- <td><div class="text-left"><a [routerLink]="['/page/meeting-control',meeting.cid]" class="btn btn-svoc contorl-btn">会议控制</a></div></td> -->
+            <td>
+              <div class="text-left">
+                <meeting-control-btn [meetingData]="meeting.cid"></meeting-control-btn>
+              </div>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+
+      </div>
+    </div>
+  </div>
+</div>

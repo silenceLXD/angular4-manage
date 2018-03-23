@@ -1,0 +1,12 @@
+.join-img-bg {
+    color: #fff;
+    padding: 15px;
+    border-radius: 3px;
+    box-shadow: 2px 2px 5px #ddd;
+    background: url(../../../../assets/img/join_bg.png) no-repeat right;
+    background-size: cover;
+}
+.join-img-bg a.btn {
+    border: 1px solid #fff;
+    background: transparent;
+}

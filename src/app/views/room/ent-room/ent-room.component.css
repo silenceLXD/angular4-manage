@@ -1,0 +1,10 @@
+.user-selected a {
+    display: inline-block;
+    white-space: nowrap;
+    padding: 3px 10px;
+    text-decoration: none;
+    border-radius: 2px;
+    color: #fff;
+  	line-height: 25px;
+    background: #00a0e9;
+}

@@ -1,0 +1,35 @@
+/* 参会者 */
+.userList-box .user-selected a {
+	color: #fff;
+	 /* border: 1px solid #00a0e9; */
+	line-height: 25px;
+   /*  padding-right: 20px; */
+    background: #00a0e9;
+}
+.userList-box dd {
+    float: left;
+    display: inline;
+    margin: 0 0 5px 5px;
+}
+.user-selected a {
+    display: inline-block;
+    white-space: nowrap;
+    height: 24px;
+    padding: 0 10px;
+        padding-right: 10px;
+    text-decoration: none;
+    color: #039;
+    border-radius: 2px;
+}
+.room-content .room-list{
+	padding:5px 20px 5px 8px;
+}
+.room-content .room-list:nth-of-type(odd) {
+    background-color: #eee;
+}
+.room-content .room-list>label{
+	display:block;
+}
+.room-content .room-list input[type='checkbox']{
+	margin-right:10px;
+}

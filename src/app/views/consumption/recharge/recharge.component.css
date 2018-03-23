@@ -1,0 +1,57 @@
+.recharge{
+	font-size:16px;
+}
+.recharge .zfb{
+	margin-left:100px;
+	margin-bottom:20px;
+}
+.recharge .zfb div{
+	margin-right:30px;
+}
+.recharge .amount-item{
+	height:70px;
+	margin:10px;
+	border:1px solid #ccc;
+	/* box-shadow: 1px 1px 1px 1px #ccc; */
+	border-radius:10px;
+	line-height:70px;
+	text-align:center;
+	font-size:20px;
+	position:relative;
+	cursor: pointer;
+
+}
+.recharge .amount-item.active{
+	/* background:url("../images/recharge.png")  no-repeat; */
+	/* box-shadow: 1px 1px 1px 1px #ff9d0b; */
+	border:1px solid #ff9d0b;
+	color:#ff9d0b;
+}
+.recharge .amount-item.active i{
+	position:absolute;
+	right:5px;
+	top:5px;
+	background:url("../../../../assets/img/icons.png") 0 -212px  no-repeat; 
+	width:28px;
+	height:28px;
+}
+.recharge .zfb-bg{
+	width: 240px;
+    height: 58px;
+	margin:10px 0 0 50px;
+	border-radius:10px;
+	position:relative;
+}
+.recharge .zfb-bg.active{
+	color:#ff9d0b;
+	border:1px solid #ff9d0b;
+	background-size: 100%;
+}
+.recharge .zfb-bg.active i{
+	position:absolute;
+	right:5px;
+	top:5px;
+	background:url("../../../../assets/img/icons.png") 0 -212px  no-repeat;
+	width:28px;
+	height:28px;
+}

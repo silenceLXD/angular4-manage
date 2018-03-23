@@ -1,0 +1,77 @@
+<nav class="nav navbar-inverse navbar-fixed-top navbar-header" [ngClass]="bgColor" role="navgation">
+  <div class="container-fluid">
+    <div class="navbar-header" [ngClass]="bgColor" style="width: 100px;height: 50px;">
+      <a routerLink="/page" class="">
+        <img [src]="logURL" style="height: 100%; border-radius:5px;">
+        <!--<img src="/assets/img/forget_mail.png" style="width: 100%;height: 100%;">-->
+      </a>
+      <button class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+
+    <div class="collapse navbar-collapse">
+      <ul class="navbar-nav nav">
+        <!--<li style="line-height: 50px;"><a>{{slogan}}</a></li>-->
+        <li *ngIf="loginUserData.console"><a routerLink="/page/home-page" (click)="changeFlagFn()">{{switchflag==0?'个人控制台':'企业控制台'}}</a>
+        </li>
+        <li *ngIf="loginUserData.overview"><a routerLink="/page/home-page" (click)="overviewFn()">总览</a></li>
+        <li *ngIf="loginUserData.productService && entData.isShow"><a routerLink="/page/product-list">产品与服务</a></li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <!-- <li><span>咨询电话：010-5873 4583</span></li> -->
+        <li><a routerLink="/page/message" class="navborderR" title="消息中心"><i class="fa icon-message"></i><span
+          class="visible-xs-inline">消息中心</span><span class="badge">{{msgUnreadCount||0}}</span></a></li>
+        <li class="user-name dropdown" [ngClass]="{true: 'open', false: ''}[isopenMenu]"
+            (click)="isopenMenu=!isopenMenu">
+          <!--<a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" style="padding: 15px 15px">{{loginUserData.entName}} - {{loginUserData.realName}} <i class="icon-angle-down"></i></a>-->
+          <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" style="padding: 15px 15px">{{entShowName
+            == ''? loginUserData.entName : entShowName}} <span *ngIf="roleType!=8"> - </span>
+            {{loginUserData.realName||nickName}}
+            <i class="icon-angle-down"></i></a>
+          <ul class="user-menu dropdown-menu">
+            <li><a routerLink="/page/personal-center"> <i class="fa icon-personal-center"></i> 个人信息</a></li>
+            <li *ngIf="roleType!=8"><a routerLink="/page/personal-consumption"> <i
+              class="fa icon-personal-consumption"></i> 消费详单</a></li>
+            <li *ngIf="roleType==1"><a routerLink="/page/change-admin"> <i class="fa icon-change-admin"></i> 更换企业管理员</a>
+            </li>
+            <li *ngIf="roleType==1 || roleType==2"><a href="javascript:;" (click)="meetingSettingFn()"> <i
+              class="fa icon-enter-setting"></i> 入会设置</a></li>
+            <li *ngIf="roleType==8"><a routerLink="/page/create-ent"> <i class="fa icon-change-admin"></i> 创建企业</a></li>
+            <li><a href="javascript:;" (click)="logoutFn()"> <i class="fa icon-logout"></i> 退出登录</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- 入会设置 Modal -->
+<nz-modal [nzVisible]="meetingSettingModal" [nzTitle]="'入会设置'" [nzContent]="meetingSettingContent"
+          [nzFooter]="meetingSettingFooter" (nzOnCancel)="meetingSettingModal=false">
+  <ng-template #meetingSettingContent>
+    <div class="" style="padding:10px 30px">
+      <form class="form-horizontal" id="settingForm">
+        <div class="form-group">
+          <label> <input type="checkbox" name="nonEnt" [(ngModel)]="setting.nonEnt"/> 允许非本企业用户入会</label>
+        </div>
+        <div class="form-group">
+          <label> <input type="checkbox" name="nonRegistered" [(ngModel)]="setting.nonRegistered"/> 允许非注册用户入会</label>
+        </div>
+      </form>
+    </div>
+  </ng-template>
+  <ng-template #meetingSettingFooter>
+    <button nz-button [nzType]="'default'" [nzSize]="'large'" (click)="meetingSettingModal=false"> 取 消</button>
+    <button nz-button [nzType]="'primary'" [nzSize]="'large'" (click)="sureSettingFn()"> 确 定</button>
+  </ng-template>
+</nz-modal>
+
+<!--退出登录 Modal -->
+<nz-modal [nzVisible]="logoutModal" [nzTitle]="'Modal'" [nzContent]="logoutContent" (nzOnCancel)="handleCancel($event)"
+          (nzOnOk)="handleOk($event)">
+  <ng-template #logoutContent>
+  </ng-template>
+</nz-modal>

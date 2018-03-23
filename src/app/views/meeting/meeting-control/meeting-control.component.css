@@ -1,0 +1,458 @@
+/***************** 会议控制  .meetingControl *****************/
+.meetingControl{
+	position:relative;
+	margin-top:20px;
+}
+.meetingControl .second-title{
+    display: inline-block;
+    margin-right:25px;
+}
+.meetingControl .action-div{
+	padding:15px 0;
+}
+.meetingControl .action-div .action-items{
+	text-align:center;
+	display: inline-block;
+	width:14%;
+	height:105px;
+	vertical-align: bottom;
+	/* padding:10px 40px; */
+}
+.action-div .action-items .items-bg{
+	display:inline-block;
+	cursor: pointer;
+	width:64px;
+	height:64px;
+	background-image:url("../../../../assets/img/icon/action_items_bg.png");
+	background-repeat: no-repeat;
+}
+.attendee-bg{
+	background-position:0 0;
+}
+.call-bg{
+	background-position:0 -65px;
+}
+.screen-bg{
+	background-position:0 -130px;
+}
+.voice-bg{
+	background-position:0 -195px;
+}
+.voice-bg-off{
+	background-position:-65px -195px;
+}
+.live-bg{
+	background-position:0 -260px;
+}
+.live-bg-off{
+	background-position:-65px -260px;
+}
+.live-bg-disabled{
+	background-position:-130px -260px;
+}
+.record-bg{
+	background-position:0 -325px;
+}
+.record-bg-off{
+	background-position:-65px -325px;
+}
+.record-bg-disabled{
+	background-position:-130px -325px;
+}
+.lock-bg{
+	background-position:0 -390px;
+}
+.lock-bg-off{
+	background-position:-65px -390px;
+}
+/*会议记录*/
+.log-tip{
+    min-width: 500px;
+    position: absolute;
+    padding: 8px;
+    background: #fff;
+    z-index: 999;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    box-shadow: 1px 1px 3px #ccc;
+    /*margin: 0 auto;*/
+    left: 50%;
+    top:-50px;
+    margin-left:-250px;
+}
+
+.record-time{
+    color: #00a0e9;
+    margin-right: 10px;
+}
+.show-detail{
+    float: right;
+}
+.meeting-record{
+    margin: 5px 10px;
+    max-height: 260px;
+    overflow-y: auto;
+}
+.meeting-record p{
+    margin: 8px 0;
+}
+/* 参会者表格内 图标样式 定义*/
+/* .attend-icon{
+    width: 22px;
+    height: 22px;
+    display: inline-block;
+    background-image: url("/assets/img/icon/contorl-icon.png");
+}
+*/
+.attend-icon{
+	color:#00a0e9;
+	font-size: 22px;
+}
+.attend-icon:hover{
+    cursor: pointer;
+}
+.attend-disabled-icon{
+	color: #ccc;
+	font-size: 22px;
+}
+.green{
+	color: #00CC00;
+}
+.red{
+	color: #f00;
+}
+/* a-z 与z-a 图标 */
+.sortTh b{
+	display: inline-block;
+  width: 16px;
+  height: 16px;
+	/* position: absolute; */
+}
+.ztoa{
+	background-image: url("../../../../assets/img/icon/a-z.png");
+	background-position: 0 0;
+}
+.atoz{
+	background-image: url("../../../../assets/img/icon/a-z.png")!important;
+	background-position: 0 16px!important;
+}
+/* 隐藏文字身份 */
+.data-txt{
+	display:none;
+}
+/*主讲人*/
+.host-icon{
+    background-position: 0 -237px;
+}
+/*访客*/
+.visitors-icon{
+    background-position: 0 -266px;
+}
+.host-disabled{
+	background-position: 0 -390px;
+}
+/*声音 正常*/
+.voice-normal{
+    background-position: 0 -48px;
+}
+/*声音 静音*/
+.voice-lock{
+    background-position: 0 -80px;
+}
+.voice-disabled{
+	background-position: 0 -327px;
+}
+/*呼叫*/
+.call{
+    background-position: 0 -112px;
+}
+/*挂断*/
+.hang-up{
+    background-position: 0 -144px;
+}
+/*共享*/
+.shared{
+    background-position: 0 -175px;
+}
+/*邀请对话*/
+.dialogue{
+	background-position: 0 -547px;
+}
+.dialogue-talking{
+	background-position: 0 -580px;
+}
+.dialogue-disabled{
+	background-position: 0 -515px;
+}
+
+/*分屏模式显示方式*/
+.split-box{
+    width: 450px;
+    /*margin: 0 auto;*/
+    text-align: center;
+}
+.split-box-color{
+    text-align: center;
+    margin: 2px ;
+    position: relative;
+}
+.split-box-color select{
+    margin: 40% auto;
+    display: block;
+}
+
+.split-box1{
+    width: 180px;
+    height: 180px;
+    margin: 0 auto;
+    background: #DBEDF6;
+    border: 1px solid #07A2E8;
+}
+
+.split-box2{
+    display: inline-block;
+    width: 165px;
+    height: 165px;
+    background: #DBEDF6;
+    border: 1px solid #07A2E8;
+}
+.split-box3{
+    display: inline-block;
+    width: 60px;
+    height: 60px;
+    background: #DBEDF6;
+    border: 1px solid #07A2E8;
+    overflow: hidden;
+}
+.screen-num{
+    position: absolute;
+    left: 5px;
+    top: -5px;
+    color: #C1E1F6;
+}
+.split-box1>.screen-num{
+    font-size: 40px;
+}
+.split-box2>.screen-num{
+    font-size: 36px;
+}
+.split-box3>.screen-num{
+    font-size: 26px;
+}
+.isPolling{
+    display: inline-block;
+    width: 34px;
+    height: 16px;
+    background-image: url("../../../../assets/img/icon/polling_tip.png");
+    position: absolute;
+    right: -4px;
+    top: -1px;
+}
+.li-txt{
+	padding-right: 50px;
+}
+/* 分屏模式图标 */
+.split-item .item-list{
+	width:40px;
+	height:40px;
+	display:inline-block;
+	margin:0 5px;
+	background:url("../../../../assets/img/icon/splitModel_icon.png") no-repeat;
+}
+.split-item .item-list0-checked{
+	background-position:-41px 0;
+}
+.split-item .item-list1{
+	background-position:0 -40px;
+}
+.split-item .item-list1-checked{
+	background-position:-41px -40px;
+}
+.split-item .item-list2{
+	background-position:0 -82px;
+}
+.split-item .item-list2-checked{
+	background-position:-41px -82px;
+}
+.split-item .item-list3{
+	background-position:0 -127px;
+}
+.split-item .item-list3-checked{
+	background-position:-41px -127px;
+}
+.split-item .item-list4{
+	background-position:0 -165px;
+}
+.split-item .item-list4-checked{
+	background-position:-41px -165px;
+}
+.split-item .item-list5{
+	background-position:0 -205px;
+}
+.split-item .item-list5-checked{
+	background-position:-41px -205px;
+}
+/* 选择参与轮询的参会人员 */
+
+.left-box,.right-box,.btn-box{
+    float:left;
+}
+.left-box ul,
+.right-box ul{
+    overflow-y: auto;
+    margin-bottom:10px;
+    width:180px;
+    height:300px;
+    border: 1px solid #ddd;
+
+}
+.left-box ul li,
+.right-box  ul li{
+    padding:5px 10px;
+}
+.btn-box{
+    /*margin: 50px auto;*/
+    margin-top: 25%;
+}
+
+.btn-box>a.btn{
+    display:block;
+    margin:5px;
+}
+
+.upbtn,
+.downbtn{
+    margin-right:3px;
+    float: right;
+}
+.li-txt:hover{
+    cursor: pointer;
+}
+#leftSelect li:hover,
+#rightSelect li:hover{
+    background: #f2f2f2;
+}
+.table-striped > tbody > tr:nth-child(even) {
+       background-color: rgba(0, 160, 233, 0.05);
+
+}
+
+
+
+
+
+/*  */
+input.theadSearch{
+	border-radius: 30px;
+  /* box-shadow: none; */
+  padding-left: 12px;
+  width: 110px;
+  border: none;
+}
+
+.right-update a{
+	display: inline-block;
+	margin-left:8px;
+}
+
+
+
+/*会议超时 动画效果*/
+/* .meeting-timeout{
+    min-height: 300px;
+} */
+.timeout-bg{
+    display: inline-block;
+    /* min-width: 120px; */
+    padding:0 8px;
+    height: 34px;
+    border-radius: 5px;
+    background-color: #FA4546;
+    position: relative;
+    margin: 0 10px;
+}
+.timeout-bg p{
+    line-height: 34px;
+    color: #fff;
+    font-size: 12px;
+}
+.circle,.circle2{
+    /*  min-width: 120px; */
+    width:95%;
+    height: 34px;
+    border-radius: 5px;
+    border: 6px solid #E35858;
+    position: absolute;
+		margin-left: -11px;
+}
+.circle{
+    opacity: 0.8;
+    animation: scaleout 1.8s infinite ease-in-out;
+    -webkit-animation: scaleout 1.8s infinite ease-in-out;
+    -moz-animation: scaleout 1.8s infinite ease-in-out;
+    -o-animation: scaleout 1.8s infinite ease-in-out;
+}
+.circle2{
+    opacity: 1;
+    animation: scaleout 2s infinite ease-in-out;
+    -webkit-animation: scaleout 2s infinite ease-in-out;
+    -moz-animation: scaleout 2s infinite ease-in-out;
+    -o-animation: scaleout 2s infinite ease-in-out;
+}
+@keyframes scaleout {
+    0% {
+        transform: scale(0.95);
+        -webkit-transform: scale(0.95);
+        -moz-transform: scale(0.95);
+        -o-transform:  scale(0.95);
+    }50% {
+         transform: scale(1.0);
+         -webkit-transform: scale(1.0);
+         -moz-transform:scale(1.0);
+         -o-transform: scale(1.0);
+     }100% {
+          transform: scale(1.3);
+          -webkit-transform: scale(1.3);
+          -moz-transform: scale(1.3);
+          -o-transform: scale(1.3);
+          opacity: 0;
+      }
+}
+@-webkit-keyframes scaleout {
+    0% {
+        transform: scale(0.95);
+        -webkit-transform: scale(0.95);
+        -moz-transform: scale(0.95);
+        -o-transform:  scale(0.95);
+    }50% {
+         transform: scale(1.0);
+         -webkit-transform: scale(1.0);
+         -moz-transform:scale(1.0);
+         -o-transform: scale(1.0);
+     }100% {
+          transform: scale(1.3);
+          -webkit-transform: scale(1.3);
+          -moz-transform: scale(1.3);
+          -o-transform: scale(1.3);
+          opacity: 0;
+      }
+}
+@-moz-keyframes  scaleout {
+    0% {
+        transform: scale(0.95);
+        -webkit-transform: scale(0.95);
+        -moz-transform: scale(0.95);
+        -o-transform:  scale(0.95);
+    }50% {
+         transform: scale(1.0);
+         -webkit-transform: scale(1.0);
+         -moz-transform:scale(1.0);
+         -o-transform: scale(1.0);
+     }100% {
+          transform: scale(1.3);
+          -webkit-transform: scale(1.3);
+          -moz-transform: scale(1.3);
+          -o-transform: scale(1.3);
+          opacity: 0;
+      }
+}

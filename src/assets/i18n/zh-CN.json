@@ -1,0 +1,15 @@
+{
+  "VCS_TITLE":"云起云",
+  "VCS_LOGO_IMG":"assets/img/logo_white.png",
+  "VCS_THEME_COLOR":"navbarHeaderBlack",
+  "WEBRTC_URL":"http://localhost:8000",
+  "BUTTON":{
+    "YES":"确定",
+    "CANCEL":"取消",
+    "SAVE":"保存",
+    "DELETE":"删除",
+    "BUY":"购买",
+    "ORDER":"下单"
+
+  }
+}

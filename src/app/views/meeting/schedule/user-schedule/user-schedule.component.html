@@ -1,0 +1,206 @@
+<div class="page-heading">会议日程</div>
+
+<div class="">
+
+  <!-- 查询 -->
+  <form class="form-inline" name="searchForm">
+    <div class="pull-left">
+      <div class="form-group-inline">
+        <!-- <input type="text" class="form-control" placeholder="按日期筛选" bsDaterangepicker name="searchDate" [(ngModel)]="bsRangeValue" style="width:210px;" (bsValueChange)="conout(bsRangeValue)"/> -->
+        <nz-datepicker style="width: 40%;" name="startTime" (ngModelChange)="_startDate=$event;_startValueChange()"
+                       [(ngModel)]="_startDate" [nzDisabledDate]="_disabledStartDate" [nzPlaceHolder]="'开始时间'"
+                       [nzAllowClear]="false"></nz-datepicker>
+        <nz-datepicker style="width: 40%;" name="endTime" (ngModelChange)="_endDate=$event;_endValueChange()"
+                       [(ngModel)]="_endDate" [nzDisabledDate]="_disabledEndDate" [nzPlaceHolder]="'结束时间'"
+                       [nzAllowClear]="false"></nz-datepicker>
+      </div>
+      <div class="form-group-inline">
+        <span>会议类型：</span>
+        <select name="meetingType" class="form-control" [(ngModel)]="searchData.type" (change)="dataSearchFn()">
+          <option value="">请选择</option>
+          <option value="0">预约会议</option>
+          <!-- <option value="1">周期会议</option> -->
+          <option value="2">实时会议</option>
+        </select>
+      </div>
+    </div>
+    <div class="pull-right has-feedback">
+      <input type="text" class="form-radius" name="appointmentName" [(ngModel)]="searchData.appointmentName"
+             placeholder="会议名称、发起人" (ngModelChange)="dataSearchFn()">
+    </div>
+  </form>
+  <div class="clearfix"></div>
+  <!-- 列表 -->
+  <div *ngIf="tableData.list.length>0; else elseBlock">
+    <div class="schedule-list" *ngFor="let list of tableData.list">
+      <!-- 会议日程 日期  ------------>
+      <div class="schedule-date col-xs-2">
+        <p>{{list.startTime | date:'yyyy-MM-dd'}}</p>
+        <p>{{list.startTime | date:'HH:mm'}}</p>
+      </div>
+      <!--  会议日程 内容 ------------->
+      <div class="schedule-content col-xs-7">
+        <p>
+          <a [routerLink]="['/page/schedule-detail',list.appointmentId]" class="operation-meeting font16">{{list.appointmentName}}</a>
+          <span *ngIf="list.isRepeat==true" class='icon-refresh'></span>
+        </p>
+        <p class="schedule-content-list">
+          <span>会议号：{{list.appointmentNumber}}</span>
+          <span>密 码：{{list.hostPwd}}</span>
+          <span>发起人：{{list.realName}}</span>
+          <span>时 长：{{list.appointmentPeriod}} 小时</span>
+          <span>会议类型：
+    				<span *ngIf="list.appointmentType!=2">
+       				<span *ngIf="list.isAppoint==true">预约会议</span>
+       				<span *ngIf="list.isAppoint==false">被邀请会议</span>
+       			</span>
+       			<span *ngIf="list.appointmentType==2">实时会议</span>
+       		</span>
+          <span>状 态：
+    				<span *ngIf="list.appointmentStatus==0">正常</span>
+       			<span *ngIf="list.appointmentStatus==1 || list.appointmentStatus==3">无法召开</span>
+       			<span *ngIf="list.appointmentStatus==2">配置成功</span>
+       			<span *ngIf="list.appointmentStatus==4">启动中</span>
+       			<span *ngIf="list.appointmentStatus==5">进行中</span>
+    			</span>
+        </p>
+      </div>
+      <!-- 会议日程 操作 ------------->
+      <div class="schedule-update col-xs-3">
+        <!-- 预约会议 -->
+        <div *ngIf="list.appointmentType!=2">
+          <!-- 预约会议 -->
+          <div *ngIf="list.isAppoint==true">
+            <div class="text-left" *ngIf="list.appointmentStatus==0"><!-- 正常 -->
+              <button class="btn btn-svoc radius20 delete-meeting" [class.disabled]="isAvailableOne" data="list"
+                      (click)="deleteMeetingFn(list)">删除
+              </button>
+              <button class="btn btn-svoc radius20 liveSrc" [class.disabled]="isAvailableOne" *ngIf="list.isLive==true"
+                      data="list.appointmentNumber"
+                      (click)="liveSrcFn(list)">直播链接
+              </button>
+            </div>
+            <div class="text-left" *ngIf="list.appointmentStatus==1 || list.appointmentStatus==3"><!-- 无法召开 -->
+              <button class="btn btn-svoc radius20 cancel-meeting" [class.disabled]="isAvailableOne" data="list"
+                      (click)="cancelMeetingFn(list)">取消预约
+              </button>
+              <button class="btn btn-svoc radius20 liveSrc" [class.disabled]="isAvailableOne" *ngIf="list.isLive==true"
+                      data="list.appointmentNumber"
+                      (click)="liveSrcFn(list)">直播链接
+              </button>
+            </div>
+            <div class="text-left" *ngIf="list.appointmentStatus==2 || list.appointmentStatus==4"><!-- 配置成功或启动中 -->
+              <button class="btn btn-svoc radius20 liveSrc" [class.disabled]="isAvailableOne" *ngIf="list.isLive==true"
+                      data="list.appointmentNumber"
+                      (click)="liveSrcFn(list)">直播链接
+              </button>
+            </div>
+            <div class="text-left" *ngIf="list.appointmentStatus==5">
+              <!-- <button class="btn btn-svoc radius20 contorl-btn" data="list" (click)="controlMeetingFn(list)">会议控制</button> -->
+              <!-- <a [routerLink]="['/page/meeting-control',list.controlId]" class="btn btn-svoc radius20 contorl-btn">会议控制</a> -->
+              <meeting-control-btn class="radius20" [meetingData]="list.controlId"
+                                   [class.disabled]="isAvailableOne"></meeting-control-btn>
+              <button class="btn btn-svoc radius20 liveSrc" [class.disabled]="isAvailableOne" *ngIf="list.isLive==true"
+                      data="list.appointmentNumber"
+                      (click)="liveSrcFn(list)">直播链接
+              </button>
+              <!-- <a href="{{path}}/webRTC/app/index?conference={{list.appointmentNumber}}&pin={{list.hostPwd}}&name={{tokenData.apiUserId}}&realName={{tokenData.realName}}" target="_blank"  class="btn btn-svoc radius20" (click)="enterWebRtcFn(list.appointmentNumber,list.hostPwd)">入会</a> -->
+              <a
+                href="/webrtc?conference={{list.appointmentNumber}}&pin={{list.hostPwd}}&name={{loginUserData.apiUserId}}&realName={{loginUserData.realName}}"
+                target="_blank" class="btn btn-svoc radius20" [class.disabled]="isAvailableOne">入会</a>
+            </div>
+          </div>
+          <!-- 被邀请的，进行中的会议 -->
+          <div class="text-left" *ngIf="list.isAppoint==false&&list.appointmentStatus==5">
+            <!-- <a href="{{path}}/webRTC/app/index?conference={{list.appointmentNumber}}&pin={{list.hostPwd}}&name={{tokenData.apiUserId}}&realName={{tokenData.realName}}" target="_blank"  class="btn btn-svoc radius20" (click)="enterWebRtcFn(list.appointmentNumber,list.hostPwd)">入会</a> -->
+            <a
+              href="/webrtc?conference={{list.appointmentNumber}}&pin={{list.hostPwd}}&name={{loginUserData.apiUserId}}&realName={{loginUserData.realName}}"
+              target="_blank" class="btn btn-svoc radius20" [class.disabled]="isAvailableOne">入会</a>
+          </div>
+        </div>
+        <!-- 实时会议 -->
+        <div *ngIf="list.appointmentType==2" class="text-left">
+    			<span *ngIf="list.isAppoint==true">
+    				<!-- <button *ngIf="list.appointmentStatus==5" class="btn btn-svoc radius20 contorl-btn" data="list" (click)="controlMeetingFn(list)">会议控制</button> -->
+            <!-- <a *ngIf="list.appointmentStatus==5" [routerLink]="['/page/meeting-control',list.controlId]" class="btn btn-svoc radius20 contorl-btn">会议控制</a> -->
+            <span *ngIf="list.appointmentStatus==5"><meeting-control-btn class="radius20"
+                                                                         [meetingData]="list.controlId"
+                                                                         [class.disabled]="isAvailableOne"></meeting-control-btn></span>
+
+            <button class="btn btn-svoc radius20 liveSrc" [class.disabled]="isAvailableOne" *ngIf="list.isLive==true"
+                    data="list.appointmentNumber"
+                    (click)="liveSrcFn(list)">直播链接</button>
+    			</span>
+          <!-- <a href="{{path}}/webRTC/app/index?conference={{list.appointmentNumber}}&pin={{list.hostPwd}}&name={{tokenData.apiUserId}}&realName={{tokenData.realName}}" target="_blank"  class="btn btn-svoc radius20" (click)="enterWebRtcFn(list.appointmentNumber,list.hostPwd)">入会</a> -->
+          <a
+            href="/webrtc?conference={{list.appointmentNumber}}&pin={{list.hostPwd}}&name={{loginUserData.apiUserId}}&realName={{loginUserData.realName}}"
+            target="_blank" class="btn btn-svoc radius20" [class.disabled]="isAvailableOne">入会</a>
+        </div>
+      </div>
+    </div>
+    <!-- 分页 -->
+    <div class="text-right">
+      <nz-pagination [(nzPageIndex)]="tableData.currentPage" [nzTotal]="tableData.totalPages"
+                     (click)="pageChanged(tableData.currentPage)" [nzShowTotal]="tableData.totalPages"
+                     [nzPageSize]="5"></nz-pagination>
+    </div>
+  </div>
+  <!-- 无数据 -->
+  <ng-template #elseBlock>
+    <div class="text-center" style="margin-top:15%;">
+      <img src="assets/img/no_schedule_data.png"/>
+    </div>
+  </ng-template>
+
+</div>
+
+<!-- 复制直播链接 -->
+<nz-modal [nzVisible]="liveSrcModal" [nzTitle]="'复制链接'" [nzContent]="liveSrcContent" [nzFooter]="liveSrcFooter"
+          (nzOnCancel)="liveSrcModal=false">
+  <ng-template #liveSrcContent>
+    <div class="">
+      <a id="srcContentShow" class="srcContentShow" target="_blank" style="left:40px;">{{srcContent}}</a>
+    </div>
+  </ng-template>
+  <ng-template #liveSrcFooter>
+    <button nz-button [nzType]="'primary'" [nzSize]="'large'" ngxClipboard [cbContent]="srcContent"
+            (cbOnSuccess)="copyLiveSrcFn()"> 复制链接
+    </button>
+  </ng-template>
+</nz-modal>
+
+<!-- 删除重复会议 -->
+<nz-modal [nzVisible]="deleteModal" [nzTitle]="'删除会议'" [nzContent]="deleteContent" [nzFooter]="deleteFooter"
+          (nzOnCancel)="deleteModal=false">
+  <ng-template #deleteContent>
+    <div class="">
+      <p class="text-center font16">您删除的会议是有重复有效期的会议，是否要删除掉？</p>
+      <div class="del-time-box">
+        <label class="font16"><input type="checkbox" name="checkedAll" [checked]="isSelectedAll()"
+                                     (click)="_allchecked($event)"> 会议有效时间</label>
+        <form id="deleteIdForm">
+          <div class="del-time-item">
+            <div class="" *ngFor="let repeatlist of repeatListData;let i = index">
+              <label>
+                <input type="checkbox" name="appointmentId" [checked]="isSelected(repeatlist)"
+                       (click)="updateSelection($event,repeatlist)"/>
+                {{i+1}}、{{repeatlist.startTime | date:'yyyy-MM-dd'}}
+              </label>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </ng-template>
+  <ng-template #deleteFooter>
+    <button nz-button [nzType]="'default'" [nzSize]="'large'" (click)="deleteModal=false"> 取 消</button>
+    <button nz-button [nzType]="'primary'" [nzSize]="'large'" (click)="deleteRepeatFn()"> 确 定</button>
+  </ng-template>
+</nz-modal>
+
+<!-- 删除单个会议／取消预约 -->
+<nz-modal [nzVisible]="alertModal" [nzTitle]="'Modal'" [nzContent]="alertContent" (nzOnCancel)="handleCancel($event)"
+          (nzOnOk)="handleOk($event)">
+  <ng-template #alertContent>
+  </ng-template>
+</nz-modal>

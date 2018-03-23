@@ -1,0 +1,60 @@
+/* You can add global styles to this file, and also import other style files */
+/*********************** 页脚 *********************/
+/* .link-other li a {
+    font-size: 14px;
+    color: #747474;
+    padding-right: 15px;
+    border-right: 1px solid #ccc;
+    text-decoration: none;
+}
+.footer{
+    width: 100%;
+    border-top: 1px solid #ccc ;
+    padding: 20px 0;
+    margin-top: 10px;
+}
+.link li a{
+    font-size: 14px;
+    color: #747474;
+    padding-right: 15px;
+    border-right: 1px solid #ccc;
+}
+.link li:last-child a{
+    border-right: none;
+}
+*/
+.black-header header{
+  background-color:#303847!important;
+}
+.white-footer .footer .link p,
+.white-footer .footer .link li a{
+    color: #fff!important;/* #747474; */
+}
+
+.list-icon li a{ border-right: none; color:#000;}
+.list-icon>li{ float:left; margin-right:20px;}
+.foot-icon {
+    width: 31px;
+    height: 30px;
+    background: url("assets/img/icon/icons.png") no-repeat;
+    display: block;
+    float:left;
+    margin-top: -3px;
+    margin-right: 5px;
+
+}
+.foot-icon-connect{
+    background-position: 0 -45px;
+}
+.foot-icon-buy{
+    background-position: 0 -77px;
+}
+.foot-icon-pakage{
+    background-position: 0 -109px;
+}
+.foot-icon-price{
+    background-position: 0 -141px;
+}
+.foot-icon-service{
+    background-position: 0 -173px;
+}

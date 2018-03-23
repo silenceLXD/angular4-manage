@@ -1,0 +1,108 @@
+
+/*分屏模式显示方式*/
+.split-box{
+    width: 480px;
+    /*margin: 0 auto;*/
+    text-align: center;
+}
+.split-box-color{
+    text-align: center;
+    margin: 2px ;
+    position: relative;
+}
+.split-box-color select{
+    margin: 40% auto;
+    display: block;
+}
+
+.split-box1{
+    width: 180px;
+    height: 180px;
+    margin: 0 auto;
+    background: #DBEDF6;
+    border: 1px solid #07A2E8;
+}
+
+.split-box2{
+    display: inline-block;
+    width: 165px;
+    height: 165px;
+    background: #DBEDF6;
+    border: 1px solid #07A2E8;
+}
+.split-box3{
+    display: inline-block;
+    width: 60px;
+    height: 60px;
+    background: #DBEDF6;
+    border: 1px solid #07A2E8;
+    overflow: hidden;
+}
+.screen-num{
+    position: absolute;
+    left: 5px;
+    top: -5px;
+    color: #C1E1F6;
+}
+.split-box1>.screen-num{
+    font-size: 40px;
+}
+.split-box2>.screen-num{
+    font-size: 36px;
+}
+.split-box3>.screen-num{
+    font-size: 26px;
+}
+.isPolling{
+    display: inline-block;
+    width: 34px;
+    height: 16px;
+    background-image: url("../../../../../assets/img/icon/polling_tip.png");
+    position: absolute;
+    right: -4px;
+    top: -1px;
+}
+.li-txt{
+	padding-right: 50px;
+}
+/* 分屏模式图标 */
+.split-item .item-list{
+	width:40px;
+	height:40px;
+	display:inline-block;
+	margin:0 5px;
+	background:url("../../../../../assets/img/icon/splitModel_icon.png") no-repeat;
+}
+.split-item .item-list0-checked{
+	background-position:-41px 0;
+}
+.split-item .item-list1{
+	background-position:0 -40px;
+}
+.split-item .item-list1-checked{
+	background-position:-41px -40px;
+}
+.split-item .item-list2{
+	background-position:0 -82px;
+}
+.split-item .item-list2-checked{
+	background-position:-41px -82px;
+}
+.split-item .item-list3{
+	background-position:0 -127px;
+}
+.split-item .item-list3-checked{
+	background-position:-41px -127px;
+}
+.split-item .item-list4{
+	background-position:0 -165px;
+}
+.split-item .item-list4-checked{
+	background-position:-41px -165px;
+}
+.split-item .item-list5{
+	background-position:0 -205px;
+}
+.split-item .item-list5-checked{
+	background-position:-41px -205px;
+}

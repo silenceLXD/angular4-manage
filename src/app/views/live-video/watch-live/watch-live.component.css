@@ -1,0 +1,246 @@
+
+.starter-template{
+  margin-top: 55px;
+}
+
+
+.liveRadio{
+    width:100%;
+    margin:0 auto;
+}
+.liveRadio .tit{
+    margin:15px 0;
+}
+.liveRadio .tit span{
+    margin-right: 20px;
+}
+/* .liveVideo{
+    width:100%;
+    min-height: 400px;
+    border-radius: 3px;
+    background: #000;
+} */
+.liveMeetInfo{
+    border: 1px solid #e6e5e5;
+    border-radius: 3px;
+    background: #fff;
+    min-height: 150px;
+    margin: 20px 0;
+}
+.liveMeetInfo .tit{
+    /* padding: 0 0 15px 20px; */
+    padding: 5px;
+    border-bottom:1px solid #e6e5e5;
+}
+.liveMeetInfo .tit>span{
+    padding: 6px;
+    border-bottom: 2px solid #07a2e8;
+}
+.liveMeetInfo .con{
+    padding:20px;
+}
+.liveTime{
+    /* min-height: 500px; */
+    background: #000;
+    border-radius: 3px;
+    text-align: center;
+    padding-top: 100px;
+}
+.liveTime h4{
+    color: #fff;
+    font-size: 24px;
+    font-weight: bold;
+}
+.liveTime .item{
+    /* width: 46px; */
+    padding: 0 15px;
+    height: 95px;
+    display: inline-block;
+    border:1px solid #fff;
+    border-radius: 3px;
+    margin-top: 50px;
+    float: left;
+    color: #fff;
+    line-height: 95px;
+    font-size: 38px;
+}
+.liveTime p{
+    color: #ccc;
+    font-size: 18px;
+    margin-top: 20px;
+}
+.liveTime li{
+    /* margin:0 20px; */
+}
+.liveTime ul{
+    margin:0 auto;
+    width: 430px;
+}
+.conf-msg{
+  margin: 20px 0;
+}
+.conf-player{
+  /* width: 100%; */
+  min-height: 400px;
+  border-radius: 3px;
+  background: #000;
+}
+.conf-player .conf-player-left{
+  /* width: 75%; */
+  /* height: 100%; */
+  /* float: left; */
+  min-height: 400px;
+  display: inline-block;
+  position: relative;
+}
+.conf-player .conf-player-right{
+  /* width: 24%; */
+  /* height: 100%; */
+  /* float: right; */
+  min-height: 400px;
+  background-color: #3f4a5d;
+  display: inline-block;
+  position: relative;
+}
+/* .chart{
+
+  height: 100%;
+} */
+.chart .chart-title{
+  color: #fff;
+  background-color: #303847;
+  padding:8px;
+}
+/* 聊天发送消息 input框 */
+.chart-send{
+  position: absolute;
+  width: 100%;
+  bottom: 0;
+}
+.chart-send input[type="text"]{
+  background: transparent;
+  border: none;
+  border-top: 1px solid #bdbbbb;
+  /* height: 20px; */
+  padding: 10px 8px;
+  color: #fff;
+  width: 100%;
+}
+.message-tip{
+    z-index: 999;
+    color: #fff;
+    text-align: center;
+}
+.message-tip>span{
+  display: inline-block;
+  background: #00000069;
+  border-radius: 5px;
+  font-size: 12px;
+  padding: 5px 10px;
+  border: 1px solid #fff;
+  position: absolute;
+  top: 10px;
+  z-index: 999;
+}
+
+.iShare-icon a{
+  font-size: 19px;
+
+}
+
+
+
+/******/
+.boxer-overlay {
+    background: #000;
+    height: 100%;
+    left: 0;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 105;
+    opacity: 0.1;
+}
+.boxer {
+    background: #fff;
+    border-radius: 3px;
+    box-shadow: 0 0 25px #000;
+    padding: 10px;
+    position: absolute;
+    z-index: 105;
+    left: 35%;
+    top: 100px;
+}
+/* .boxer .boxer-container{
+  width: 300px;
+  height: 300px;
+} */
+
+
+
+/* 聊天 */
+
+.avatar-color{
+  width:35px;
+	height:35px;
+	border-radius:50%;
+  text-align:center;
+	line-height: 35px;
+  margin:0 10px;
+	color:#fff;
+}
+.avatar-color0{
+	background:#a9d2f2;
+}
+.avatar-color1{
+	background:#a9d2f2;
+}
+.avatar-color2{
+	background:#c5b3eb;
+}
+.avatar-color3{
+	background:#f3b2b2;
+}
+.avatar-color4{
+	background:#a7dbc2;
+}
+.avatar-color5{
+	background:#f7d4a3;
+}
+
+
+.msg-name-list{
+  color: #fff;
+  margin: 3px 0;
+}
+.msg-content-list-left,
+.msg-content-list-right{
+  background: #fff;
+  color: #000;
+  padding: 5px 8px;
+  border-radius: 5px;
+  position: relative;
+  max-width: 200px;
+  word-wrap: break-word;
+}
+
+ .msg-content-list-left:before{
+     position: absolute;
+     content: "";
+     width: 0;
+     height: 0;
+     left: -5px;
+     border-top: 3px solid transparent;
+     border-right: 6px solid #fff;
+     border-bottom: 3px solid transparent;
+ }
+ .msg-content-list-right:before{
+     position: absolute;
+     content: "";
+     width: 0;
+     height: 0;
+     right: -5px;
+     border-top: 3px solid transparent;
+     border-left: 6px solid #fff;
+     border-bottom: 3px solid transparent;
+ }

@@ -1,0 +1,44 @@
+<div class="">
+  <app-header-un class="black-header"></app-header-un>
+  <div class="container">
+    <div class="" style="width:680px;margin: 50px auto;">
+      <div class="col-xs-6 col-xs-offset-3">
+        <form class="form-horizontal" name="bindPhoneForm">
+          <h5 class="text-center bind-title">绑定手机号</h5>
+          <div class="form-group">
+            <div class="col-xs-12">
+              <input type="text" class="form-control input-radius" name="phone" [(ngModel)]="bindData.mobilePhone"
+                     (blur)="checkPhoneFn(bindData.mobilePhone)" maxlength="11" placeholder="请输入手机号">
+              <p class="error">{{ checkPhoneMsg.msg}}</p>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-xs-12 msg-code">
+              <input type="text" class="form-control input-radius" name="msgCode" (ngModelChange)="bindDataInput()"
+                     [(ngModel)]="bindData.verificationCode" maxlength="6" autocomplete="off" placeholder="请输入验证码">
+              <!-- <button class="get-msg-code" (click)="sendMessage()" [disabled]="disabledClick">{{paracont}}</button> -->
+              <timer-button class="get-msg-code" [sendType]="1" [phoneNum]="bindData.mobilePhone"></timer-button>
+              <p class="error">{{ errorMsg}}</p>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-xs-12">
+              <input type="password" class="form-control input-radius" name="password" [(ngModel)]="bindData.password"
+                     autocomplete="off" placeholder="请输入密码" (ngModelChange)="passwordInput()">
+              <p *ngIf="passwordValidators" class="error">密码不得为空</p>
+            </div>
+          </div>
+          <!--<div class="col-xs-12 error">{{errorMsg}}</div>-->
+          <div class="form-group">
+            <div class="col-xs-12">
+              <a href="javascript:;" class="btn btn-svoc bind-btn" [ngClass]="isDisabledBind?'disabled':''" (click)="sureBind()">确认 </a>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+
+
+  </div>
+  <app-footer></app-footer>
+</div>

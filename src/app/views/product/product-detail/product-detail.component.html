@@ -1,0 +1,207 @@
+<div class="page-heading">商品详情</div>
+
+<div class="white-bg">
+  <div class="widget-con package-cons" id="packageCons" style="width: 900px;">
+    <form class="form-inline select-form  open clearfix">
+      <div class="border3">
+        <!-- 套餐类型 -->
+        <div class="row lh32">
+          <label class="col-xs-2"><span class="color-svoc fa fa-bookmark"></span> 套餐类型：</label>
+          <p class="col-xs-6">
+            <!-- <span *ngIf="productData.productType==1">试用</span> -->
+            <span *ngIf="productData.productType==2">包时</span>
+            <span *ngIf="productData.productType==3">计时</span>
+            <span *ngIf="productData.productType==4">附加包</span>
+          </p>
+          <!-- <a href="javascript:;" (click)="downloadContract()" class="col-xs-4">合同模板下载</a> -->
+        </div>
+        <!-- 套餐名称 -->
+        <div class="row lh32">
+          <label class="col-xs-2"><span class="color-svoc fa fa-cloud"></span> 套餐名称：</label>
+          <p class="col-xs-10">{{productData.productName}}</p>
+          <input type="hidden" name="productName" [(ngModel)]="productData.productName">
+        </div>
+        <div class="line"></div>
+        <!-- 套餐内容 -->
+        <div class="row lh32">
+          <label class="col-xs-2"><span class="color-svoc fa fa-list-alt"></span>
+            {{productData.productType==3?'免费基础包':'套餐内容'}}：</label>
+          <div class="col-xs-10">
+            <!-- <div class="col-xs-3"><span ng-bind="productData.detailList[0].resourceName"></span><p class="con-item-p"><span class="icon-home"></span> <span ng-bind="productData.detailList[0].count"></span> 个</p></div>
+                            <div class="col-xs-3"><span ng-bind="productData.detailList[1].resourceName"></span><p class="con-item-p"><span class="icon-user"></span> <span ng-bind="productData.detailList[1].count"></span> 个</p></div>
+                            <div class="col-xs-3"><span ng-bind="productData.detailList[2].resourceName"></span><p class="con-item-p"><span class="icon-group"></span> <span ng-bind="productData.detailList[2].count"></span> 个</p></div> -->
+            <div class="col-xs-3" *ngFor="let detail of productData.detailList">
+              <span>{{detail.resourceName}}</span>
+              <p class="con-item-p">
+                <span class="product-icon {{detail.flagName}}-icon"></span>
+                <span>{{detail.count==-1?'不限':detail.count}}</span>
+                <span>{{detail.flagName=='flow'||detail.flagName=='cloudSpace'?'GB':'个'}}</span>
+              </p>
+            </div>
+            <div class="col-xs-3">视频类型<p class="con-item-p"><span class="product-icon video-icon"></span> <span>{{productData.videoType==1?'720P':'1080P'}}</span>
+            </p></div>
+            <div class="col-xs-3" *ngIf="productData.productType==3">月租<p class="con-item-p"><span
+              class="product-icon video-icon"></span> <span>{{productData.costPrice}}</span>元/月</p></div>
+          </div>
+        </div>
+        <div class="line"></div>
+        <!-- 服务单价 -->
+        <div class="row lh32" *ngIf="productData.productType==3">
+          <label class="col-xs-2"><span class="color-svoc fa fa-list-alt"></span> 服务单价：</label>
+          <div class="col-xs-10">
+            <div class="col-xs-3">通讯<p class="con-item-p"><span class="product-icon communicationPrice-icon"></span>
+              <span> {{productData.communicationPrice==null?'0':productData.communicationPrice}}</span>元／分钟／方</p></div>
+            <div class="col-xs-3" *ngIf="productData.livePrice">流量<p class="con-item-p"><span
+              class="product-icon livePrice-icon"></span> <span> {{productData.livePrice==null?'0':productData.livePrice}}</span>元／GB
+            </p></div>
+            <!-- <div class="col-xs-3" *ngIf="productData.vodPrice">点播流量<p class="con-item-p"><span class="product-icon vodPrice-icon"></span> <span ng-bind="productData.vodPrice==null?'0':productData.vodPrice"> </span>元／GB</p></div> -->
+            <!--<div class="col-xs-3" *ngIf="productData.storagePrice">云存储<p class="con-item-p"><span class="product-icon storagePrice-icon"></span> <span> {{productData.storagePrice==null?'0':productData.storagePrice}}</span>元/天</p></div>-->
+          </div>
+        </div>
+        <!-- 套餐说明 -->
+        <div class="row lh32">
+          <label class="col-xs-2"><span class="color-svoc fa fa-book"></span> 套餐说明：</label>
+          <p class="col-xs-10">{{productData.remark}}</p>
+        </div>
+        <div class="line"></div>
+
+        <!-- 套餐类型判断 begin -->
+
+        <!-- productType==1 试用套餐 -->
+        <!-- <div *ngIf="productData.productType==1">
+          <div class="row lh32">
+            <label class="col-xs-2"><span class="color-svoc fa fa-rmb"></span> 套餐金额：</label>
+            <p class="col-xs-10"><span class="orange">{{productData.price | currency: '￥'}} 元/月</span></p>
+          </div>
+          <div class="line"></div>
+          <div class="row lh32">
+            <label class="col-xs-2"><span class="color-svoc fa fa-credit-card"></span> 支付金额：</label>
+            <p class="col-xs-10"><span class="orange font18 payPrice">0.00元</span></p>
+            <input type="hidden" name="payPrice" [(ngModel)]="productData.price" >
+          </div>
+          <input type="hidden" name="useLength" [(ngModel)]="productData.useLength" >
+        </div> -->
+
+        <!-- productType==2 包时套餐 -->
+        <div *ngIf="productData.productType==2">
+          <div class="row lh32">
+            <label class="col-xs-2"><span class="color-svoc fa fa-rmb"></span> 套餐金额：</label>
+            <p class="col-xs-10"><span class="orange">{{productData.price | currency: '￥'}} 元/月</span></p>
+          </div>
+          <div class="line"></div>
+          <div class="row lh32">
+            <label class="col-xs-2"><span class="color-svoc fa fa-clock-o"></span> 服务时长：</label>
+            <div class="col-xs-10">
+              <slider-date (getSliderdate)="onPurchaseTime($event)"></slider-date>
+            </div>
+          </div>
+          <div class="line"></div>
+          <div class="row lh32">
+            <label class="col-xs-2"><span class="color-svoc fa fa-credit-card"></span> 支付金额：</label>
+            <p class="col-xs-10"><span class="orange font18 payPrice">{{productData.price * purchasetime | currency: '￥'}} 元</span>
+            </p>
+          </div>
+        </div>
+
+        <!-- productType==3 计时服务 -->
+        <div *ngIf="productData.productType==3">
+          <div class="row lh32">
+            <label class="col-xs-2"><span class="color-svoc fa fa-rmb"></span> 套餐金额：</label>
+            <p class="col-xs-10"><span class="orange">{{productData.price | currency: '￥'}} 元</span></p>
+          </div>
+          <!-- <div class="row lh32" style="background:#dcefff">
+                            <p class="col-xs-12">套餐换算：<span *ngIf="productData.communicationPrice">计时：{{productData.price}}元={{(productData.price / productData.communicationPrice) |number:2}}分钟</span>
+                                <span *ngIf="productData.livePrice">直播：{{productData.price}}元={{(productData.price / productData.livePrice) |number:1}}GB</span>
+                                <span *ngIf="productData.vodPrice">点播：{{productData.price}}元={{(productData.price / productData.vodPrice) |number:1}}GB</span>
+                            </p>
+                        </div> -->
+          <div class="row lh32">
+            <label class="col-xs-2"><span class="color-svoc fa fa-credit-card"></span> 支付金额：</label>
+            <p class="col-xs-10" *ngIf="oldOrdernNo">
+              <input type="number" name="payPrice" class="form-control" [(ngModel)]="productData.renewPrice"
+                     [(ngModel)]="$parent.entpayPrice" ng-blur="checkRenewprice($parent.entpayPrice)"/>
+              <span class=" payPrice">最低续费金额 {{productData.renewPrice | currency: '￥'}} 元</span>
+            </p>
+            <p class="col-xs-10" *ngIf="!oldOrdernNo">
+              <span *ngIf="!oldOrdernNo" class="orange font18 payPrice">{{productData. price| currency: '￥'}} 元</span>
+              <input type="hidden" name="payPrice" [(ngModel)]="productData.price">
+            </p>
+
+          </div>
+        </div>
+        <!-- productType==4 附加包套餐 -->
+        <div *ngIf="productData.productType==4">
+          <div class="row lh32">
+            <label class="col-xs-2"><span class="color-svoc fa fa-rmb"></span> 套餐金额：</label>
+            <p class="col-xs-10"><span class="orange">{{productData.price | currency: '￥'}} 元</span></p>
+          </div>
+          <div class="line"></div>
+          <div class="row lh32" *ngIf="productData.detailList[0].flagName=='cloudSpace'">
+            <label class="col-xs-2"><span class="color-svoc fa fa-clock-o"></span> 服务时长：</label>
+            <div class="col-xs-10">
+              <slider-date (getSliderdate)="onPurchaseTime($event)"></slider-date>
+            </div>
+          </div>
+          <div class="line" *ngIf="productData.detailList[0].flagName=='cloudSpace'"></div>
+          <div class="row lh32">
+            <label class="col-xs-2"><span class="color-svoc fa fa-credit-card"></span> 支付金额：</label>
+            <p class="col-xs-10"><span class="orange font18 payPrice">{{productData.price * (purchasetime||1) | currency: '￥'}} 元</span>
+            </p>
+            <input type="hidden" name="payPrice" [(ngModel)]="productData.price * purchasetimeYnum">
+          </div>
+        </div>
+        <!-- 套餐类型判断 end -->
+      </div>
+      <!-- 备 注 -->
+      <div class="row lh32" style="margin-top: 15px;">
+
+        <p class="col-xs-10"><span>备 注：</span>
+          <input type="text" name="remark" class="form-control" [(ngModel)]="remark"
+                 style="width:310px;" maxlength="20" placeholder="请输入20字以内的备注"></p>
+      </div>
+    </form>
+    <div class="text-center marginTB10">
+      <a href="javascript:;" id="renewalsOrder" *ngIf="oldOrdernNo" class="btn btn-svoc btn-svoc-lg renewalsOrder"
+         (click)="renewalsOrderFn(productData)">续费</a>&nbsp;
+      <a href="javascript:;" id="submitOrder" *ngIf="!oldOrdernNo" class="btn btn-svoc btn-svoc-lg submitOrder"
+         (click)="submitOrderFn(productData)">提交订单</a>&nbsp;
+      <a [routerLink]="'/page/product-list'" id="" class="btn btn-svoc btn-svoc-lg go-back">返回</a>
+    </div>
+  </div>
+
+</div>
+
+<ul class="list-inline list-unstyled list-icon font16 marginTB10 clearfix">
+  <li>
+    <a href="javascript:;" style="overflow: hidden;">
+      <span class="foot-icon-connect foot-icon"></span>
+      <span class="font16 pull-left">售前咨询:400-888-8888</span>
+    </a>
+
+  </li>
+  <li>
+    <a href="javascript:;" style="overflow: hidden;">
+      <span class="foot-icon-buy foot-icon"></span>
+      <span class="font16 pull-left">全方位购买咨询</span>
+    </a>
+  </li>
+  <li>
+    <a href="javascript:;" style="overflow: hidden;">
+      <span class="foot-icon-pakage foot-icon"></span>
+      <span class="font16">精准的套餐推荐</span>
+    </a>
+  </li>
+  <li>
+    <a href="javascript:;" style="overflow: hidden;">
+      <span class="foot-icon-price foot-icon"></span>
+      <span class="font16 pull-left">灵活的价格方案</span>
+    </a>
+  </li>
+  <li>
+    <a href="javascript:;" style="overflow: hidden;">
+      <span class="foot-icon-service foot-icon"></span>
+      <span class="font16 pull-left">1对1贴心服务</span>
+    </a>
+  </li>
+  <li style="clear:both;"></li>
+</ul>

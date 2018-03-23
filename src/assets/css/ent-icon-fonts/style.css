@@ -1,0 +1,188 @@
+@font-face {
+  font-family: 'icomoon';
+  src:  url('fonts/icomoon.eot?t2d6wa');
+  src:  url('fonts/icomoon.eot?t2d6wa#iefix') format('embedded-opentype'),
+    url('fonts/icomoon.ttf?t2d6wa') format('truetype'),
+    url('fonts/icomoon.woff?t2d6wa') format('woff'),
+    url('fonts/icomoon.svg?t2d6wa#icomoon') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+[class^="icon-"], [class*=" icon-"] {
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: 'icomoon' !important;
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-control-talking-on:before {
+  content: "\e907";
+}
+.icon-download:before {
+  content: "\e938";
+}
+.icon-meeting-management:before {
+  content: "\e937";
+}
+.icon-book:before {
+  content: "\e90f";
+}
+.icon-change-admin:before {
+  content: "\e910";
+}
+.icon-conference-management:before {
+  content: "\e911";
+}
+.icon-consumption-all:before {
+  content: "\e912";
+}
+.icon-consumption-detail:before {
+  content: "\e913";
+}
+.icon-contacts-ent:before {
+  content: "\e914";
+}
+.icon-contacts-user:before {
+  content: "\e915";
+}
+.icon-create-ent:before {
+  content: "\e916";
+}
+.icon-customize:before {
+  content: "\e917";
+}
+.icon-enter-setting:before {
+  content: "\e918";
+}
+.icon-history-management:before {
+  content: "\e919";
+}
+.icon-history:before {
+  content: "\e91a";
+}
+.icon-home-account:before {
+  content: "\e91b";
+}
+.icon-home-matter:before {
+  content: "\e91c";
+}
+.icon-home-service:before {
+  content: "\e91d";
+}
+.icon-input-search:before {
+  content: "\e91e";
+}
+.icon-join:before {
+  content: "\e91f";
+}
+.icon-live:before {
+  content: "\e920";
+}
+.icon-logout:before {
+  content: "\e921";
+}
+.icon-message:before {
+  content: "\e922";
+}
+.icon-more:before {
+  content: "\e923";
+}
+.icon-operation-log:before {
+  content: "\e924";
+}
+.icon-order-management:before {
+  content: "\e925";
+}
+.icon-personal-center:before {
+  content: "\e926";
+}
+.icon-personal-consumption:before {
+  content: "\e927";
+}
+.icon-room-management:before {
+  content: "\e928";
+}
+.icon-room:before {
+  content: "\e929";
+}
+.icon-schedule-management:before {
+  content: "\e92a";
+}
+.icon-schedule:before {
+  content: "\e92b";
+}
+.icon-user-email:before {
+  content: "\e92c";
+}
+.icon-user-job:before {
+  content: "\e92d";
+}
+.icon-user-number:before {
+  content: "\e92e";
+}
+.icon-user-personal-depone:before {
+  content: "\e92f";
+}
+.icon-user-personal-depthree:before {
+  content: "\e930";
+}
+.icon-user-personal-deptwo:before {
+  content: "\e931";
+}
+.icon-user-phone:before {
+  content: "\e932";
+}
+.icon-user-sip-pwd:before {
+  content: "\e933";
+}
+.icon-user-sip:before {
+  content: "\e934";
+}
+.icon-video-ent:before {
+  content: "\e935";
+}
+.icon-video:before {
+  content: "\e936";
+}
+.icon-attend-host:before {
+  content: "\e900";
+}
+.icon-attend-visitors:before {
+  content: "\e901";
+}
+.icon-call-off:before {
+  content: "\e902";
+}
+.icon-call-on:before {
+  content: "\e903";
+}
+.icon-control-alert:before {
+  content: "\e904";
+}
+.icon-control-request:before {
+  content: "\e905";
+}
+.icon-control-talking-off:before {
+  content: "\e906";
+}
+.icon-control-vote:before {
+  content: "\e90b";
+}
+.icon-hand-up:before {
+  content: "\e90c";
+}
+.icon-voice-off:before {
+  content: "\e90d";
+}
+.icon-voice-on:before {
+  content: "\e90e";
+}

@@ -1,0 +1,162 @@
+<div class="page-heading">订单支付</div>
+
+<div class="white-bg">
+  <!--支付订单成功页 开始-->
+  <div class="widget-con trySuss-con">
+    <div class="widget-title row">
+      <h4 class="col-xs-8">
+        订单提交成功！订单号：<span id="id" class="font16">{{orderdata.orderNo}}</span>
+      </h4>
+      <p class="col-xs-4 font16">
+        金额 <span class="orange font18">{{orderdata.amount | currency:'￥'}}</span> 元
+      </p>
+    </div>
+    <div>
+      <div class="row">
+        <div class="col-xs-8"></div>
+        <a href="javascript:;" class="pull-right col-xs-4 order-info" (click)="isshowOrderDetail=!isshowOrderDetail">订单详情<span
+          class="icon-double-angle-down"></span></a>
+        <!-- <a href="javascript:;" class="pull-right col-xs-4 order-info" *ngIf="isshowOrderDetail">收起详情<span class="icon-double-angle-up"></span></a> -->
+      </div>
+      <div class="row">
+        <div class="info-con col-xs-12" [hidden]="isshowOrderDetail">
+          <div id="orderDetail">
+            <!-- 订单详情 -->
+            <div class="col-xs-2">
+              <ul>
+                <li class="lh32">套餐名称：</li>
+                <li class="lh32">{{orderdata.productName}}</li>
+              </ul>
+            </div>
+            <div class="col-xs-8">
+              <ul>
+                <li class="lh32">套餐内容：</li>
+                <li class="lh32">
+                  <span class="margin10" *ngFor="let v of orderdata.product.detailList">{{v.resourceName}}: {{v.count==-1?'不限':v.count}} <span>{{v.flagName=='flow'||v.flagName=='cloudSpace'||v.flagName=='vodFlow'?'GB':'个'}}</span></span>
+                  <!-- <span class="margin10" *ngIf="orderdata.product.productType!=1">使用时长:
+                                <span *ngIf="orderdata.useLength<12">{{orderdata.useLength}} 月</span>
+                   <span *ngIf="orderdata.product.productType==3">不限</span>
+                            </span>
+                            <span class="margin10" *ngIf="orderdata.product.productType==1">使用时长:
+                                <span>{{orderdata.useLength}} 天</span>
+                            </span>
+                 <span class="margin10" *ngIf="orderdata.product.productType==3">使用时长:
+                                <span>不限</span>
+                            </span> -->
+                  <!--<span class="margin10 inline-block">使用时长:
+                            <span *ngIf="orderdata.product.productType==1">{{orderdata.useLength}} 天</span>
+                            <span *ngIf="orderdata.product.productType==2">{{orderdata.useLength}} 个月</span>
+                            <span *ngIf="orderdata.product.productType==3">不限</span>
+                            <span *ngIf="orderdata.product.productType==4">{{orderdata.product.storagePrice=='0.00'?'不限':orderdata.useLength+'个月'}}</span>
+                          </span>-->
+                  <span class="margin10">视频类型：{{orderdata.product.videoType==1?'720P':'1080P'}}</span>
+                  <span class="margin10"
+                        *ngIf="orderdata.product.productType==3">月租：{{orderdata.product.costPrice}} 元/月</span>
+                  <span class="margin10"
+                        *ngIf="orderdata.product.communicationPrice!=null&&orderdata.product.productType==3"> 通讯：{{orderdata.product.communicationPrice}} 元／分钟／方</span>
+                  <span class="margin10"
+                        *ngIf="orderdata.product.livePrice!=0&&orderdata.product.productType==3"> 流量：{{orderdata.product.livePrice}} 元／GB</span>
+                  <!-- <span class="margin10" *ngIf="orderdata.product.livePrice"> 直播流量：<span>{{orderdata.product.livePrice}} </span>元／GB</span>
+                                <span class="margin10" *ngIf="orderdata.product.vodPrice"> 点播流量：<span>{{orderdata.product.vodPrice}} </span>元／GB</span> -->
+                  <!--<span class="margin10" *ngIf="orderdata.product.storagePrice"> 云存储：<span>{{orderdata.product.storagePrice}} </span>元/天</span>-->
+                  <span class="margin10">{{orderdata.product.scale}}</span>
+                </li>
+              </ul>
+            </div>
+            <div class="col-xs-2">
+              <ul>
+                <li class="lh32">服务有效期：</li>
+                <li class="lh32">
+                  <span *ngIf="orderdata.product.productType==1">{{orderdata.useLength}} 天</span>
+                  <span *ngIf="orderdata.product.productType==2">{{orderdata.useLength}} 个月</span>
+                  <span *ngIf="orderdata.product.productType==3">不限</span>
+                  <span *ngIf="orderdata.product.productType==4">{{orderdata.product.detailList[0].flagName=='flow'?'不限':orderdata.useLength+'个月'}}</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <div *ngIf="orderdata.product.productType!=1">
+      <!-- 汇款 -->
+      <div class="border3 explain">
+        <span class="tit font18">汇 款</span>
+        <h4 class="row margin10 font18 white-bg">请您在30日内完成支付，否则订单会自动取消。到账周期为3个工作日。</h4>
+        <div class="split-line"></div>
+        <div class="row white-bg">
+          <p class="font16 marginTB10">请付款至以下账户，我们将为您开通服务</p>
+          <div class="col-xs-4">
+            <img src="assets/img/pay_card.png" width="100%"/>
+          </div>
+          <div class="col-xs-8 gray">
+            <p>特别提示</p>
+            <p>1、您可通过网上银行，银行转账，线下汇款等方式进行汇款。</p>
+            <p>2、办理银行转账时，请您务必在汇款单的用途栏内注明订单号／企业全称。</p>
+            <p>（如果您没有注明，请与我们联系，我们将核实您的款项，为您开通服务。）</p>
+            <p>3、如需发票或在支付过程中有其它疑问，欢迎致电010-58734583，我们将竭诚为您服务！</p>
+          </div>
+        </div>
+      </div>
+      <!-- 余额支付 -->
+      <div>
+        <div class="border3 explain">
+          <div class="tit font18">支付方式
+            <label for="payWay2" class="marginLR10">
+              <span class="fa orange font16" [ngClass]="ischeckedPay?'fa-check-square-o':'fa-square-o'"></span>
+            </label>
+            <input type="checkbox" id="payWay2" style="display:none;" [(ngModel)]="ischeckedPay">
+          </div>
+          <div [hidden]="!ischeckedPay">
+            <h4 class="margin10 font16">应付金额：<span class="orange font18">{{orderdata.amount | currency:'￥'}}</span>元
+            </h4>
+
+            <div class="white-bg">
+              <label for="balance" class="font16"> <input type="checkbox" id="balance" [(ngModel)]="chooseBalance"
+                                                          (change)="chooseBalanceFn(chooseBalance)"> 账户余额 <span
+                class="orange">{{accountData | currency:'￥'}}</span> 元</label>
+              <span class="pull-right font14"
+                    *ngIf="chooseBalance">支付：<b>{{payMoney.balancePay | currency:'￥'}}</b>元</span>
+            </div>
+            <p class="font16 marginTB10"></p>
+
+            <!-- <p class="font16 marginTB10">其他支付方式：</p> -->
+            <div class="white-bg">
+              <label for="alipay" class="font16"> <input type="checkbox" id="alipay" [(ngModel)]="chooseAlipay"
+                                                         (change)="chooseAlipayFn(chooseAlipay)"> 支付宝支付 </label>
+              <span class="pull-right font14"
+                    *ngIf="chooseAlipay">支付：<b>{{payMoney.alipayPay | currency:'￥'}}</b>元</span>
+            </div>
+
+            <div class="marginTB10">
+              <button type="button" [disabled]="ablePayBool" class="btn btn-svoc btn-svoc-lg look-btn"
+                      (click)="surePayFn()">确认支付
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- 试用说明 -->
+    <div class="border3 explain" *ngIf="orderdata.product.productType==1">
+      <span class="tit font18">试用说明</span>
+      <h4 class="margin10 font18">服务开通时间为1-3个工作日，试用时长为7天，如在使用过程中有疑问，欢迎致电010-58734583，我们将竭诚为您服务。</h4>
+    </div>
+    <div style="clear:both;"></div>
+    <!-- <div class="alert alert-warning col-xs-9"><span class="alert-icon tip-icon"></span>如需发票、合同请联系：400-888-8888</div> -->
+    <div>
+      <div class="text-center col-xs-9 ">
+        <a routerLink="/page/order-list" class="btn btn-svoc btn-svoc-lg look-btn">查看订单</a>
+        <input type="hidden" value="${pid }" name="pid" id="pid"/>
+      </div>
+    </div>
+
+  </div>
+  <!--支付订单成功页 结束-->
+</div>
+<div id="resultHtml">
+
+</div>

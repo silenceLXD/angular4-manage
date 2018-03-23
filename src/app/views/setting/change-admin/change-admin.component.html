@@ -1,0 +1,96 @@
+<div class="page-heading">更换企业管理员</div>
+
+<div class="">
+  <!-- 第一步 -->
+  <div *ngIf="stepTwo">
+    <div class="chang-admin-alert">
+      <span *ngIf="isPhone">更换企业管理员账号，需要验证当前企业管理员账号的身份</span>
+      <span *ngIf="!isPhone" class="error">当前账号未绑定手机号，前往<a routerLink="/page/personal-center">个人信息</a>绑定</span>
+    </div>
+    <div class="chang-admin-form">
+      <form class="form-inline">
+        <div class="row">
+          <label class="col-xs-2 col-lg-2">当前绑定手机号：</label>
+          <input type="hidden" id="currentPhone" name="currentPhone" [(ngModel)]="currentPhone">
+          <p class="col-xs-10 col-lg-10 phone">{{currentPhone?currentPhone:'未绑定手机号'}}</p>
+        </div>
+        <div class="row">
+          <label class="col-xs-2 col-lg-2">验证码：</label>
+          <div class="col-xs-4 col-lg-4 clearfix">
+            <div class="pull-left">
+              <input class="form-control" name="currentPhoneCode" [(ngModel)]="currentPhoneCode" maxlength="6"/>
+              <p class="error marginTB10">{{currentCodeError}}</p>
+            </div>
+            <div class="pull-left">
+              <a class="btn btn-svoc" href="javascript:;" id="getCodeCurrent" [ngClass]="disabledClick?'disabled':''"
+                 (click)="getPhoneCode(currentPhone)" style="padding:8px; margin-left:20px;">{{paracont}}</a>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-xs-2 col-lg-2">
+          </div>
+          <div class="col-xs-4 col-lg-4">
+            <a class="btn btn-svoc radius20" style="padding:10px 50px;" (click)="nextStepTwo()"
+               [ngClass]="{'disabled':isCanNext}">下一步</a>
+          </div>
+
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 第二步 -->
+  <div *ngIf="!stepTwo" class="chang-admin-form">
+    <div class="chang-admin-alert">
+      <span>更换企业管理员必须是当前通讯录里的用户</span>
+    </div>
+    <form class="form-inline">
+      <div class="row">
+        <label class="col-xs-2 col-lg-2">绑定企业账号：</label>
+        <!-- <input class="col-xs-4 col-lg-4 form-control" id="entPhone"/> -->
+        <div class="col-xs-4 col-lg-4 ">
+          <input type="text" class="form-control" id="entPhone" name="searchField" [(ngModel)]="searchField"
+                 (click)="chooseBox=!chooseBox" style="display:block;width:200px" maxlength="11"/>
+          <!-- <div  *ngIf="hidden">
+                        <select class="form-control" style='width:200px; height:40px; min-height:40px; max-height:130px; overflow-y:auto' (change)="change(searchField)" name="selectname" [(ngModel)]="searchField" multiple>
+                            <option *ngFor="let data of bindPhoneList | searchPhone:searchField" >{{data.mobilePhone}}</option>
+                        </select>
+                    </div> -->
+
+          <div class="wyinput-drop" *ngIf="chooseBox">
+            <ul>
+              <li *ngFor="let data of bindPhoneList | searchPhone:searchField"
+                  (click)="chooseNewPhoneFn(data.mobilePhone)">{{data.mobilePhone}}
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <label class="col-xs-2 col-lg-2">验证码：</label>
+        <div class="col-xs-4 col-lg-4 clearfix">
+          <div class="pull-left">
+            <input class="form-control" style="width:200px;" name="entCode" [(ngModel)]="searchFieldcode" id="codeEnt"
+                   maxlength="6"/>
+          </div>
+          <div class="pull-left">
+            <a class="btn btn-svoc" href="javascript:;" id="getCodeEnt" [ngClass]="disabledClick?'disabled':''"
+               (click)="getPhoneCode(searchField)" style="padding:8px;margin-left:20px;">{{ paracont }}</a>
+          </div>
+        </div>
+      </div>
+      <div class="">
+        <div class="col-xs-offset-2 error">{{searchFieldError}}</div>
+      </div>
+
+      <div class="row">
+        <div class="col-xs-2 col-lg-2">
+        </div>
+        <div class="col-xs-4 col-lg-4">
+          <a class="btn btn-svoc radius20" style="padding:10px 50px;" (click)="sureUpdateAdminFn()">确 定</a>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

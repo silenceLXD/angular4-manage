@@ -1,0 +1,19 @@
+.live-list{
+	background:#fff;
+	padding:20px;
+}
+.live-list h4{
+	/* margin:20px 0; */
+	font-size:14px;
+}
+.live-list p.gray{
+	margin-top:20px;
+}
+.live-list>.media-left{
+	position: relative;
+}
+.live-list>.media-left>b{
+	position: absolute;
+	margin:5px;
+	font-size:16px;
+}

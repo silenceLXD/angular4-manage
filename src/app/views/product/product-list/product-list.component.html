@@ -1,0 +1,84 @@
+<div class="page-heading">产品与服务</div>
+
+<div class="white-bg">
+  <div class="widget-con buy-con" id="buyCon">
+    <div class="choose-service marginT20">
+      <ul class="nav nav-tabs">
+        <li [ngClass]="productType==2?'active':''"><a href="javascript:;" (click)="changeProdTypeFn(2)"
+                                                      id="monthServiceActive">包时服务</a></li>
+        <li [ngClass]="productType==3?'active':''"><a href="javascript:;" (click)="changeProdTypeFn(3)"
+                                                      id="timeServiceActive">计时服务</a></li>
+        <li [ngClass]="productType==4?'active':''"><a href="javascript:;" (click)="changeProdTypeFn(4)"
+                                                      id="attachServiceActive">附加包</a></li>
+      </ul>
+
+      <div class="tab-content">
+        <!-- 显示套餐列表 -->
+        <div class="tab-pane" class="active">
+          <div class="clearfix packages">
+            <div class="package" *ngFor="let list of productListData">
+              <!--<div class="tit">
+                <p>{{list.productName}}</p>
+                <p>价格：<span class="font18">{{list.price}}</span>元/月</p>
+              </div>
+              <div class="con">
+                <ul>
+                  <li class="lh25" *ngFor="let del of list.detailList"><i class="cire solid"></i>
+                    {{del.resourceName}}：{{del.count}} <span>{{del.flagName=='flow'||del.flagName=='cloudSpace'||del.flagName=='vodFlow'?'GB':'个'}}</span>
+                  </li>
+                  <li class="lh25"><i class="cire solid"></i> 视频类型：<span>{{list.videoType==1?'720P':'1080P'}}</span>
+                  </li>
+                  <li><p class="remarkword"><i class="cire solid"></i> 套餐说明：<span>{{list.remark}}</span></p></li>
+                </ul>
+              </div>
+              <div class="text-center footerbtn">
+                <a [routerLink]="['/page/product-detail',list.id]"
+                   class="btn btn-svoc-border btn-svoc-lg buyBtn">立刻购买</a><input type="hidden" class="pid"
+                                                                                 ng-value="list.id">
+              </div>-->
+              <div class="tit">
+                <p>{{list.productName}}</p>
+                <p>价格：<span class="font18">{{list.price}}</span>元/月</p>
+              </div>
+              <div class="con">
+                <ul>
+                  <li *ngIf="list.productType==3">
+                    <h5 class="lh40"><i class="fa fa-suitcase" style="color:#4d8bca;font-size: 16px;"></i> 基础包</h5>
+                  </li>
+                  <li class="lh25" *ngFor="let del of list.detailList"><i class="cire solid tit"></i>
+                    {{del.resourceName}}：{{del.count}} <span>{{del.flagName=='flow'||del.flagName=='cloudSpace'||del.flagName=='vodFlow'?'GB':'个'}}</span>
+                  </li>
+                  <li *ngIf="list.productType==2||list.productType==3" class="lh25">
+                    <i class="cire solid tit"></i> 视频类型：<span>{{list.videoType==1?'720P':'1080P'}}</span>
+                  </li>
+                  <li *ngIf="list.productType==3" class="lh25"><i class="cire solid tit"></i> 月租：
+                    <span>{{list.costPrice}}</span>元/月
+                  </li>
+                  <li *ngIf="list.productType==3">
+                    <h5 class="lh40"><i class="fa fa-dollar" style="color:#4d8bca;font-size: 16px;"></i> 服务单价</h5>
+                  </li>
+                  <li *ngIf="list.communicationPrice!=null&&list.productType==3" class="lh25"><i
+                    class="cire solid tit"></i>
+                    通讯：
+                    <span>{{list.communicationPrice}}</span>元/分钟/方
+                  </li>
+                  <li *ngIf="list.livePrice!=0&&list.productType==3" class="lh25"><i class="cire solid tit"></i> 流量：
+                    <span>{{list.livePrice}}</span>元/GB
+                  </li>
+                  <li><p class="remarkword"><i class="cire solid tit"></i> 套餐说明：<span>{{list.remark}}</span></p></li>
+                </ul>
+              </div>
+              <div class="text-center footerbtn">
+                <a [routerLink]="['/page/product-detail',list.id]"
+                   class="btn btn-svoc-border btn-svoc-lg buyBtn">立刻购买</a><input type="hidden" class="pid"
+                                                                                 ng-value="list.id">
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>

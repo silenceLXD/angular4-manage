@@ -1,0 +1,88 @@
+<div class="page-heading">云会议室</div>
+<div class="white-bg">
+  <div class="fic-con" id="ficCon">
+    <div class="clearfix row">
+      <div class="clearfix table-list">
+        <table class="table">
+          <thead>
+          <tr>
+            <th>云会议室</th>
+            <th>会议号</th>
+            <th>密码</th>
+            <th>云会议室状态</th>
+            <!-- <th>云会议室直播</th> -->
+            <th>操作</th>
+          </tr>
+          </thead>
+          <tbody *ngIf="!isAvailableOne" id="tbody">
+          <tr *ngFor="let list of ficData">
+            <td>{{list?.vmrName}}</td><!-- 虚拟会议室名称 -->
+            <td>{{list?.vmrNumber}}</td><!-- 会议号 -->
+            <td>{{list?.participantPin}}</td><!-- 密码 roleId==1 显示-->
+            <td><!-- 虚拟会议室状态 -->
+              <span *ngIf="list?.status==0">空闲</span>
+              <span *ngIf="list?.status==2">进行中</span>
+              <!-- <span *ngIf="list.status==3">配置中</span> -->
+            </td>
+            <!-- <td>
+                      <span *ngIf="list.isAllowLive==0">不允许</span>
+                      <span *ngIf="list.isAllowLive==1">允许</span>
+                  </td> -->
+            <td>
+              <div class="text-center">
+                <a href="javascript:;" class="btn btn-svoc radius20 edit" [class.disabled]="isAvailableTwo"
+                   (click)="editFicFn(list)">编辑</a>
+                <a
+                  href="/webrtc?conference={{list.vmrNumber}}&pin={{list.participantPin}}&name={{loginUserData.apiUserId}}&realName={{loginUserData.realName}}"
+                  class="btn btn-svoc enterBtn radius20" [class.disabled]="isAvailableTwo" target="_blank">入会</a>
+                <!-- <a *ngIf="list.status==2" [routerLink]="['/page/meeting-control',list.cid]" class="btn btn-svoc radius20 controlMeeting">会议控制</a> -->
+                <meeting-control-btn *ngIf="list.status==2" class="radius20"
+                                     [meetingData]="list.cid"></meeting-control-btn>
+              </div>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 编辑会议室 Modal -->
+<nz-modal [nzVisible]="editRoomModal" [nzTitle]="'编辑云会议室'" [nzContent]="editRoomContent" [nzFooter]="editRoomFooter"
+          (nzOnCancel)="editRoomModal=false">
+  <ng-template #editRoomContent>
+    <form id="editForm" class="form-horizontal" name="editForm">
+      <div class="form-group">
+        <label class="col-xs-3">会议号</label>
+        <div class="col-xs-8">
+          <input type="text" class="form-control" name="vmrNumber" [(ngModel)]="editData.vmrNumber" id="editVmrNumber"
+                 readonly>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-xs-3">云会议室</label>
+        <div class="col-xs-8">
+          <input type="text" class="form-control" name="vmrName" [(ngModel)]="editData.vmrName" id="editVmrName"
+                 maxlength="20">
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-xs-3">密码</label>
+        <div class="col-xs-8">
+          <input type=text class="form-control" name="hostPin" [(ngModel)]="editData.participantPin" id="editHostPin"
+                 minlength="4" maxlength="20"/>
+        </div>
+      </div>
+      <!-- <div class="form-group">
+         <label class="col-xs-offset-3"><input type="checkbox" name="isAllowLive" checked="editData.isAllowLive" disabled/> 允许直播</label>
+      </div> -->
+      <div class="col-xs-offset-3 col-xs-8" class="error">{{errorMsg}}</div>
+
+    </form>
+  </ng-template>
+  <ng-template #editRoomFooter>
+    <button nz-button [nzType]="'default'" [nzSize]="'large'" (click)="editRoomModal=false"> 取 消</button>
+    <button nz-button [nzType]="'primary'" [nzSize]="'large'" (click)="submitUpdateFn(editData)"> 确 定</button>
+  </ng-template>
+</nz-modal>

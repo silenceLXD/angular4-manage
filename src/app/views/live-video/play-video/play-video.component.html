@@ -1,0 +1,17 @@
+<!-- ==================== header ==================== -->
+  <app-header></app-header>
+
+  <div class="container" style="width:1100px;">
+    <div class="playBox">
+      <h4 id="conferenceName"></h4>
+      <video id="videoCon" width="1000" height="600" controls autoplay>
+					<source [src]="address" type="video/mp4" >
+			</video>
+    </div>
+
+    <div class="hasFlash" style="display:none;">
+				<p>您需要安装Flash Player后才能观会议直播～<br>
+				请您<a target="_blank" style="margin:0 5px;" class="btn btn-svoc" href="http://www.adobe.com/go/getflashplayer_cn">安装</a>后刷新本页面
+			</p>
+		</div>
+  </div>

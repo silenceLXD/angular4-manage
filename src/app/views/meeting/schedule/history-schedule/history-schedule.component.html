@@ -1,0 +1,70 @@
+<div class="page-heading">{{UpdateType == 'admin'?'预约会议管理':'历史预约'}}</div>
+
+<div class="white-bg">
+  <ul class="nav nav-tabs" *ngIf="UpdateType == 'admin'">
+    <li><a [routerLink]="'/page/ent-schedule'">已预约会议</a></li>
+    <li class="active"><a href="javascript:;">历史预约</a></li>
+  </ul>
+
+  <div class="tab-content tab-pane" style="padding-top: 20px;" id="appointMeeting">
+    <!-- 查询 -->
+    <form class="form-inline" name="searchForm">
+      <div class="pull-left">
+        <div class="form-group-inline">
+          <nz-datepicker style="width: 40%;" name="startTime" (ngModelChange)="_startDate=$event;_startValueChange()"
+                         [(ngModel)]="_startDate" [nzDisabledDate]="_disabledStartDate" [nzPlaceHolder]="'开始时间'"
+                         [nzAllowClear]="false"></nz-datepicker>
+          <nz-datepicker style="width: 40%;" name="endTime" (ngModelChange)="_endDate=$event;_endValueChange()"
+                         [(ngModel)]="_endDate" [nzPlaceHolder]="'结束时间'"
+                         [nzAllowClear]="false"></nz-datepicker>
+        </div>
+      </div>
+      <div class="pull-right has-feedback">
+        <input type="text" class="form-radius" name="appointmentName" [(ngModel)]="searchData.appointmentName"
+               placeholder="会议名称" (keyup)="dataSearchFn()">
+      </div>
+    </form>
+    <div class="clearfix"></div>
+    <!-- 列表 -->
+    <div class="table-list">
+      <table class="table ">
+        <thead>
+        <tr>
+          <th>会议名称</th>
+          <th>会议预约开始时间</th>
+          <th>预约时长</th>
+          <th>参会方</th>
+          <th>会议状态</th>
+          <th *ngIf="UpdateType == 'user'">操作</th>
+        </tr>
+        </thead>
+
+        <tbody id="tbody1">
+        <tr *ngFor="let list of tableData.list">
+          <td><a [routerLink]="['/page/history-detail',list.appointmentId,2]">{{list.appointmentName}}</a></td>
+          <td>{{list.startTime | date:'yyyy-MM-dd HH:mm'}}</td>
+          <td>{{list.appointmentPeriod}}小时</td>
+          <td>{{list.attendNode}}</td>
+          <td>
+            <span
+              *ngIf="list.appointmentStatus!=6&&list.appointmentStatus!=7&&list.appointmentStatus!=8&&list.appointmentStatus!=5">未召开</span>
+            <span *ngIf="list.appointmentStatus==7||list.appointmentStatus==6">已召开</span>
+            <span *ngIf="list.appointmentStatus==8">已取消</span>
+            <span *ngIf="list.appointmentStatus==5">进行中</span>
+          </td>
+          <td class="text-left" *ngIf="UpdateType == 'user'">
+            <button class='btn btn-svoc radius20' [routerLink]="['/page/book',list.appointmentId,2]">发起会议</button>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- 分页 -->
+    <div class="text-right">
+      <nz-pagination [(nzPageIndex)]="tableData.currentPage" [nzTotal]="tableData.totalPages"
+                     (click)="pageChanged(tableData.currentPage)" [nzShowTotal]="tableData.totalPages"
+                     [nzPageSize]="10"></nz-pagination>
+    </div>
+  </div>
+</div>

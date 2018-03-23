@@ -1,0 +1,194 @@
+<div class="page-heading">订单详情</div>
+<div class="white-bg">
+  <div class="widget-con">
+    <!--startprint-->
+    <div id="printCon">
+
+
+      <div class="paypart marginTB10">
+        <h4 class="tit clearfix">
+  				<span class="pull-left font16">订单状态：
+  					<span class="font16 red" *ngIf="detailData.orderState==1">未支付</span>
+  					<span class="green font16" *ngIf="detailData.orderState==2">部分支付</span>
+  					<span class="green font16" *ngIf="detailData.orderState==3">已支付</span>
+  					<span class="font16 orange" *ngIf="detailData.orderState==4">已取消</span>
+  					<span class="font16 orange" *ngIf="detailData.orderState==5">已关闭</span>
+  				</span>
+        </h4>
+      </div>
+      <div class="paypart">
+        <h4 class="font16">订单概要</h4>
+        <div class="con">
+          <ul>
+            <li class="lh32">订单号：{{detailData.orderNo}}</li>
+            <li class="lh32">下单时间：{{detailData.orderTime | date:'yyyy-MM-dd HH:mm'}}</li>
+            <li class="lh32">支付时间：{{detailData.payTime}}</li>
+            <li class="lh32">支付状态：
+              <span class="error" *ngIf="detailData.orderState==1">未支付</span>
+              <span class="green" *ngIf="detailData.orderState==2">部分支付 <span
+                class="orange">{{detailData.receipts}}</span>（人民币）元</span>
+              <span class="green" *ngIf="detailData.orderState==3">已支付</span>
+              <span class="error" *ngIf="detailData.orderState==4">已取消</span>
+              <span class="error" *ngIf="detailData.orderState==5">已关闭</span>
+
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="paypart">
+        <div class="tit" style="padding: 10px 0px;">
+          <h4 class="font16">套餐详情</h4>
+        </div>
+        <div class="consec">
+          <table class="table">
+            <thead>
+            <tr>
+              <th>套餐名称</th>
+              <th>套餐内容</th>
+              <th>套餐类型</th>
+              <th>服务开始时间</th>
+              <th>服务结束时间</th>
+              <th>套餐单价</th>
+              <th>服务有效期</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+              <td>{{detailData.product.productName}}</td>
+              <td>
+                <ul>
+                  <li *ngFor="let li of detailData.product.detailList">
+                    {{li.resourceName}}：{{li.count==-1?'不限':li.count}} <span>{{li.flagName=='flow'||li.flagName=='cloudSpace'||li.flagName=='vodFlow'?'GB':'个'}}</span>
+                  </li>
+                  <li *ngIf="detailData.product.productType==2||detailData.product.productType==3"> 视频类型：
+                    <span>{{detailData.product.videoType==1?'720P':'1080P'}}</span>
+                  </li>
+                  <li *ngIf="detailData.product.productType==3">月租：
+                    <span>{{detailData.product.costPrice}}</span>元/月
+                  </li>
+                  <li *ngIf="detailData.product.communicationPrice!=null&&detailData.product.productType==3">
+                    通讯单价：<span>{{detailData.product.communicationPrice}}</span>元／分钟／方
+                  </li>
+                  <li *ngIf="detailData.product.livePrice!=0&&detailData.product.productType==3"> 流量单价：<span>{{detailData.product.livePrice}} </span>元／GB
+                  </li>
+                  <!-- <li *ngIf="detailData.product.communicationPrice"> 通讯单价：<span>{{detailData.product.communicationPrice}}</span>元／分钟／方
+                   </li>
+                   <li *ngIf="detailData.product.livePrice"> 流量单价：<span>{{detailData.product.livePrice}} </span>元／GB</li>-->
+                  <!-- <li *ngIf="detailData.product.vodPrice"> 点播流量：<span>{{detailData.product.vodPrice}} </span>元／GB</li> -->
+                  <!-- <li *ngIf="detailData.product.storagePrice"> 云存储：<span>{{detailData.product.storagePrice}} </span>元/天
+                   </li>-->
+
+                  <li style="width:150px;word-break: break-word;"><p class="product-remark"> 套餐说明：<span *ngIf="!down">{{detailData.product.remark}}</span>
+                  </p>
+                    <p class="text-center"><i class="drop" (click)="dropToggle(down)"></i></p>
+                  </li>
+                </ul>
+              </td>
+              <td>
+                <span *ngIf="detailData.product.productType==1">试用套餐</span>
+                <span *ngIf="detailData.product.productType==2">包时套餐</span>
+                <span *ngIf="detailData.product.productType==3">计时套餐</span>
+                <span *ngIf="detailData.product.productType==4">附加包套餐</span>
+              </td>
+              <td>
+                <span
+                  *ngIf="detailData.serviceState==1">{{detailData.startServiceTime | date:'yyyy-MM-dd HH:mm'}}</span>
+                <span *ngIf="detailData.serviceState!=1">
+  						 		<span *ngIf="detailData.orderState==2 || detailData.orderState==3">待开通</span>
+  						 	</span>
+              </td>
+              <td>
+                <!--<span
+                  *ngIf="detailData.serviceState==1 && (detailData.product.productType!=4 || detailData.product.productType!=3)">{{detailData.finishServiceTime | date:'yyyy-MM-dd HH:mm'}}</span>
+                <span *ngIf="detailData.serviceState!=1">
+  						 		<span *ngIf="detailData.orderState==2 || detailData.orderState==3">待开通</span>
+  						 	</span>-->
+                <span
+                  *ngIf="!(detailData.product.productType==3||(detailData.product.productType==4&&detailData.product.detailList[0].flagName=='flow'))">
+                <span
+                  *ngIf="detailData.serviceState==1">{{detailData.finishServiceTime | date:'yyyy-MM-dd HH:mm'}}</span>
+                <span *ngIf="detailData.serviceState!=1">
+  						 		<span *ngIf="detailData.orderState==2 || detailData.orderState==3">待开通</span>
+  						 	</span>
+              </span>
+              </td>
+              <td><span>{{detailData.receivable}}</span>（人民币）元</td>
+              <td>
+                <span *ngIf="detailData.product.productType==1">{{detailData.useLength}} 天</span>
+                <span *ngIf="detailData.product.productType==2">{{detailData.useLength}} 个月</span>
+                <span *ngIf="detailData.product.productType==3">不限</span>
+                <span *ngIf="detailData.product.productType==4">{{detailData.product.detailList[0].flagName=='flow'?'不限':detailData.useLength+'个月'}}</span>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="lh32 text-right font16 money"> 应付金额（人民币）元：<span class="orange font16">{{detailData.receivable}}</span>
+      </div>
+      <div class="line"></div>
+      <div class="lh32 text-right font16 money" *ngIf="detailData.orderState==2">实付金额（人民币）元：<span class="orange font16">{{detailData.receipts}}</span>
+      </div>
+      <!--endprint-->
+    </div>
+
+    <!-- 未支付详情页 操作 -->
+    <div *ngIf="detailData.orderState==1">
+      <div class="clearfix">
+        <a href="javascript:;" class="pull-left print clearfix print" (click)="printitFn()"><i
+          class="print-icon pull-left"></i><span class="pull-left">打印订单</span></a>
+        <a href="javascript:;" id="detailCancelOrder" class="pull-left cancel clearfix"
+           (click)="cancelOrderFn(detailData.orderNo)" style="margin-left:20px;"><i
+          class="cancel-icon pull-left"></i><span class="pull-left">取消订单</span></a>
+      </div>
+      <div class="text-center">
+        <a href="javascript:;" class="btn btn-svoc detail-pay" [routerLink]="['/page/payinfo',detailData.orderNo]"
+           style="margin: 20px 20px 0 0; padding: 8px 38px;">支付</a>
+        <a [routerLink]="'/page/order-list'" class="btn btn-svoc back-overPayInfo"
+           style="margin-top:20px; padding: 8px 38px;">返回</a>
+      </div>
+    </div>
+    <!-- 已支付（部分付款）详情页 操作 -->
+    <div *ngIf="detailData.orderState==2 || detailData.orderState==3">
+      <div class="clearfix">
+        <a href="javascript:;" class="pull-left print clearfix print" (click)="printitFn()"><i
+          class="print-icon pull-left"></i><span class="pull-left">打印订单</span></a>
+      </div>
+
+      <div class="text-center">
+  				<span *ngIf="detailData.product.productType!=1">
+  					<span *ngIf="detailData.serviceState == 1">
+  						<a href="javascript:;"
+                 *ngIf="detailData.finishServiceTime > nowFormatTimes && detailData.productType == 2"
+                 class="btn btn-svoc renewals-btn" (click)="renewalsFn(detailData.orderNo,detailData.productId)"
+                 style="margin: 20px 20px 0 0; padding: 8px 38px;">续费</a>
+  						<a href="javascript:;" *ngIf="detailData.finishServiceTime <= nowFormatTimes"
+                 class="btn btn-svoc renewals-btn" (click)="buyAgainFn(detailData.orderNo,detailData.productId)"
+                 style="margin: 20px 20px 0 0; padding: 8px 38px;">再次购买</a>
+  					</span>
+  					<a href="javascript:;" class="btn btn-disabled" *ngIf="detailData.serviceState!=1" disabled
+               (click)="renewalsFn(detailData.orderNo,detailData.productId)"
+               style="margin: 20px 20px 0 0; padding: 8px 38px;">续费</a>
+  				</span>
+
+        <a [routerLink]="'/page/order-list'" class="btn btn-svoc back-overPayInfo"
+           style="margin-top:20px; padding: 8px 38px;">返回</a>
+      </div>
+    </div>
+    <!-- 已取消（已关闭）详情页 操作 -->
+    <div *ngIf="detailData.orderState==4 || detailData.orderState==5">
+      <div class="text-center">
+        <a [routerLink]="'/page/order-list'" class="btn btn-svoc back-overPayInfo"
+           style="margin-top:20px; padding: 8px 38px;">返回</a>
+      </div>
+    </div>
+  </div>
+
+</div>
+<!-- 删除/取消 confirm-->
+<nz-modal [nzVisible]="deleteModal" [nzTitle]="'Modal'" [nzContent]="deleteContent" (nzOnCancel)="handleCancel($event)"
+          (nzOnOk)="handleOk($event)">
+  <ng-template #deleteContent>
+  </ng-template>
+</nz-modal>
+<app-wrap *ngIf="isWrap" [title]="'需关闭打印后,才可以在此页面进行操作'"></app-wrap>

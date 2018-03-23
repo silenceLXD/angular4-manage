@@ -1,0 +1,16 @@
+<div class="white-bg">
+  <div class="row marginTB10 text-center">
+    <div class="row">
+      <div class="customer-service text-center col-xs-8 col-xs-offset-2">
+        <img class="" src="assets/img/ent-user-book.png" width="120px"/>
+        <p class="gray">云起云支持中心</p>
+      </div>
+    </div>
+    <!-- ng-href="{{path}}/webRTC/app/index?conference={{supportData.roomNumber}}&pin={{supportData.password}}&realName={{loginRealName}}" -->
+    <!--href="/webrtc?conference={{supportData.roomNumber}}&pin={{supportData.password}}&realName={{loginRealName}"-->
+    <a
+      href="/webrtc?conference={{loginMsg?.roomNumber}}&pin={{loginMsg?.password}}&realName={{loginMsg?.loginRealName}}"
+      target="_blank" class="btn btn-svoc radius20 font16 marginTB10"
+      style="padding:10px 50px;">呼叫</a>
+  </div>
+</div>

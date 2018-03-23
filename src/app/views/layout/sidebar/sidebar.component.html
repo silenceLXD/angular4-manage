@@ -1,0 +1,55 @@
+<nav class="sidebar-menu col-md-2" [ngClass]="bgColor">
+  <ul class="nav">
+    <!-- <li class="menu-view active">
+      <a href="#">
+        <i class="fa fa-dashboard"></i> <span>测试模块</span>
+        <span class="pull-right-container">
+          <i class="fa fa-angle-left pull-right"></i>
+        </span>
+      </a>
+      <ul class="child-menu">
+          <li><a routerLink="/home"><i class="fa fa-circle-o"></i> home</a></li>
+          <li><a routerLink="/about"><i class="fa fa-circle-o"></i> about</a></li>
+          <li><a routerLink="/homePage/admin-home"><i class="fa fa-circle-o"></i> admin-home</a></li>
+          <li><a routerLink="/homePage/user-home"><i class="fa fa-circle-o"></i> user-home</a></li>
+          <li><a routerLink="/homePage/personal-home"><i class="fa fa-circle-o"></i> personal-home</a></li>
+      </ul>
+    </li> -->
+
+    <li *ngFor="let item of sidebarData">
+      <span  class="menu-header" *ngIf="item.parentId==-1">{{item.resDesc}}</span>
+			<a *ngIf="item.parentId!=-1&&item.resUrl!='book'" routerLink="{{item.resUrl}}" routerLinkActive="active">
+				<i class="fa icon-{{item.resName}}"></i><span> {{item.resDesc}}</span>
+        <span class="pull-right-container" *ngIf="item.children">
+          <i class="fa fa-angle-left pull-right"></i>
+        </span>
+			</a>
+      <a *ngIf="item.parentId!=-1&&item.resUrl=='book'" [routerLink]="[item.resUrl,0,0]" routerLinkActive="active">
+				<i class="fa icon-{{item.resName}}"></i><span> {{item.resDesc}}</span>
+        <span class="pull-right-container" *ngIf="item.children">
+          <i class="fa fa-angle-left pull-right"></i>
+        </span>
+			</a>
+      <ul *ngIf="item.children" class="child-menu">
+          <li *ngFor="let child of item.children">
+            <a routerLink="{{item.resUrl}}"><i class="fa fa-circle-o"></i> home</a>
+          </li>
+      </ul>
+    </li>
+    <!-- <li *ngFor="let item of adminSidebarData">
+      <span  class="menu-header" *ngIf="item.parentId==-1">{{item.resDesc}}</span>
+			<a *ngIf="item.parentId!=-1" routerLink="{{item.resUrl}}">
+				<i class="fa icon-{{item.resName}}"></i><span> {{item.resDesc}}</span>
+        <span class="pull-right-container" *ngIf="item.children">
+          <i class="fa fa-angle-left pull-right"></i>
+        </span>
+			</a>
+      <ul *ngIf="item.children" class="child-menu">
+          <li *ngFor="let child of item.children">
+            <a routerLink="{{item.resUrl}}"><i class="fa fa-circle-o"></i> home</a>
+          </li>
+      </ul>
+    </li> -->
+
+  </ul>
+</nav>

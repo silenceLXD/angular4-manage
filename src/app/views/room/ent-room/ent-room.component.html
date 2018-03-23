@@ -1,0 +1,198 @@
+<div class="page-heading">云会议室管理</div>
+<div class="white-bg">
+  <div class="fic-con" id="ficCon">
+    <form id="queryForm" class="form-inline" style="overflow: hidden;">
+      <div class="pull-left">
+        <span class="">会议室状态：</span>
+        <select name="status" id="orgName" class="form-control " (change)="dataSearchFn()"
+                [(ngModel)]="searchData.status">
+          <option value="-1">请选择</option>
+          <option value="0">空闲</option>
+          <option value="2">进行中</option>
+          <!-- <option value="3">配置中</option> -->
+        </select>
+      </div>
+      <!-- <label class="marginLR10"><input id="isIncludeLiveFlow" [disabled]="!isdisabled" type="checkbox" name="allShare" [(ngModel)]="isallShare" (change)="allShareFn(isallShare)"/> 允许共享会议室直播</label> -->
+      <div class="pull-right">
+        <input type="text" id="searchInput" placeholder="会议号、会议室名称" name="queryKey" class="form-radius"
+               (keyup)="dataSearchFn()"
+               [(ngModel)]="searchData.keywords">
+      </div>
+    </form>
+
+    <div class="clearfix row">
+      <div class="clearfix table-list">
+        <table class="table">
+          <thead>
+          <tr>
+            <th>云会议室</th>
+            <th>会议号</th>
+            <th>云会议室状态</th>
+            <th>云会议室属性</th>
+            <!-- <th>云会议室直播</th> -->
+            <th>操作</th>
+          </tr>
+          </thead>
+          <tbody *ngIf="!isAvailableOne" id="tbody">
+          <tr *ngFor="let ficList of tableData.list">
+            <td>{{ficList.vmrName}}</td>
+            <!-- 虚拟会议室名称 -->
+            <td>{{ficList.vmrNumber}}</td>
+            <!-- 会议号 -->
+            <td>
+              <!-- 虚拟会议室状态 -->
+              <span *ngIf="ficList.status==0">空闲</span>
+              <span *ngIf="ficList.status==2">进行中</span>
+              <!-- <span *ngIf="ficList.status==3">配置中</span> -->
+            </td>
+            <td>
+              <!-- 云会议室属性 -->
+              <span *ngIf="ficList.realName==null">未分配</span>
+              <span *ngIf="ficList.realName!=null">{{ficList.realName}}</span>
+            </td>
+            <!-- <td>
+              <span *ngIf="ficList.isAllowLive==0">不允许</span>
+              <span *ngIf="ficList.isAllowLive==1">允许</span>
+            </td> -->
+            <td>
+              <div class="text-left">
+                <a href="javascript:;" class="btn btn-svoc" (click)="updateOwnerFn(ficList)">编辑</a>
+                <!-- <a [routerLink]="['/page/meeting-control',ficList.cid]" *ngIf="ficList.status==2" class="btn btn-svoc">会议控制</a> -->
+                <meeting-control-btn *ngIf="ficList.status==2" [meetingData]="ficList.cid"></meeting-control-btn>
+              </div>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- 分页 -->
+    <div class="text-right">
+      <nz-pagination [(nzPageIndex)]="tableData.currentPage" [nzTotal]="tableData.totalPages"
+                     (click)="pageChanged(tableData.currentPage)" [nzShowTotal]="tableData.totalPages"
+                     [nzPageSize]="10"></nz-pagination>
+    </div>
+  </div>
+</div>
+
+<!--授权 Modal-->
+<!-- 授权 Modal -->
+<nz-modal [nzVisible]="editRoomModal" [nzTitle]="'编辑云会议室'" [nzContent]="editRoomContent" [nzFooter]="editRoomFooter"
+          (nzOnCancel)="editRoomModal=false">
+  <ng-template #editRoomContent>
+    <form id="editForm" class="form-horizontal bv-form" novalidate="novalidate">
+      <div class="form-group">
+        <label class="col-xs-3">会议号</label>
+        <div class="col-xs-8">
+          <input type="text" class="form-control" name="vmrNumber" [(ngModel)]="updateOwnerData.vmrNumber" readonly>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-xs-3">云会议室</label>
+        <div class="col-xs-8">
+          <input type="text" class="form-control" name="vmrName" [(ngModel)]="updateOwnerData.vmrName" maxlength="20">
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-xs-3">授权</label>
+        <div class="col-xs-8">
+          <input type="hidden" name="ownerId" [(ngModel)]="userId"/>
+          <!--<a href="javascript:;" class="btn btn-svoc" (click)="assignOwnerFn(chooseMemberModal)">指定</a>-->
+          <dl class="pull-left" *ngIf="checkedMember.realName!=null">
+            <dd class="user-selected"><a href="javascript:;"> {{checkedMember.realName}} <i
+              class="fa fa-close removeUser" (click)="removeMember()"></i></a></dd>
+          </dl>
+
+          <a href="javascript:;" class="btn btn-svoc" (click)="assignOwnerFn()"
+             style="margin-left:10px;margin-top:3px;">指定</a>
+          <!-- <div class="pull-left">
+            <span *ngIf="checkedMember.realName!=null" class="marginLR10" style="display: inline-block;position: relative;padding:5px 10px;background:#0A98E8;border-radius:3px;color: #fff;">
+                   	{{checkedMember.realName}}
+            </span>
+            <span  *ngIf="checkedMember.realName!=null" class="close-square" (click)="removeMember()" style="position:absolute;left: 80px;top: -15px;font-size: 20px;color: #0A98E8;cursor: pointer;">×</span>
+          </div> -->
+
+
+        </div>
+      </div>
+      <!-- <div class="form-group" *ngIf="isshowLive">
+        <label class="col-xs-offset-3"><input id="isIncludeLiveFlows" [disabled]="!isdisabled" type="checkbox" name="isAllowLive" [(ngModel)]="updateOwnerData.isAllowLive"/> 允许直播</label>
+      </div> -->
+    </form>
+  </ng-template>
+  <ng-template #editRoomFooter>
+    <button nz-button [nzType]="'default'" [nzSize]="'large'" (click)="editRoomModal=false"> 取 消</button>
+    <button nz-button [nzType]="'primary'" [nzSize]="'large'" (click)="sureUpdateRoomFn()"> 确 定</button>
+  </ng-template>
+</nz-modal>
+
+
+<!-- 选择授权人 Modal-->
+<nz-modal [nzVisible]="chooseMemberModal" [nzTitle]="'更换授权人员'" [nzContent]="chooseMemberContent"
+          [nzFooter]="chooseMemberFooter" (nzOnCancel)="chooseMemberModal=false" [nzWidth]="'820px'">
+  <ng-template #chooseMemberContent>
+    <form action="" id="contactsForm" class="form-inline" style="margin-bottom: 50px;">
+      <div class="pull-left form-group">
+        <select name="deptName" id="entOrgId" class="form-control" [(ngModel)]="deptName"
+                (change)="getSecondDepat(deptName)">
+          <option value="" selected>请选择一级部门</option>
+          <option [(ngValue)]="item.orgId" *ngFor="let item of oneDepartmentList">{{ item.orgName }}</option>
+        </select>
+        <select name="subdeptName" id="entDeptName" class="form-control" [(ngModel)]="subdeptName"
+                (change)="getThirdDepat(subdeptName)">
+          <option value="" selected>请选择二级部门</option>
+          <option [(ngValue)]='item.orgId' *ngFor="let item of TwoDepartmentList">{{ item.orgName }}</option>
+        </select>
+        <select name="threedeptName" id="entSubdeptName" class="form-control" [(ngModel)]="threedeptName"
+                (change)="searchUser(threedeptName)">
+          <option value='' selected>请选择三级部门...</option>
+          <option [(ngValue)]="item.orgId" *ngFor="let item of ThreeDepartmentList">{{ item.orgName }}</option>
+        </select>
+        <select name="position" id="entPosition" class="form-control" [(ngModel)]="position"
+                (change)="searchPositions(position)">
+          <option value="" selected>请选择职务...</option>
+          <option *ngFor="let item of positionsList">{{ item }}</option>
+        </select>
+      </div>
+      <div class="pull-right">
+        <input type="text" placeholder="姓名、工号" name="realName" id="searchInput" [(ngModel)]="realName"
+               class="form-radius" (keyup)="searchRealName(realName)">
+      </div>
+    </form>
+    <div class="">
+      <table class="table">
+        <thead>
+        <tr>
+          <th></th>
+          <th>工号</th>
+          <th>姓名</th>
+          <th>公司单位</th>
+          <th>一级部门</th>
+          <th>二级部门</th>
+          <th>职务</th>
+          <th>邮箱</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let member of chooseMemberData">
+          <td>
+            <input type="radio" name="member" (change)="chooseFn($event,member)">
+          </td>
+          <td>{{member.empno}}</td>
+          <td>{{member.realName}}</td>
+          <td>{{member.deptName}}</td>
+          <td>{{member.subdeptName}}</td>
+          <td>{{member.threedeptName}}</td>
+          <td>{{member.position}}</td>
+          <td>{{member.email}}</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </ng-template>
+  <ng-template #chooseMemberFooter>
+    <button nz-button [nzType]="'default'" [nzSize]="'large'" (click)="chooseMemberModal=false"> 取 消</button>
+    <button nz-button [nzType]="'primary'" [nzSize]="'large'" (click)="chooseBtn_ok()"> 确 定</button>
+  </ng-template>
+</nz-modal>

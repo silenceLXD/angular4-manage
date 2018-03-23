@@ -1,0 +1,282 @@
+<div class="page-heading">企业群组</div>
+
+<div class="white-bg">
+  <ul class="nav nav-tabs">
+    <li><a routerLink="/page/ent-contacts">通讯录</a></li>
+    <li class="active"><a href="javascript:void(0);">企业群组</a></li>
+    <li><a routerLink="/page/ent-realroom">会议室</a></li>
+  </ul>
+
+  <div class="tab-content">
+    <div class="tab-pane active clearfix">
+      <!-- 左侧 组别显示 -->
+      <div class="col-lg-3 col-xs-5">
+        <div class="marginTB10">
+          <a href="javascript:void(0);" class="btn btn-svoc btn-svoc-lg" [class.disabled]="isAvailableOne" id="addGroup"
+             (click)="AddGroupFn()"><i
+            class="icon-plus-sign"></i> 添加组</a>
+        </div>
+        <form id="groupSearchForm" class="fmarginTB10">
+          <div class="marginTB10 has-feedback">
+            <input type="text" placeholder="按组名称查询" class="form-control" name="groupname" [(ngModel)]="searchName"
+                   (keyup)="searchGroupFn()">
+            <span class="glyphicon glyphicon-search form-control-feedback"></span>
+          </div>
+        </form>
+
+        <div>
+          <p class="group-title" style="background: #F0F2F4;padding: 10px;"><i class="icon-angle-down"></i> 公开群组</p>
+          <p class="group-list clearfix row pGroup" *ngFor="let group of groupList"
+             style="width:100%;margin-left:0px;height: 40px;line-height: 40px;">
+            <span class="pull-left clearfix col-xs-10" (click)="checkMember(group)"
+                  style="display: block;cursor: pointer;">
+          			<span class="pull-left">{{group.groupName}}</span>
+            <span class="pull-right" style="position:absolute; top:0; right:0;">{{group.userCount}} 人 </span>
+            </span>
+            <i class="dele-group dele-group-icon" [class.disabled]="isAvailableOne"
+               style="margin-left: 10px; font-size: 16px; cursor: pointer;"
+               title="删除群组" (click)="DeleteGroup(group)">×</i>
+          </p>
+        </div>
+      </div>
+
+      <div class="col-lg-9 col-xs-7" style="border-left: 1px solid #ccc;">
+        <div class="clearfix" style="margin:25px 5px;" *ngIf="isHaveValue">
+          <h4 class="pull-left">
+            <span *ngIf="!isEditGroupName" calss="title-span"
+                  style="font-size:22px;">{{groupName}}{{checkUserCount}}</span>
+            <span *ngIf="isEditGroupName" style="display: inline-block;">
+              <input type="text" class="form-control" [(ngModel)]="groupName"
+                     (keydown)="editGroupNameKey($event)"/>
+            </span>
+            <span *ngIf="!isEditGroupName">
+              <a href="javascript:;" class="fa fa-pencil-square-o font18 color-svoc" [class.disabled]="isAvailableOne"
+                 (click)="sureEdit();isEditGroupName=true"></a>
+              <a href="javascript:;" class="fa fa-user-plus font18 color-svoc" [class.disabled]="isAvailableOne"
+                 (click)="addContacts(2)"></a>
+            </span>
+            <span *ngIf="isEditGroupName">
+              <a href="javascript:;" class="fa fa-remove font18 red"
+                 (click)="cancelEdit();isEditGroupName=false"></a>
+              <a href="javascript:;" class="fa fa-check font18 color-svoc" (click)="editGroupName()"></a>
+            </span>
+
+          </h4>
+        </div>
+
+        <table class="table">
+          <thead>
+          <tr>
+            <th>工号</th>
+            <th>姓名</th>
+            <th>一级部门/分公司</th>
+            <th>二级部门</th>
+            <th>三级部门</th>
+            <th>职务</th>
+            <th>邮箱</th>
+            <th></th>
+          </tr>
+          </thead>
+          <tbody id="tbody1">
+          <tr *ngFor="let item of checkGroupMembers.list">
+            <td>{{item.empno}}</td>
+            <td>{{item.realName}}</td>
+            <td>{{item.deptName}}</td>
+            <td>{{item.subdeptName}}</td>
+            <td>{{item.threedeptName}}</td>
+            <td>{{item.position}}</td>
+            <td>{{item.email}}</td>
+            <td>
+              <!--<span class="edit-group edit-user-icon" (click)="editUserFn(item.userId)"></span>-->
+              <nz-dropdown [nzTrigger]="'click'" [class.disabled]="isAvailableOne">
+                  <span class="ant-dropdown-link" nz-dropdown>
+                      <a href="javascript:;" class="font16 color-svoc fa-ellipsis-h fa"></a>
+                    </span>
+                <ul nz-menu>
+                  <li nz-menu-item>
+                    <nz-dropdown [nzTrigger]="'click'">
+                        <span class="ant-dropdown-link" nz-dropdown>
+                          <a href="javascript:;" (click)="moveGroup(item)">移动到</a>
+                        </span>
+                      <ul nz-menu *ngIf="isMoveGroup" style="box-shadow: 2px 2px 10px #CCC;">
+                        <li nz-menu-item *ngFor="let list of moveOtherGroupsList"><a href="javascript:;"
+                                                                                     (click)="moveGroupOk(list)">{{list.groupName}}</a>
+                        </li>
+                        <li nz-menu-item nzDisable *ngIf="isHaveGroup">无其他群组</li>
+                      </ul>
+                    </nz-dropdown>
+                  </li>
+                  <li nz-menu-item>
+                    <nz-dropdown [nzTrigger]="'click'">
+                        <span class="ant-dropdown-link" nz-dropdown>
+                          <a href="javascript:;" (click)="copyGroup(item)">复制到</a>
+                        </span>
+                      <ul nz-menu *ngIf="isCopyGroup" style="box-shadow: 2px 2px 10px #CCC;">
+                        <li nz-menu-item *ngFor="let list of moveOtherGroupsList"><a href="javascript:;"
+                                                                                     (click)="copyGroupOk(list)">{{list.groupName}}</a>
+                        </li>
+                      </ul>
+                    </nz-dropdown>
+                  </li>
+                  <li nz-menu-item><a href="javascript:;" (click)="deleteUser(item)">删除</a></li>
+                </ul>
+              </nz-dropdown>
+              <!--移动到-->
+              <!-- <ul nz-menu *ngIf="isMoveGroup" style="position: absolute;top: 5px;right: 37px;">
+                <li nz-menu-item *ngFor="let list of moveOtherGroupsList"><a href="javascript:;" (click)="moveGroupOk(list)">{{list.groupName}}</a></li>
+              </ul> -->
+              <!--复制到-->
+              <!-- <ul nz-menu *ngIf="isCopyGroup" style="position: absolute;top: 5px;right: 37px;">
+                <li nz-menu-item *ngFor="let list of moveOtherGroupsList"><a href="javascript:;" (click)="copyGroupOk(list)">{{list.groupName}}</a></li>
+              </ul> -->
+            </td>
+          </tr>
+          </tbody>
+        </table>
+        <!-- 分页 -->
+        <div class="text-right">
+          <nz-pagination [(nzPageIndex)]="checkGroupMembers.currentPage" [nzTotal]="checkGroupMembers.totalPages"
+                         (click)="pageChanged(checkGroupMembers.currentPage)"
+                         [nzShowTotal]="checkGroupMembers.totalPages" [nzPageSize]="10"></nz-pagination>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- 添加群组 -->
+<nz-modal [nzVisible]="addGroupModal" [nzTitle]="'添加群组'" [nzContent]="addGroupContent" [nzFooter]="addGroupFooter"
+          (nzOnCancel)="addGroupModal=false" [nzMaskClosable]="false">
+  <ng-template #addGroupContent>
+    <form action="" class="form-horizontal">
+      <div class="form-group">
+        <div class="col-xs-3 text-right">组名称</div>
+        <div class="col-xs-8">
+          <input type="text" class="form-control" name="groupName" id="addEntGroupName" [(ngModel)]="groupNameAdd">
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="col-xs-3 text-right">添加组员</div>
+        <div class="col-xs-4">
+          <a href="javascript:void(0);" class="btn btn-svoc add-member" (click)="chooseMemberDialog(1)" id="insterUser"><i
+            class="icon-plus-sign"></i> 添加成员</a>
+        </div>
+      </div>
+      <div class="form-group">
+        <div id="showAddUser">
+          <!-- <span class="appendContent" *ngFor="let member of members">
+	           	<span class="close-square" (click)="closeMember(member)">×</span> {{member.realName}}-{{member.subdeptName}}
+          </span> -->
+          <dl class="userList-box">
+            <dd class="user-selected" *ngFor="let member of members"><a href="javascript:;">{{member.realName}}-{{member.subdeptName}}
+              <i class="fa fa-close removeUser" (click)="closeMember(member)"></i></a></dd>
+          </dl>
+        </div>
+      </div>
+    </form>
+  </ng-template>
+  <ng-template #addGroupFooter>
+    <button nz-button [nzType]="'default'" [nzSize]="'large'" (click)="addGroupModal=false"> 取 消</button>
+    <button nz-button [nzType]="'primary'" [nzSize]="'large'" (click)="saveAddGroupFn()"> 确 定</button>
+  </ng-template>
+</nz-modal>
+
+
+<!-- 添加联系人 -->
+<nz-modal [nzVisible]="addContactsModal" [nzTitle]="'选择联系人'" [nzContent]="addContactsContent"
+          [nzFooter]="addContactsFooter"
+          (nzOnCancel)="addContactsModal=false" [nzMaskClosable]="false" [nzWidth]="'900px'">
+  <ng-template #addContactsContent>
+    <div class="invitation" style="width:865px; max-height: 100px;overflow-y: auto;">
+      <!--<span>张三 — 产品部</span>-->
+      <!-- <span class="appendContent" *ngFor="let member of chosedMembers">
+          <span class="close-square" (click)="closeMember(member)">×</span> {{member.realName}}-{{member.subdeptName}}
+      </span> -->
+      <dl class="userList-box">
+        <dd class="user-selected" *ngFor="let member of chosedMembers"><a href="javascript:;">{{member.realName}}-{{member.subdeptName}}
+          <i class="fa fa-close removeUser" (click)="closeMember(member)"></i></a></dd>
+      </dl>
+    </div>
+    <form action="" id="contactsForm" class="form-inline" style="margin-bottom: 50px;">
+      <div class="pull-left form-group">
+        <select name="deptName" id="entOrgId" class="form-control" [(ngModel)]="deptName"
+                (change)="getSecondDepat(deptName)">
+          <option value="" selected>请选择一级部门</option>
+          <option [(ngValue)]="item.orgId" *ngFor="let item of oneDepartmentList">{{ item.orgName }}</option>
+        </select>
+        <select name="subdeptName" id="entDeptName" class="form-control" [(ngModel)]="subdeptName"
+                (change)="getThirdDepat(subdeptName)">
+          <option value="" selected>请选择二级部门</option>
+          <option [(ngValue)]='item.orgId' *ngFor="let item of TwoDepartmentList">{{ item.orgName }}</option>
+        </select>
+        <select name="threedeptName" id="entSubdeptName" class="form-control" [(ngModel)]="threedeptName"
+                (change)="searchUser(threedeptName)">
+          <option value='' selected>请选择三级部门...</option>
+          <option [(ngValue)]="item.orgId" *ngFor="let item of ThreeDepartmentList">{{ item.orgName }}</option>
+        </select>
+        <select name="position" id="entPosition" class="form-control" [(ngModel)]="position"
+                (change)="searchPositions(position)">
+          <option value="" selected>请选择职务...</option>
+          <option *ngFor="let item of positionsList">{{ item }}</option>
+        </select>
+      </div>
+      <div class="pull-right">
+        <input type="text" placeholder="姓名、工号" name="realName" id="searchInput" [(ngModel)]="realName"
+               class="form-radius" (keyup)="searchRealName(realName)">
+      </div>
+    </form>
+    <div style="max-height: 350px;overflow-y:auto;">
+      <table class="table ">
+        <thead>
+        <tr>
+          <th>
+            <input type="checkbox" name="allMember" [(ngModel)]="allcheckedValue" (click)="_allchecked($event)">
+          </th>
+          <th>工号</th>
+          <th>姓名</th>
+          <th>一级部门/分公司</th>
+          <th>二级部门</th>
+          <th>三级部门</th>
+          <th>职务</th>
+          <th>邮箱</th>
+          <th>手机号</th>
+        </tr>
+        </thead>
+        <tbody id="tbody">
+        <tr *ngFor="let member of memberList">
+          <td>
+            <input type="checkbox" name="addressChoose" [(ngModel)]="member.isInGroup"
+                   (click)="updateSelection($event,member)">
+          </td>
+          <td>{{ member.empno }}</td>
+          <td>{{ member.realName }}</td>
+          <td>{{ member.deptName }}</td>
+          <td>{{ member.subdeptName }}</td>
+          <td>{{ member.threedeptName }}</td>
+          <td>{{ member.position }}</td>
+          <td>{{ member.email }}</td>
+          <td>{{ member.mobilePhone }}</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </ng-template>
+  <ng-template #addContactsFooter>
+    <button nz-button [nzType]="'default'" [nzSize]="'large'" (click)="cancelAddContactsFn()"> 取 消</button>
+    <button nz-button [nzType]="'primary'" [nzSize]="'large'" (click)="saveAddContactsFn()"> 确 定</button>
+  </ng-template>
+</nz-modal>
+
+<!-- 编辑群组 -->
+
+<!-- 选择联系人 -->
+
+<!-- 删除群组 -->
+
+<!-- 删除用户 -->
+
+<!-- 移动到 -->
+
+<!-- 复制到 -->

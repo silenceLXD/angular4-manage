@@ -1,0 +1,69 @@
+.nav-border > li + li {
+  margin-left: 8px;
+}
+
+.nav-border > li > a {
+  border: 1px solid #00a0e9;
+  border-radius: 3px;
+  color: #00a0e9;
+  padding: 7px 15px;
+}
+
+.nav-border > li.disabled > a,
+.nav-border > li.disabled > a:focus,
+.nav-border > li.disabled > a:hover {
+  border: 1px solid #BCBCBC;
+  border-radius: 3px;
+  background: #E4E4E4;
+}
+
+.nav-border > li.active > a,
+.nav-border > li.active > a:focus,
+.nav-border > li.active > a:hover {
+  background: #00a0e9;
+  color: #fff;
+}
+
+.message-center .table-list .table-hover th,
+.message-center .table-list .table-hover td {
+  text-align: left;
+  vertical-align: middle !important;
+}
+
+/*消息中心 未读/已读 标题区分 */
+.message-center .title-unread {
+  color: #000;
+}
+
+.message-center .title-read {
+  color: #999;
+}
+
+.message-center .title-read:hover,
+.message-center .title-unread:hover {
+  color: #00a0e9;
+  text-decoration: underline;
+}
+
+/* 消息中心 未读圆点标识 */
+.message-center .state-column {
+  width: 10px;
+  padding-left: 10px;
+  padding-right: 5px;
+}
+
+.message-center .state-column .state-unread {
+  background: #00a0e9;
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+}
+
+.message-center .column-text {
+  color: #999;
+}
+
+.ableBtn {
+  color: #108ee9;
+}

@@ -1,0 +1,139 @@
+<div class="page-heading">会议日程 - 详情</div>
+<div class="">
+  <div id="MeetingDetails">
+    <div class="schedule-Details meetingDetailMsg white-bg">
+      <div class="widget-title">
+        	<span *ngIf="detailsData.appointment.appointmentType!=2">
+          	<span *ngIf="detailsData.appointment.appointmentStatus==0">
+              	<!-- <a href="javascript:;" class="btn btn-svoc" id="invateUsers" *ngIf="detailsData.appointment.isAppoint==true" (click)="invate(detailsData)">邀请参会者</a> -->
+          	</span>
+        	</span>
+        <div class=" pull-right">
+          <a href="javascript:;" [class.disabled]="isAvailableOne" id="copyBtn" title="复制" style="margin-right:10px;"
+             ngxClipboard
+             [cbContent]="copyContent" (cbOnSuccess)="toClipboard()"><span class="fa fa-clipboard font16"></span></a>
+          <span *ngIf="detailsData.appointment.appointmentType!=2">
+            	<span *ngIf="detailsData.appointment.appointmentStatus==0">
+            		<a href="javascript:;" class="delete-meeting" [class.disabled]="isAvailableOne" id="view-delete-meeting"
+                   *ngIf="detailsData.appointment.isAppoint==true" style="margin-right:10px;" title="删除"
+                   (click)="deleteMeetingFn(detailsData.appointment)"><span class="icon-trash font16"></span></a>
+            	</span>
+          	</span>
+        </div>
+        <div class="clearfix"></div>
+      </div>
+      <div class="widget-box row">
+        <div class="col-md-8 col-xs-12">
+          <!-- <textarea name="copy-content-hide" id="copyHide" cols="30" rows="10" style="display: none;"></textarea> -->
+          <ul class="list-group copy-content" id="copy-content">
+
+            <li class="detail-list-item">
+              <div class="view-title pull-left"><i class="fa fa-bookmark font14 color-svoc marginLR10"></i>会议名称:</div>
+              <div class="col-lg-8 col-xs-8"><span
+                class="meetingName-view">{{detailsData.appointment.appointmentName}}</span></div>
+            </li>
+            <li class="detail-list-item" *ngIf="detailsData.appointment.appointmentType!=2">
+              <div class="view-title pull-left"><i class="fa fa-clock-o font14 color-svoc marginLR10"></i>会议开始时间:</div>
+              <div class="col-lg-6 col-xs-7">北京时间 <span class="startTimeDate-view">{{detailsData.appointment.startTime | date:'yyyy-MM-dd HH:mm'}}</span>（{{weeks}}）
+              </div>
+              <div class="view-title pull-left" *ngIf="detailsData.appointment.appointmentType!=2">会议时长: <span
+                class="meetingTimeLong-view">{{detailsData.appointment.appointmentPeriod}}</span>小时
+              </div>
+            </li>
+            <li class="detail-list-item" *ngIf="detailsData.appointment.isRepeat">
+              <div class="view-title pull-left"><i class="fa fa-refresh font14 color-svoc marginLR10"></i>重复周期:</div>
+              <!-- <div class="col-xs-8">{{detailsData.appointment.repeateMsg}}会议重复，有效期至{{detailsData.appointment.repeatEndTime | date:'yyyy-MM-dd'}}，共{{detailsData.appointment.repeateNum}}次会议    <a [routerLink]="['/page/user-schedule']" > 查看所有会议</a></div> -->
+              <div class="col-xs-9" style="word-wrap: break-word;"><span class="isRepeat-view" *ngFor="let repeateDates of detailsData.repeateDates">{{repeateDates | date:'yyyy-MM-dd'}}；</span> 共{{detailsData.appointment.repeateNum}}次会议 
+              </div>
+            </li>
+            <!-- <li class="detail-list-item" *ngIf="appointType!=2">
+                <div class="view-title pull-left"><i class="fa fa-users font14 color-svoc marginLR10"></i>参会方:</div>
+                <div class="col-lg-8 col-xs-8"><span class="attendnode-view">{{detailsData.appointment.attendNode}}</span></div>
+            </li> -->
+            <li class="detail-list-item">
+              <div class="view-title pull-left"><i class="fa fa-th font14 color-svoc marginLR10"></i>会议号:</div>
+              <div class="col-lg-4 col-xs-6"><span
+                class="meetingNum-view">{{detailsData.appointment.appointmentNumber}}</span></div>
+              <div class="view-title pull-left">会议密码: <span
+                class="speakerPsd-view">{{detailsData.appointment.hostPwd}}</span></div>
+            </li>
+            <li class="detail-list-item" *ngIf="detailsData.appointment.appointmentType!=2">
+              <div class="view-title pull-left"><i class="fa fa-link font14 color-svoc marginLR10"></i>入会链接:</div>
+              <div class="col-lg-8 col-xs-8"><span class="webrtc-view">{{detailsData.webrtcUri}}</span></div>
+            </li>
+            <li class="detail-list-item">
+              <div class="view-title pull-left"><i class="fa fa-microphone font14 color-svoc marginLR10"></i>入会时:</div>
+              <div class="col-lg-8 col-xs-8">
+                <span class="metu-view" *ngIf="detailsData.appointment.isMute==true">静音</span>
+                <span class="metu-view" *ngIf="detailsData.appointment.isMute==false">不静音</span>
+              </div>
+            </li>
+            <!-- <li class="detail-list-item">
+                <div class="view-title pull-left"><i class="fa fa-play-circle-o font14 color-svoc marginLR10"></i>开启会议直播:</div>
+                <div class="col-lg-6 col-xs-8">
+                  <span class="metu-view" *ngIf="detailsData.appointment.isLive==false">未开启</span>
+                  <a href="javascript:;" class="speakerPsd-view" *ngIf="detailsData.appointment.isLive==true">{{detailsData.appointment.liveAddress}}</a>
+                </div>
+                <div class="pull-left" *ngIf="detailsData.appointment.isLive==true">
+                    直播密码: <span class="speakerPsd-view">{{detailsData.appointment.livePwd}}</span>
+                          </div>
+            </li> -->
+            <li class="detail-list-item">
+              <div class="view-title pull-left lh32"><i class="fa fa-play-circle-o font14 color-svoc marginLR10"></i>开启会议直播:
+              </div>
+              <div class="col-lg-6 col-xs-8 lh32">
+                <span class="metu-view" *ngIf="detailsData.appointment.isLive==false">未开启</span>
+                <a href="javascript:;" class="speakerPsd-view" *ngIf="detailsData.appointment.isLive==true">{{srcContent}}</a>
+              </div>
+              <div class="pull-left" *ngIf="detailsData.appointment.isLive==true">
+                直播密码: <span class="speakerPsd-view">{{detailsData.appointment.livePwd}}</span>
+              </div>
+            </li>
+            <li class="detail-list-item">
+              <div class="view-title pull-left"><i class="fa fa-video-camera font14 color-svoc marginLR10"></i>开启会议录制：
+              </div>
+              <div class="col-lg-8 col-xs-8">
+                <span class="metu-view" *ngIf="detailsData.appointment.isRecord==true">开启</span>
+                <span class="metu-view" *ngIf="detailsData.appointment.isRecord==false">未开启</span>
+              </div>
+            </li>
+            <li class="detail-list-item">
+              <div class="view-title pull-left"><i class="fa fa-edit font14 color-svoc marginLR10"></i>会议描述:</div>
+              <div class="col-xs-9"><span class="meetingDesc-view">{{detailsData.appointment.appointmentDesc}}</span>
+              </div>
+            </li>
+            <li class="detail-list-item">
+              <div class="view-title pull-left"><i class="fa fa-user font14 color-svoc marginLR10"></i>参会人员:</div>
+              <div class="col-xs-9">
+                <span class="attendMember-view"
+                      *ngFor="let user of detailsData.appointment.users">{{user?.realName}}；</span>
+                <span class="attendMember-view"
+                      *ngFor="let room of detailsData.appointment.rooms">{{room?.roomName}}；</span>
+              </div>
+            </li>
+          </ul>
+          <div class="text-center">
+                	<span *ngIf="detailsData.appointment.appointmentType!=2">
+                  	<span *ngIf="detailsData.appointment.appointmentStatus==0">
+                      	<a id="editMeeting" href="javascript:;" class="btn btn-svoc btn-svoc-lg"
+                           [class.disabled]="isAvailableOne"
+                           [routerLink]="['/page/book',detailsData.appointment.appointmentId,1]">编 辑</a>
+                  	</span>
+                	</span>
+            <a href="javascript:history.back(-1)" class="btn btn-svoc btn-svoc-lg returnAppoint">返 回</a>
+          </div>
+        </div>
+        <div class="col-md-4 col-xs-12">
+          <div class="view-title lh32"><i class="fa fa-bookmark font14 color-svoc marginLR10"></i>会议二维码：</div>
+          <div class="meeting-qrcode text-center">
+            <img [src]="conferenceImg"/>
+          </div>
+          <div class="text-center">扫一扫入会</div>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</div>

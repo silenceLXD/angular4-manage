@@ -1,0 +1,39 @@
+.trySuss-con .order-info {
+  padding-left: 53px;
+}
+
+.trySuss-con .order-info span {
+  margin: 0 5px;
+}
+
+.info-con {
+  border-top: 1px solid #ccc;
+  margin-top: 20px;
+}
+
+.trySuss-con .explain {
+  margin-top: 20px;
+  position: relative;
+  padding: 60px 50px 40px 50px;
+}
+
+.trySuss-con .explain .tit {
+  position: absolute;
+  top: 20px;
+  left: -4px;
+  background: url("../../../../assets/img/icons.png") -140px 0 no-repeat;
+  width: 138px;
+  height: 52px;
+  color: #fff;
+  text-align: center;
+  line-height: 48px;
+}
+
+.trySuss-con .look-btn {
+  margin: 40px 0 0 0;
+}
+
+.inline-block {
+  display: inline-block;
+  float: left;
+}

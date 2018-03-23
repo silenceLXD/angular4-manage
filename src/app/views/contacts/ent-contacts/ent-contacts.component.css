@@ -1,0 +1,53 @@
+.contactsMenuTitle{
+    cursor: pointer;
+    color: rgb(255, 255, 255);
+    font: 12px/31px 宋体;
+    background: rgb(7, 162, 232);
+    /* text-align: center; */
+    padding: 7px 0px 7px 20px;
+    font-weight: bold;
+}
+.fa-caret-right {
+    margin-right: 7px;
+}
+.fa-folder {
+    margin-right: 7px;
+}
+.contactsMenu{
+  box-shadow: 1px 1px 10px #eee;
+}
+.contactsUlMenu li{
+    padding: 13px 0;
+    /* line-height: 33px; */
+    /* margin-top: 4px; */
+}
+.contactsUlMenu a{
+    display: block;
+    padding-left: 50px;
+    text-decoration: none;
+}
+.contactsUlMenu a:hover{
+    background: rgb(7, 162, 232);
+    color: #fff;
+    text-decoration: none;
+}
+.isdontShow{
+    display: none;
+}
+.isShow{
+    display: block;
+    transition: all .3s;
+}
+
+
+.isActive{
+    background: rgb(7, 162, 232);
+    color: #fff;
+}
+/*.isActive+.isdontShow{
+    display: block;
+}*/
+.isNavActive{
+    background: rgb(7, 162, 232);
+    color: #fff;
+}

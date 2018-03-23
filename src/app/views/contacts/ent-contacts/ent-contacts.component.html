@@ -1,0 +1,516 @@
+<div class="page-heading">企业通讯录</div>
+
+<div class="white-bg" *ngIf="!isImport">
+  <ul class="nav nav-tabs">
+    <li class="active"><a href="javascript:;">通讯录</a></li>
+    <li><a routerLink="/page/ent-group">企业群组</a></li>
+    <li><a routerLink="/page/ent-realroom">会议室</a></li>
+  </ul>
+
+  <div class="tab-content clearfix" style="position:relative;">
+    <div class="tab-pane active">
+      <div class="pull-left marginTB10">
+        <a href="javascript:void(0);" class="btn btn-svoc-border" [ngClass]="isAvailableOne?'disabled':''"
+           id="importBook" (click)="openImprotFile()"><i
+          class="icon-signin"></i> 导入通讯录</a>
+        <a href="javascript:void(0);" class="btn btn-svoc-border" [ngClass]="isAvailableOne?'disabled':''"
+           id="exportBook" (click)="exportBook()"><i
+          class="icon-signout"></i> 导出通讯录</a>
+      </div>
+
+      <div class="pull-right">
+        <i class="fa fa-exclamation-circle font16 color-svoc" (click)="sipalert=!sipalert"></i>
+      </div>
+      <div class="pull-right" *ngIf="sipalert">
+        <nz-alert [nzType]="'warning'" nzCloseable>
+         <span alert-body>
+           <span>用户登录密码初始值为<span class="red">123456</span></span>
+           <p>通讯录使用账号数为{{sipCount?sipCount:'0'}}个</p>
+         </span>
+        </nz-alert>
+      </div>
+
+      <div class="clearfix"></div>
+      <div class="row">
+        <!-- 左侧列表 -->
+        <div class="col-lg-3 col-xs-5">
+          <form name="queryForm" id="queryForm">
+            <div class="marginTB10 has-feedback">
+              <input type="text" id="searchInput" placeholder="姓名" name="searchInput" class="form-control"
+                     [(ngModel)]="searchByName" (keyup)="searchData()">
+              <span class="glyphicon glyphicon-search form-control-feedback"></span>
+            </div>
+          </form>
+          <div class="contactsMenu">
+            <div>
+              <h2 class="contactsMenuTitle" (click)="searchAll(organList.value,organList.level,organList.name)">
+                {{organList.name}} ( {{organList.count}} )</h2>
+            </div>
+
+            <contacts-tree [treelists]="organList.submenu" (outPutTreeData)="getTreeItemData($event)"></contacts-tree>
+
+          </div>
+        </div>
+
+        <!-- 右侧表格 -->
+        <div class="col-lg-9 col-xs-7">
+          <h2 class="marginTB10">
+            <span *ngIf="!isEditOrgpName" calss="title-span" style="font-size:20px;">{{ itemName }}</span>
+            <span *ngIf="isEditOrgpName" style="display: inline-block;">
+              <input type="text" class="form-control" [(ngModel)]="itemName"
+                     (keydown)="editOrgNameKey($event)"/>
+            </span>
+            <span *ngIf="!isEditOrgpName && isShowUpdateBtn">
+              <a href="javascript:;" class="fa fa-pencil-square-o font18 color-svoc" [class.disabled]="isAvailableOne"
+                 (click)="sureEdit();isEditOrgpName=true"></a>
+             </span>
+            <span *ngIf="isEditOrgpName">
+              <a href="javascript:;" class="fa fa-remove font18 red"
+                 (click)="cancelEditOrgName();isEditOrgpName=false"></a>
+              <a href="javascript:;" class="fa fa-check font18 color-svoc" (click)="editOrgName(itemName)"></a>
+            </span>
+
+          </h2>
+          <div class="marginTB10">
+            <div *ngIf="!isShowUpdateBtn"><a href="javascript:void(0);" class="btn btn-svoc-border"
+                                             [ngClass]="isAvailableOne?'disabled':''"
+                                             (click)="AddDepartmentBranch();">添加部门/分公司</a></div>
+            <div *ngIf="isShowUpdateBtn">
+              <a href="javascript:void(0);" class="btn btn-svoc" [ngClass]="isAvailableOne?'disabled':''"
+                 (click)="addUserFn()">添加用户</a>
+              <a *ngIf="orgLevel!=3" href="javascript:void(0);" class="btn btn-svoc-border"
+                 [ngClass]="isAvailableOne?'disabled':''"
+                 (click)="addOtherDepateFn();">添加子部门</a>
+              <a href="javascript:void(0);" class="btn btn-svoc-border" [class.disabled]="!isCanDelet||isAvailableOne"
+                 id="deletdepat"
+                 (click)="deletDepatFn()">删除部门</a>
+            </div>
+          </div>
+
+          <table class="table" style="border-bottom: 1px solid #ddd;">
+            <thead>
+            <tr>
+              <th>工号</th>
+              <th>姓名</th>
+              <th>一级部门/分公司</th>
+              <th>二级部门</th>
+              <th>三级部门</th>
+              <th>
+                <select name="" id="position" class="form-control" [(ngModel)]="positionSearch" (change)="searchData()"
+                        style="height:25px;width:80%;font-size: 12px;padding:0;">
+                  <option value="">职务</option>
+                  <option *ngFor="let position of positionList" [value]="position">{{position}}</option>
+                </select>
+              </th>
+              <th>邮箱</th>
+              <th>手机</th>
+              <th>SIP账号</th>
+              <th>操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let user of userListData.list">
+              <td>{{user.empno}}</td>
+              <td>
+                <i *ngIf="user.roleId==2" class="fa fa-user-md color-svoc"></i> {{user.realName}}
+              </td>
+              <td>{{user.deptName}}</td>
+              <td>{{user.subdeptName}}</td>
+              <td>{{user.threedeptName}}</td>
+              <td>{{user.position}}</td>
+              <td>{{user.email}}</td>
+              <td>{{user.mobilePhone}}</td>
+              <td>{{user.sipNumber}}</td>
+              <td>
+                <a *ngIf="user.roleId==1" href="javascript:;" (click)="updateUserFn(user)"
+                   class="fa fa-pencil-square-o font16 color-svoc" [class.disabled]="isAvailableOne"></a>
+
+                <nz-dropdown [nzTrigger]="'click'" *ngIf="user.roleId!=1" [class.disabled]="isAvailableOne">
+                    <span class="ant-dropdown-link" nz-dropdown>
+                      <a href="javascript:;" class="font16 color-svoc fa-ellipsis-h fa"></a>
+                    </span>
+                  <ul nz-menu>
+                    <li nz-menu-item><a href="javascript:;" (click)="updateUserFn(user)">编辑</a></li>
+                    <!-- <li nz-menu-item><a href="javascript:;" (click)="blocked(user)">冻结</a></li>
+                    <li nz-menu-item><a href="javascript:;" (click)="unblocked(user)">解冻</a></li> -->
+                    <li nz-menu-item><a href="javascript:;" (click)="deleteUserFn(user.userId)">删除</a>
+                    <li nz-menu-item><a href="javascript:;" (click)="restPwd(user.userId)">重置密码</a></li>
+                  </ul>
+                </nz-dropdown>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+          <!-- 分页 -->
+          <div class="text-right">
+            <nz-pagination [(nzPageIndex)]="userListData.currentPage" [nzTotal]="userListData.totalPages"
+                           (click)="pageChanged(userListData.currentPage)"
+                           [nzShowTotal]="userListData.totalPages" [nzPageSize]="10"></nz-pagination>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--导入通讯录列表-->
+<div class="white-bg" *ngIf="isImport">
+  <p>本次共导入{{ImportListLength?ImportListLength:'0'}}条数据</p>
+  <div>
+    <table class="table table-bordered">
+      <thead>
+      <tr>
+        <th>公司</th>
+        <th>工号</th>
+        <th>一级部门</th>
+        <th>二级部门</th>
+        <th>姓名</th>
+        <th>职务</th>
+        <th>E-mail</th>
+        <th>手机</th>
+        <th>微信号</th>
+        <th>重要领导</th>
+        <th>备注</th>
+      </tr>
+      </thead>
+      <tbody id="tbody">
+      <tr *ngFor="let item of ImportList" class="ng-scope">
+        <td>{{ item.orgName }}</td>
+        <td>{{ item.empno }}</td>
+        <td>{{ item.deptName }}</td>
+        <td>{{ item.subdeptName }}</td>
+        <td>{{ item.realName }}</td>
+        <td>{{ item.position }}</td>
+        <td>{{ item.email }}</td>
+        <td>{{ item.mobilePhone }}</td>
+        <td>{{ item.userWeixin }}</td>
+        <td>{{ item.isImportant == 1?'是':'否' }}</td>
+        <td>{{ item.remark }}</td>
+      </tr>
+      </tbody>
+    </table>
+    <a class="btn btn-svoc" href="javascript:void(0);" id="sure" (click)="insertUser()" value="bc">保 存</a>
+    <a class="btn btn-svoc" href="javascript:void(0);" id="back" (click)="back()" value="">返 回</a>
+  </div>
+</div>
+
+<!--导入通讯录重复的列表-->
+<nz-modal [nzVisible]="showRepeatDataModal" [nzTitle]="'消息'" [nzContent]="showRepeatDataContent"
+          [nzFooter]="showRepeatDataFooter" (nzOnCancel)="showRepeatDataModal=false">
+  <ng-template #showRepeatDataContent>
+    <div style="width: 400px; word-wrap: break-word; overflow-y:auto;">
+      <h4 id="emailh4" class="lh32" *ngIf="emailUsed">注意以下工号的邮箱已经使用过！</h4>
+      <div>
+        <ul style="overflow: hidden;" id="textEmail">
+          <li *ngFor="let user of emailUsedList">{{user.empno}},{{user.email}}</li>
+        </ul>
+      </div>
+      <h4 id="phoneh4" class="lh32" *ngIf="phoneUsed">注意以下工号的手机号已经使用过！</h4>
+      <div>
+        <ul style="overflow: hidden;" id="textPhone">
+          <li *ngFor="let user of phoneUsedList">{{user.empno}},{{user.mobilePhone}}</li>
+        </ul>
+      </div>
+    </div>
+  </ng-template>
+  <ng-template #showRepeatDataFooter>
+    <button nz-button [nzType]="'default'" [nzSize]="'large'" (click)="showRepeatDataModal=false"> 取 消</button>
+  </ng-template>
+</nz-modal>
+
+<!--添加部门分公司-->
+<nz-modal [nzVisible]="AddDepartmentBranchModal" [nzTitle]="'添加部门/分公司'" [nzContent]="AddDepartmentBranchContent"
+          [nzFooter]="AddDepartmentBranchFooter"
+          (nzOnCancel)="AddDepartmentBranchModal=false" [nzMaskClosable]="false">
+  <ng-template #AddDepartmentBranchContent>
+    <form class="form-horizontal" id="firstDepatForm">
+      <div class="form-group">
+        <div class="lh32 pull-left">上级部门/分公司</div>
+        <div class="col-xs-9">
+          <span class="lh32 font16">{{ organList.name }}</span>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="lh32 col-xs-3 text-right"><span class="red">*</span>名 称</div>
+        <div class="col-xs-8">
+          <input type="text" class="form-control" name="orgName" [(ngModel)]="depatName">
+        </div>
+      </div>
+    </form>
+  </ng-template>
+  <ng-template #AddDepartmentBranchFooter>
+    <button nz-button [nzType]="'default'" [nzSize]="'large'" (click)="AddDepartmentBranchModal=false"> 取 消</button>
+    <button nz-button [nzType]="'primary'" [nzSize]="'large'" (click)="saveBtn_ok()"> 保 存</button>
+  </ng-template>
+</nz-modal>
+
+<!--导入通讯录-->
+<nz-modal [nzVisible]="openImprotFileModal" [nzTitle]="'添加部门/分公司'" [nzContent]="openImprotFileContent"
+          [nzFooter]="openImprotFileFooter"
+          (nzOnCancel)="openImprotFileModal=false">
+  <ng-template #openImprotFileContent>
+    <ul class="importli">
+      <li>
+        <span>1、下载通讯录模版，批量填写信息</span>
+        <a class="btn btn-svoc" id="" (click)="downloadBookTemplate()">下载</a>
+      </li>
+      <li>
+        <span>2、上传填写好的通讯录</span>
+        <form action="enterprise/uploadBook" class="ng-pristine ng-valid" enctype="multipart/form-data" id="poiExcel"
+              method="post">
+          <!-- <input type="text" id="FileText" class="form-control" style="width: 240px;"> -->
+          <input id="UploadFile" name="excelFile" [(ngModel)]="excelFile" style="display:none" type="file"
+                 (change)="previewImage($event)"
+                 class="ng-pristine ng-untouched ng-valid">
+          <a class="btn btn-svoc UploadFileBtn" href="javascript:;" onclick="UploadFile.click();">选择文件</a>
+          <span id="FileText">{{fileName}}</span>
+        </form>
+      </li>
+    </ul>
+  </ng-template>
+  <ng-template #openImprotFileFooter>
+    <button nz-button [nzType]="'default'" [nzSize]="'large'" (click)="openImprotFileModal=false"> 取 消</button>
+    <button nz-button [nzType]="'primary'" [nzSize]="'large'" (click)="uploadBtn_ok(0)"> 上 传</button>
+  </ng-template>
+</nz-modal>
+
+<!--添加用户-->
+<nz-modal [nzVisible]="addUserModal" [nzTitle]="'添加用户'" [nzContent]="addUserContent" [nzFooter]="addUserFooter"
+          (nzOnCancel)="addUserModal=false" [nzMaskClosable]="false">
+  <ng-template #addUserContent>
+    <form class="form-horizontal w5c-form demo-form" role="form" novalidate name="addForm" #addUserForm="ngForm">
+      <div class="form-group row">
+        <div class="col-xs-3 text-right lh32"><span class="red">* </span>工号</div>
+        <div class="col-xs-8">
+          <input type="text" class="form-control" name="empno" [(ngModel)]="addUserData.empno" required
+                 placeholder="请输入工号" maxlength="10" #empno="ngModel">
+          <div *ngIf="empno.errors && (empno.dirty || empno.touched)" class="error">
+            <span [hidden]="!empno.errors.required">工号必须输入</span>
+          </div>
+        </div>
+      </div>
+      <div class="form-group row">
+        <div class="col-xs-3 text-right lh32"><span class="red">* </span>姓名</div>
+        <div class="col-xs-8">
+          <input type="text" class="form-control" name="realName" [(ngModel)]="addUserData.realName" required
+                 placeholder="请输入姓名" #realName="ngModel">
+          <div *ngIf="realName.errors && (realName.dirty || realName.touched)" class="error">
+            <span [hidden]="!realName.errors.required">姓名必须输入</span>
+          </div>
+        </div>
+      </div>
+      <div class="form-group row">
+        <div class="col-xs-3 text-right lh32"><span class="red">* </span>所属部门</div>
+        <div class="col-xs-8">
+          <input type="text" class="form-control" name="itemName" [(ngModel)]="itemName" required readonly>
+        </div>
+      </div>
+      <div class="form-group row">
+        <div class="col-xs-3 text-right lh32"><span class="red">* </span>职务</div>
+        <div class="col-xs-8">
+          <input type="text" class="form-control" name="position" placeholder="请输入职务" [(ngModel)]="addUserData.position"
+                 required #position="ngModel">
+          <div *ngIf="position.errors && (position.dirty || position.touched)" class="error">
+            <span [hidden]="!position.errors.required">职务必须输入</span>
+          </div>
+        </div>
+      </div>
+      <div class="form-group row">
+        <div class="col-xs-3 text-right lh32"><span class="red">* </span>邮箱</div>
+        <div class="col-xs-8">
+          <input type="email" class="form-control" name="email" placeholder="请输入邮箱" [(ngModel)]="addUserData.email"
+                 required #email="ngModel" pattern="[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$">
+          <div *ngIf="email.errors && (email.dirty || email.touched)" class="error">
+            <span [hidden]="!email.errors.required">邮箱必须输入</span>
+            <span *ngIf="!email.errors.required">
+              <span [hidden]="!email.errors">输入的邮箱格式不正确</span>
+            </span>
+          </div>
+          <div [hidden]="!asyncValidtorBool.emailRepeat||email.errors" class="error">
+            <span>
+              邮箱已被注册，请更换邮箱
+            </span>
+          </div>
+        </div>
+      </div>
+      <div class="form-group row">
+        <div class="col-xs-3 text-right lh32"><span class="red">* </span>手机</div>
+        <div class="col-xs-8">
+          <input type="text" class="form-control" name="mobilePhone" id="telephone" maxlength="11" placeholder="请输入手机号"
+                 [(ngModel)]="addUserData.mobilePhone"
+                 required #mobilePhone="ngModel" pattern="^1(3|4|5|7|8)+\d{9}$">
+          <div *ngIf="mobilePhone.errors && (mobilePhone.dirty || mobilePhone.touched)" class="error">
+            <span [hidden]="!mobilePhone.errors.required">手机必须输入</span>
+            <span *ngIf="!mobilePhone.errors.required">
+              <span [hidden]="!mobilePhone.errors">输入的手机格式不正确</span>
+            </span>
+          </div>
+          <div [hidden]="!asyncValidtorBool.mobilePhoneRepeat||mobilePhone.errors" class="error">
+            <span>
+              该手机号码已被注册，请更换手机号码
+            </span>
+          </div>
+          <!--<p *ngIf="!isDisabledBind" class="error"><span *ngIf="addUserData.mobilePhone">输入的手机格式不正确</span></p>-->
+        </div>
+      </div>
+      <div class="form-group row">
+        <div class="col-xs-3 text-right lh32">角色</div>
+        <div class="col-xs-8">
+          <select class="form-control" name="roleId" [(ngModel)]="addUserData.roleId">
+            <option value="3">用户</option>
+            <option value="2">二级管理员</option>
+          </select>
+        </div>
+      </div>
+    </form>
+  </ng-template>
+  <ng-template #addUserFooter>
+    <button nz-button [nzType]="'default'" [nzSize]="'large'" (click)="addUserModal=false"> 取 消</button>
+    <button (click)="saveAddUserFn()" nz-button [nzType]="'primary'"
+            [disabled]="!isDisabledButton||asyncValidtorBool.isDisabledButton" [nzSize]="'large'" [disabled]=""> 保
+      存
+    </button>
+  </ng-template>
+</nz-modal>
+
+<!-- 编辑用户 -->
+<nz-modal [nzVisible]="updateUserModal" [nzTitle]="'编辑用户'" [nzContent]="updateUserContent" [nzFooter]="updateUserFooter"
+          (nzOnCancel)="updateUserModal=false" [nzMaskClosable]="false">
+  <ng-template #updateUserContent>
+    <form class="form-horizontal w5c-form demo-form" role="form" w5c-form-validate="vm.validateOptions"
+          novalidate
+          name="addForm">
+      <div class="form-group row">
+        <div class="col-xs-3 text-right lh32"><span class="red">* </span>工号</div>
+        <div class="col-xs-8">
+          <input type="text" class="form-control" name="empno" [(ngModel)]="updateUserData.empno" required=""
+                 placeholder="请输入工号" maxlength="10">
+        </div>
+      </div>
+      <div class="form-group row">
+        <div class="col-xs-3 text-right lh32"><span class="red">* </span>姓名</div>
+        <div class="col-xs-8">
+          <input type="text" class="form-control" name="realName" [(ngModel)]="updateUserData.realName" required=""
+                 placeholder="请输入姓名">
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-xs-3"><span class="red">*</span>一级部门</label>
+        <div class="col-xs-8">
+          <select class="form-control" name="deptId" id="orgId" (change)="getSecondDepat(updateUserData.deptId)"
+                  [(ngModel)]="updateUserData.deptId">
+            <option value="0">请选择一级部门...</option>
+            <option *ngFor="let dept of firstDeptData" [value]="dept.orgId">{{dept.orgName}}</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-xs-3">二 级 部 门</label>
+        <div class="col-xs-8">
+          <select id="deptId" class="form-control" name="subdeptId" (change)="getThirdDepat(updateUserData.subdeptId)"
+                  [(ngModel)]="updateUserData.subdeptId">
+            <option value="0">请选择二级部门...</option>
+            <option *ngFor="let dept of secondDeptData" [value]="dept.orgId">{{dept.orgName}}</option>
+          </select>
+        </div>
+        <!-- <input type="hidden" name="subdeptId" [value]="editsubDeptId.orgId==null?'0':editsubDeptId.orgId"> -->
+      </div>
+      <div class="form-group row">
+        <label class="col-xs-3">三 级 部 门</label>
+        <div class="col-xs-8">
+          <select class="form-control" name="threedeptId" id="subdeptId" [(ngModel)]="updateUserData.threedeptId">
+            <option value="0">请选择三级部门...</option>
+            <option *ngFor="let dept of thirdDepatData" [value]="dept.orgId">{{dept.orgName}}</option>
+          </select>
+        </div>
+        <!-- <input type="hidden" name="threedeptId" [value]="editthirdDeptId.orgId==null?'0':editthirdDeptId.orgId"> -->
+      </div>
+      <div class="form-group row">
+        <div class="col-xs-3 text-right lh32"><span class="red">* </span>职务</div>
+        <div class="col-xs-8">
+          <input type="text" class="form-control" name="position" placeholder="请输入职务"
+                 [(ngModel)]="updateUserData.position" required="">
+        </div>
+      </div>
+      <div class="form-group row">
+        <div class="col-xs-3 text-right lh32"><span class="red">* </span>邮箱</div>
+        <div class="col-xs-8">
+          <input type="email" class="form-control" name="email" placeholder="请输入邮箱" [(ngModel)]="updateUserData.email"
+                 required="">
+        </div>
+      </div>
+      <div class="form-group row">
+        <div class="col-xs-3 text-right lh32"><span class="red">* </span>手机</div>
+        <div class="col-xs-8">
+          <input type="text" class="form-control" name="mobilePhone" [(ngModel)]="updateUserData.mobilePhone"
+                 maxlength="11" placeholder="请输入手机号"
+                 required="">
+        </div>
+      </div>
+      <div class="form-group row">
+        <div class="col-xs-3 text-right lh32"><span class="red">* </span>SIP账号</div>
+        <div class="col-xs-8">
+          <input type="text" class="form-control" name="sipNumber" [(ngModel)]="updateUserData.sipNumber" readonly>
+        </div>
+      </div>
+      <div class="form-group row">
+        <div class="col-xs-3 text-right lh32"><span class="red">* </span>SIP账号密码</div>
+        <div class="col-xs-5">
+          <input type="text" class="form-control" name="sipPassword" [(ngModel)]="updateUserData.sipPassword">
+        </div>
+        <div class="col-xs-3">
+          <a href="javascript:;" class="btn btn-svoc" (click)="updateUserData.sipPassword='123456'">重置密码</a>
+        </div>
+      </div>
+      <div class="form-group row">
+        <div class="col-xs-3 text-right lh32">角色</div>
+        <div class="col-xs-8">
+          <select class="form-control" name="roleId" [(ngModel)]="updateUserData.roleId"
+                  [disabled]="updateUserData?.roleId==1 ? 'true' : 'false'">
+            <option value="3">用户</option>
+            <option value="2">二级管理员</option>
+          </select>
+        </div>
+      </div>
+    </form>
+  </ng-template>
+  <ng-template #updateUserFooter>
+    <button nz-button [nzType]="'default'" [nzSize]="'large'" (click)="updateUserModal=false"> 取 消</button>
+    <button nz-button [nzType]="'primary'" [nzSize]="'large'" (click)="sureUpdateUserFn(updateUserData.userId)"> 保 存
+    </button>
+  </ng-template>
+</nz-modal>
+
+<!--添加子部门-->
+<nz-modal [nzVisible]="addOtherDepatModal" [nzTitle]="'添加子部门'" [nzContent]="addOtherDepatContent"
+          [nzFooter]="addOtherDepatFooter"
+          (nzOnCancel)="addOtherDepatModal=false" [nzMaskClosable]="false">
+  <ng-template #addOtherDepatContent>
+    <form class="form-horizontal" id="otherDeptForm">
+      <div class="form-group">
+        <div class="lh32 col-xs-3 text-right">上级部门</div>
+        <div class="col-xs-8">
+          <span class="lh32 font14">{{ itemName }}</span>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="col-xs-3 lh32 text-right"><span class="red">*</span>名 称</div>
+        <div class="col-xs-8">
+          <input type="text" class="form-control" name="orgName" [(ngModel)]="otherdepatName">
+        </div>
+      </div>
+    </form>
+  </ng-template>
+  <ng-template #addOtherDepatFooter>
+    <button nz-button [nzType]="'default'" [nzSize]="'large'" (click)="addOtherDepatModal=false"> 取 消</button>
+    <button nz-button [nzType]="'primary'" [nzSize]="'large'" (click)="saveAddOtherFn()"> 保 存</button>
+  </ng-template>
+</nz-modal>
+
+<!-- 删除confirm-->
+<nz-modal [nzVisible]="deleteModal" [nzTitle]="'Modal'" [nzContent]="deleteContent" (nzOnCancel)="handleCancel($event)"
+          (nzOnOk)="handleOk($event)">
+  <ng-template #deleteContent>
+  </ng-template>
+</nz-modal>

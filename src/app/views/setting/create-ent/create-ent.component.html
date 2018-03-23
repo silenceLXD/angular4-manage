@@ -1,0 +1,40 @@
+<div class="page-heading">创建企业</div>
+<div class="white-bg" style="width:80%;">
+    <!-- 第一步  填写企业信息-->
+    <div class="create-ent" *ngIf="!validaeEmail" style="padding:30px 0;">
+    	<form class="form-horizontal" id="creatForm">
+    		<div class="form-group">
+    			<label class="col-xs-3">企业全称</label>
+    			<div class="col-xs-6">
+    				<input type="text" name="orgName" [(ngModel)]="entName" (blur)="checkEntName()" class="form-radius" placeholder="请输入企业全称">
+					<p class="error" *ngIf="entNameMsg" style="padding-left:20px;"><span class="alert-icon validtip-icon"></span> 企业名称已被注册，请更换企业名称</p>
+    			</div>
+    		</div>
+    		<div class="form-group">
+    			<label class="col-xs-3">邮箱</label>
+    			<div class="col-xs-6">
+    				<input type="email"  name="email" class="form-radius" placeholder="请填写企业邮箱" [(ngModel)]="email" (blur)="checkEmail()" required="" autocomplete="off">
+    				<p class="error" *ngIf="emailMsg" style="padding-left:20px;"><span class="alert-icon validtip-icon"></span> 邮箱已被注册，请更换邮箱</p>
+    			</div>
+    		</div>
+    	</form>
+    	<div class="text-center" style="margin-top:30px">
+    		<a href="javascript:;" class="btn btn-svoc font16 radius20" style="padding:10px 50px;" (click)="nextStep()">下一步</a>
+    	</div>
+    </div>
+
+    <!-- 第二步  登录邮箱进行验证-->
+    <div class="validae-email" *ngIf="validaeEmail">
+        <div class="text-center">
+            <div style="margin: 60px auto"><img src="assets/img/email_gray.png" alt=""></div>
+            <h4 style="margin-bottom: 30px;">邮箱验证后，即可完成注册</h4>
+            <p>只需要登录邮箱<span>{{email}}</span>点击链接激活即可，验证后成为云起云用户，可登录使用，账号更安全！</p>
+
+            <div style="margin: 30px auto;width: 300px;">
+                <a href="javascript:;" class="btn btn-svoc login-btn" (click)="loginEmail()">立即登录邮箱验证</a>
+            </div>
+            <p style="margin-bottom: 30px;">若页面无法跳转，请您从邮箱官网登录！</p>
+        </div>
+    </div>
+
+</div>

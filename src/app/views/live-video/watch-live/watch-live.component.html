@@ -1,0 +1,229 @@
+<!-- ==================== header ==================== -->
+ <app-header *ngIf="isLogin" class="hidden-xs"></app-header>
+<app-header-un  class="black-header hidden-xs" *ngIf="!isLogin"></app-header-un>
+
+
+<!--==================== 直播主体内容 ====================-->
+<div class="container">
+  <div class="starter-template">
+    <!-- ========== 会议信息 ========== -->
+    <div class="conf-msg row" *ngIf="isShowConMsg">
+      <h4>{{liveConferenceData.conferenceName}}</h4>
+      <!-- <div class="">
+        {{isPc}} : {{browser}}
+      </div>
+      <div class="">
+        {{LiveAddressType}}
+      </div> -->
+      <div class="clearfix tit marginTB10">
+        <div class="col-md-9 col-xs-12">
+          <span>预约人：<span id="appointUser">{{liveConferenceData.appointUser}}</span></span>
+          <span>会议时间：<span id="startTime">{{liveConferenceData.startTime | date:'yyyy-MM-dd HH:mm'}}</span></span>
+        </div>
+        <div class="col-md-3 col-xs-12">
+          <span>观看人数：<span
+            style="margin-right:0">{{liveConferenceData.playNum<=0?'1':liveConferenceData.playNum}}</span>人</span>
+          <span id="shareBtn" style="cursor: pointer;" (click)="shareFn()"><i class="fa fa-share-alt"
+                                                                              style="color: #00a0e9;font-size: 14px;margin: 5px;"></i>分享</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========== 主体 播放器 ========== -->
+    <div class="conf-player row">
+      <!-- 左侧直播框conf-player-left  -->
+      <div class="col-md-9 col-xs-12" style="padding:0;">
+        <!-- 消息提示 -->
+        <div class="message-tip" *ngIf="alertMsg">
+          <span>xx加入会议</span>
+        </div>
+        <!-- ckplayer播放器 -->
+        <div class="liveVideo" *ngIf="liveState.liveVideo">
+          <div id="video" style="height:400px;"></div>
+        </div>
+
+        <!-- 会议倒计时  -->
+        <div class="liveTime ng-hide" *ngIf="liveState.countDown" id="countDown">
+          <h4>距离会议开始还有</h4>
+          <div class="row">
+            <ul class="clearfix">
+              <li class="pull-left col-xs-3">
+                <div class="clearfix">
+                  <span class="item">{{ouptCountDown.days}}</span>
+                  <!-- <span class="item"></span> -->
+                </div>
+                <p>天</p>
+              </li>
+              <li class="pull-left col-xs-3">
+                <div class="clearfix">
+                  <span class="item">{{ouptCountDown.hours}}</span>
+                  <!-- <span class="item"></span> -->
+                </div>
+                <p>小时</p>
+              </li>
+              <li class="pull-left col-xs-3">
+                <div class="clearfix">
+                  <span class="item">{{ouptCountDown.minutes}}</span>
+                  <!-- <span class="item"></span> -->
+                </div>
+                <p>分钟</p>
+              </li>
+              <li class="pull-left col-xs-3">
+                <div class="clearfix">
+                  <span class="item">{{ouptCountDown.seconds}}</span>
+                  <!-- <span class="item"></span> -->
+                </div>
+                <p>秒</p>
+              </li>
+
+            </ul>
+          </div>
+        </div>
+
+        <!-- 此会议室没有召开的会议 -->
+        <div class="liveTime ng-hide" *ngIf="liveState.noConference" id="noConference">
+          <h4>此会议室没有召开的会议</h4>
+        </div>
+      </div>
+      <!-- 右侧 聊天室 conf-player-right-->
+      <div class="col-md-3 col-xs-12 conf-player-right" style="padding:0;">
+
+        <div class="chart">
+          <p class="chart-title">聊天室</p>
+          <div class="chart-con" style="height:360px;">
+            <ul class="chart-list" style="overflow-y: auto;height:80%;">
+              <li *ngFor="let message of messageContent">
+                <div class="" style="overflow:hidden;" *ngIf="message.userId == loginUserData.userId">
+                  <span class="avatar-color pull-right"
+                        [ngClass]="message.colors">{{message.realName | slice:0:1}}</span>
+                  <div class="fr" style="display:inline-block;float:right;">
+                    <div class="msg-name-list" style="text-align:right;">
+                      {{message.realName}}[{{message.roomType=='1'?'直播间':'会议室'}}]
+                    </div>
+                    <div class="msg-content-list-right">
+                      <span>{{message.content}}</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="" *ngIf="message.userId != loginUserData.userId">
+                  <span class="avatar-color pull-left"
+                        [ngClass]="message.colors">{{message.realName | slice:0:1}}</span>
+                  <div class="" style="display:inline-block">
+                    <div class="msg-name-list sel-participant-name">
+                      {{message.realName}}[{{message.roomType=='1'?'直播间':'会议室'}}]
+                    </div>
+                    <div class="msg-content-list-left">
+                      <span>{{message.content}}</span>
+                    </div>
+                  </div>
+                </div>
+
+              </li>
+
+            </ul>
+          </div>
+          <div class="chart-send">
+            <input type="text" name="" value="" [(ngModel)]="sendMsgCont" (keyup.enter)="keyDownSendMsgFn(sendMsgCont)"
+                   placeholder="写消息">
+          </div>
+        </div>
+
+
+      </div>
+
+    </div>
+
+    <!-- ========== 会议描述 ========== -->
+    <div class="conf-introduce row">
+      <!--  *ngIf="liveMeetInfo" -->
+      <div class="liveMeetInfo">
+        <h4 class="tit"><span class="font16">会议描述</span></h4>
+        <div class="con" id="appointmentDesc">{{liveConferenceData.conferenceDesc}}</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<div class="" *ngIf="showWeChatImg">
+  <div class="boxer-overlay" (click)="showWeChatImg=false"></div>
+  <div class="boxer">
+    <div class="boxer-container">
+        <span>
+         <span aria-label="Close" class="ant-modal-close" (click)="showWeChatImg=false">
+          <span class="ant-modal-close-x" style="width: 40px;height: 40px;line-height: 40px;"></span>
+          </span>
+          <img [src]="liveQrImg"/>
+        </span>
+
+
+      <div class="text-center marginTB10">
+        打开微信扫一扫分享
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 输入直播密码 -->
+<nz-modal [nzVisible]="livePwdModal" [nzTitle]="'直播密码'" [nzContent]="livePwdContent" [nzClosable]="false"
+          [nzWidth]="'420px'" [nzFooter]="livePwdFooter">
+  <ng-template #livePwdContent>
+    <div class="row">
+      <label class="col-xs-3 lh32 text-right">直播密码：</label>
+      <div class="col-xs-8">
+        <input type="password" id="livePwd" [(ngModel)]="livePwd" class="form-control">
+      </div>
+    </div>
+  </ng-template>
+  <ng-template #livePwdFooter>
+    <!-- <button nz-button [nzType]="'default'" [nzSize]="'large'" (click)="livePwdModal=false"> 取 消 </button> -->
+    <button nz-button [nzType]="'primary'" [nzSize]="'large'" (click)="checkLivePwdFn()"> 确 定</button>
+  </ng-template>
+</nz-modal>
+
+<!-- 直播结束 -->
+<nz-modal [nzVisible]="liveEndModal" [nzTitle]="'直播结束'" [nzContent]="liveEndContent" [nzClosable]="false"
+          [nzWidth]="'420px'" [nzFooter]="liveEndFooter">
+  <ng-template #liveEndContent>
+    <div class="font16 text-center" style="padding:20px 10px;">
+      直播已结束！
+    </div>
+  </ng-template>
+  <ng-template #liveEndFooter>
+    <!-- <button nz-button [nzType]="'default'" [nzSize]="'large'" (click)="livePwdModal=false"> 取 消 </button> -->
+    <button nz-button [nzType]="'primary'" [nzSize]="'large'" (click)="livePwdModal=false"> 确 定</button>
+  </ng-template>
+</nz-modal>
+
+<!-- 分享 -->
+<nz-modal [nzVisible]="shareLiveModal" [nzTitle]="'分享直播'" [nzContent]="shareLiveContent" [nzFooter]="shareLiveFooter"
+          (nzOnCancel)="shareLiveModal=false">
+  <ng-template #shareLiveContent>
+    <div class="">
+      <p>1、分享到</p>
+      <div class="iShare-icon iShare-32">
+        <a href="javascript:;" class="iShare_qq" (click)="shareToFn('qq')"><i class="fa fa-qq qq"></i></a>
+        <a href="javascript:;" class="iShare_wechat" (click)="shareToFn('weixin')"><i class="fa fa-weixin"
+                                                                                      style="vertical-align: -2px;"></i></a>
+      </div>
+    </div>
+    <div class="marginTB10">
+      <p>2、复制链接发送到QQ、微信等好友</p>
+      <div class="copyBox">
+        <a target="_blank" [href]="shareAddress">{{shareAddress}}</a>
+      </div>
+    </div>
+  </ng-template>
+  <ng-template #shareLiveFooter>
+    <button nz-button [nzType]="'primary'" [nzSize]="'large'" ngxClipboard [cbContent]="shareAddress"
+            (cbOnSuccess)="toClipboardLive()"> 复制链接
+    </button>
+  </ng-template>
+</nz-modal>
+
+<nz-modal [nzVisible]="alertModal" [nzTitle]="'Modal'" [nzContent]="alertContent" (nzOnCancel)="handleCancel($event)"
+          (nzOnOk)="handleOk($event)">
+  <ng-template #alertContent>
+  </ng-template>
+</nz-modal>

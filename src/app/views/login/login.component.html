@@ -1,0 +1,126 @@
+<div class="loginPage-bg">
+  <!-- <header style="background-color:transparent;">
+      <div class="container">
+          <div class="nav-logo">
+              <a href="index.html" class="pull-left" style="height:50px">
+                <img src="assets/img/logo_white.png" style="width: 100%;height: 100%;">
+              </a>
+
+              <div class="menu-tool pull-right">
+                  <a [href]="webrtcAnonymousUrl" target="_blank" style="padding:6px 12px;margin: 6px 0;display: inline-block;">加入会议</a>
+              </div>
+          </div>
+      </div>
+  </header> -->
+  <app-header-un></app-header-un>
+
+  <div class="container">
+    <div class="row">
+      <div class="col-md-offset-3 col-md-6 col-xs-12">
+        <div class="form-bg">
+          <div class="login-heading">
+            <span class="heading" [ngClass]="{'active': loginway=='psd'}" (click)="loginway='psd'"><a
+              href="javascript:">密码登录</a></span>
+            <span class="heading" [ngClass]="{'active': loginway=='qrcode'}" (click)="loginByCode()"><a
+              href="javascript:">扫码登录</a></span>
+          </div>
+          <input value="Thisisthehomepageoftheenterprisemanagementplatform" style="display: none;">
+          <!--================== 密码登录 ==================-->
+          <div class="psd-login flip in" *ngIf="loginway=='psd'">
+            <form novalidate class="form-horizontal" [formGroup]="loginForm" (ngSubmit)="postFormData(loginForm.value)">
+              <div class="form-group">
+                <input type="text" class="form-control" formControlName="username" placeholder="登录账户为邮箱/手机号" required>
+                <i class="glyphicon glyphicon-user"></i>
+              </div>
+              <div class="form-group help">
+                <input type="password" class="form-control" formControlName="password" placeholder="密　码" required
+                       maxlength="18">
+                <i class="glyphicon glyphicon-lock"></i>
+              </div>
+              <div class="form-group" style="margin-bottom:10px;">
+                <div class="col-md-8 col-xs-9" style="padding: 0;">
+                  <input type="text" class="form-control" formControlName="captcha" placeholder="验证码" required
+                         minlength="4" maxlength="4">
+                </div>
+                <div class="col-md-4 col-xs-3">
+                  <div class="verifycode" id="verifycode">
+                    <!-- <img id="imgId" src="captcha" alt="验证码"> -->
+                    <img id="imgId" alt="验证码" [src]="oImgSrc" (click)="changeCodeImg()">
+                  </div>
+                </div>
+              </div>
+              <div class="form-group" style="margin:0 20px;">
+                <p class="error">{{errorMsg}}</p>
+              </div>
+              <!-- <div class="form-group" style="margin-bottom:10px;">
+                <label for="isAvoid" style="color:#fff;">
+                    <input type="checkbox" id="isAvoid" formControlName="isKeepLogin" [(ngModel)]="isAvoid">
+                    15天内免登录
+                </label>
+                            </div> -->
+              <div class="form-group" style="margin-bottom:10px;">
+                <button type="submit" class="btn btn-svoc login-btn" [disabled]="loginForm.invalid" style="width:100%;">
+                  登 录
+                </button>
+              </div>
+              <div class="form-group">
+                <p class="pull-left" style="padding: 7px 0px;"><a routerLink="/register">立即注册</a></p>
+                <p class="pull-right" style="padding: 7px 0px;"><a routerLink="/forget">忘记密码？</a></p>
+              </div>
+
+              <div class="form-group wechart">
+                <div class="row">
+                  <div class="col-xs-4 we-line"></div>
+                  <div class="col-xs-4 text-center" style="margin-top: -8px;">微信登录方式</div>
+                  <div class="col-xs-4 we-line"></div>
+                </div>
+                <div class="row text-center wechart-img">
+                  <img src="assets/img/wechart.png" width="50px;" (mouseenter)="weixinLogin()"
+                       (mouseleave)="showlogincode=false"/>
+                  <!--  (mouseenter)="weixinLogin()" (mouseleave)="showlogincode=false" -->
+                </div>
+                <div class="login-qrcode" id="myWeixin" *ngIf="showlogincode">
+                  <!-- <img src="/images/qrcode_login.png"/> -->
+                  <div id="login_container">
+                    <!-- <img [src]="weixin_href"  width="300px" height="400px" alt=""> -->
+                  </div>
+                </div>
+
+              </div>
+            </form>
+          </div>
+          <!-- ========================================== -->
+          <!-- =============== 扫码登录 ===================-->
+          <div class="qrcode-login flip in" *ngIf="loginway=='qrcode'">
+            <div class="qrcode" style="position:relative;width:100%;height:100%;">
+              <div *ngIf="!qrcodeSuccess" style="height:300px;">
+                <img [src]="codeUrl"/>
+                <div class="expired-codebg" *ngIf="expiredShow">
+                  <p *ngIf="!qrcodeOverdue" style="color:#fff;font-size:20px;line-height: 130px;">二维码已失效</p>
+                  <p *ngIf="qrcodeOverdue" style="color:#fff;font-size:20px;line-height: 130px;">登录失败</p>
+                  <p>
+                    <a href="javascript:" class="btn btn-svoc radius20" (click)="loginByCode()">刷 新</a>
+                  </p>
+                </div>
+                <div>
+                  <span style="color:#fff;">打开“云起云”扫一扫登录</span>
+                </div>
+              </div>
+              <div *ngIf="qrcodeSuccess" style="height:300px;">
+                <img src="assets/img/qrcode-success-message.png" style="width:20%;"/>
+                <div>
+                  <p style="color:#fff;font-size:16px;margin: 20px 0 30px;">扫描成功</p>
+                  <p style="color:#fff;font-size:18px;margin-bottom: 20px;">请在手机上确认登录</p>
+                  <p class="" style="padding: 7px 0px;"><a href="javascript:" (click)="loginByCode()">返回二维码登录</a></p>
+                </div>
+              </div>
+            </div>
+            <p class="" style="padding: 7px 0px;"><a routerLink="/register">立即注册</a></p>
+          </div>
+          <!-- =========================================== -->
+        </div>
+      </div>
+    </div>
+  </div>
+  <app-footer class="white-footer"></app-footer>
+</div>

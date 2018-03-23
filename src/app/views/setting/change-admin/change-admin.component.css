@@ -1,0 +1,37 @@
+/*更换企业管理员*/
+.chang-admin-alert{
+	background: #eceff4;
+    line-height: 50px;
+    padding-left: 30px;
+    font-size: 16px;
+}
+/* .chang-admin-form label{
+	line-height:50px;
+}*/
+.chang-admin-form .row{
+	margin-top:40px;
+}
+.chang-admin-form .phone{
+	line-height:30px;
+}
+.customer-service{
+	/* border:1px solid #0A98E8; */
+	border-radius:10px;
+}
+
+.wyinput-drop{
+	width: 200px;
+	min-height: 40px;
+	overflow-y: auto;
+	background: #fff;
+	box-shadow: 2px 2px 1px #ddd;
+}
+.wyinput-drop ul li{
+	border-bottom: 1px solid #eee;
+	padding: 10px 8px;
+}
+.wyinput-drop ul li.active,
+.wyinput-drop ul li:hover{
+	background: #07a2e8;
+	color: #fff;
+}

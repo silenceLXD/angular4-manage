@@ -1,0 +1,49 @@
+/**************** 个人中心personal-center.html *************/
+#personalMsg .list-group-item {
+	overflow: hidden;
+	padding: 16px 0;
+}
+
+#personalMsg .list-group-item div:first-child {
+	color: #999;
+	padding-left: 30px;
+}
+.personalMsg-title{
+	background:url("../../../assets/img/personalMsg_bg.png") no-repeat;
+	height: 220px;
+  background-size: cover;
+}
+.personalMsg-title .personalMsg-name{
+	width: 100px;
+  height: 100px;
+  display: inline-block;
+  margin-top: 70px;
+  text-align: center;
+  background: #07a2e8;
+  border: 8px solid #fff;
+  border-radius: 50%;
+  font-size: 30px;
+  color: #fff;
+  padding: 20px 0;
+  word-wrap: break-word;
+}
+
+#personalMsg .list-group .list-group-item{
+	border-radius: 12px;
+	border: 1px dotted #ddd;
+}
+.per-list-icon{
+	width:24px;
+	height:24px;
+	display:inline-block;
+	margin-right:15px;
+	/* background:url("../images/icon/personal_center_icon.png") no-repeat; */
+	vertical-align: middle;
+}
+
+#verifyIdentMCode{
+	width: 50%;
+}
+#vIdentPicCode{
+	width: 50%;
+}

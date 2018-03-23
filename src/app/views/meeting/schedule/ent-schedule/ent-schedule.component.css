@@ -1,0 +1,12 @@
+.del-time-box{
+	margin-left: 40px;
+}
+.del-time-item{
+	max-height: 300px;
+	overflow-y: auto;
+
+}
+.del-time-item>div{
+	display: inline-block;
+	margin-right: 10px;
+}

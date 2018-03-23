@@ -1,0 +1,30 @@
+<div class="">
+  <app-header-un class="black-header"></app-header-un> 
+  <div class="container">
+    <div class="forget-pass-box">
+
+      <div class="col-xs-6 col-xs-offset-3">
+          <!-- 第一步 填写账户-->
+          <div class="setup-one" *ngIf="setupState == 1">
+              <setup-one (outPutSetupOneData)="getSetupOneData($event)"></setup-one>
+          </div>
+          <!-- 第二步 验证身份 -->
+          <div class="setup-two" *ngIf="setupState == 2">
+            <setup-two [inputParentData]="accountParentData" (outPutSetupTwoData)="getSetupTwoData($event)"></setup-two>
+          </div>
+
+          <!-- 第三步 设置新密码 -->
+          <div class="setup-three" *ngIf="setupState == 3">
+            <setup-three [inputParentData]="accountParentData" (outPutSetupThreeData)="getSetupThreeData($event)"></setup-three>
+          </div>
+
+          <!-- 第四步 完成重置 -->
+          <div class="setup-four" *ngIf="setupState == 4">
+            <setup-four></setup-four>
+          </div>
+      </div>
+    </div>
+  </div>
+
+  <app-footer></app-footer>
+</div>

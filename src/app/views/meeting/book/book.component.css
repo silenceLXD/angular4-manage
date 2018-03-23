@@ -1,0 +1,131 @@
+.appointment{
+	/* padding: 16px 0; */
+	max-width:1240px;
+    overflow: hidden;
+}
+.appointment .form-inline .row{
+	margin:15px 0;
+}
+.appointment .repeat-label{
+	display:inline-block;
+	vertical-align: top;
+}
+.appointment .repeat-div{
+	display:inline-block;
+	/* margin-left:50px; */
+	width: 75%;
+}
+
+.meetingDetailMsg ul li{
+	overflow:hidden;
+	padding: 15px 10px;
+	border-bottom:1px solid #ddd;
+}
+.bookrow{
+	margin:10px 0;
+	padding:12px 0;
+	/* border-bottom:1px solid rgba(185, 185, 185, 0.3); */
+}
+.bookborder{
+	border-bottom:1px solid rgba(185, 185, 185, 0.3);
+}
+.bookpart{
+	box-shadow: 5px 5px rgba(238, 238, 238, 0.68);
+}
+/* 会议二维码样式 */
+.meeting-qrcode{
+	margin:10% 0;
+}
+.meeting-qrcode>img{
+	width:70%;
+}
+/* 密码提示框 */
+.psd-tip {
+    border: 1px solid #00a0e9;
+    padding: 10px;
+    border-radius: 3px;
+    position: absolute;
+    top:-66px;
+    /* display: none; */
+    background-color: #fff;
+}
+.psd-tip-arr{
+    display: block;
+    width: 16px;
+    height: 16px;
+    /*background: url("../images/icon/arr-bottom.jpg") no-repeat;*/
+    position: absolute;
+    left: 17px;
+    bottom: -13px;
+    margin-top: -5px;
+}
+
+
+/* 参会者 */
+.userList-box .user-selected a {
+	color: #fff;
+	 /* border: 1px solid #00a0e9; */
+	line-height: 25px;
+   /*  padding-right: 20px; */
+    background: #00a0e9;
+}
+.userList-box dd {
+    float: left;
+    display: inline;
+    margin: 0 0 5px 5px;
+}
+.user-selected a {
+    display: inline-block;
+    white-space: nowrap;
+    height: 24px;
+    padding: 0 10px;
+    padding-right: 10px;
+    text-decoration: none;
+    color: #039;
+    border-radius: 2px;
+}
+
+
+
+
+
+.select-result{width:900px;}
+.select-result ul li a{
+	height:25px;
+	padding: 0 10px 0 10px;
+    border-radius: 3px;
+	line-height:25px;
+	display:block;
+	position:relative;
+	float:left;
+	margin:0 10px 10px 0;
+	color:#fff;
+	font-size:14px;
+	background:#07a2e8;
+}
+.updown_box{
+	float: left;
+    padding: 15px;
+    width:280px;
+    -webkit-box-sizing: content-box;
+    -moz-bo··x-sizing: content-box;
+    box-sizing: content-box;
+    box-shadow: 1px 1px 3px #ccc;
+}
+.updown_box ul li{
+	float:left;
+	min-width: 28px;
+    height: 25px;
+    margin: 5px;
+    text-align: center;
+}
+.updown_box ul li a{
+	display:block;
+	font-size:14px;
+	padding:6px;
+	line-height:10px;
+}
+.updown_box ul li.selected{
+	/* background:#07a2e8; */
+	border-bottom: 3px solid #07a2e8;
+}

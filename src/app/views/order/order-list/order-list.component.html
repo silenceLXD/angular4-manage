@@ -1,0 +1,127 @@
+ <div class="page-heading">订单管理</div>
+
+ <div class="white-bg">
+    <div class="">
+      <!-- 查询 -->
+      <form class="form-inline clearfix" id="searchForm">
+          <div class="pull-left">
+              <div class="form-group">
+                  <label>订单状态：</label>
+                  <select id="orderState" name="orderState" class="form-control" (change)="dataSearchFn()" [(ngModel)]="searchData.orderState">
+                      <option value="-1">全部订单状态</option>
+                      <option value="1">未支付</option>
+                      <option value="2">部分支付</option>
+                      <option value="3">已支付</option>
+                      <option value="4">已取消</option>
+                      <option value="5">已关闭</option>
+                  </select>
+                  <label class="ordertime-lab">下单时间：</label>
+                  <select name="startTime" class="form-control" (change)="dataSearchFn()" [(ngModel)]="searchData.startTime">
+                      <option value="">请选择</option>
+                      <option *ngFor="let year of yearList" [value]="year">{{year==currentYear ? '今' : year}}年订单</option>
+                  </select>
+              </div>
+          </div>
+          <div class="pull-right">
+              <input type="text" class="form-radius" name="searchStr" [(ngModel)]="searchData.searchStr" (keyup)="dataSearchFn()" placeholder="套餐名称、套餐类型" >
+          </div>
+      </form>
+
+      <!-- 列表 -->
+      <div class="table-list">
+        <table class="table ">
+            <thead>
+            <tr>
+                <th>订单号</th>
+                <th>套餐名称</th>
+                <th>套餐类型</th>
+                <th>下单时间</th>
+                <th>应付金额（元）</th>
+                <th>实付金额（元）</th>
+                <th>订单状态</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody id="tbody">
+              <tr *ngFor="let order of tableData.list">
+                <td>{{order.orderNo}}</td>
+                <td>{{order.productName}}</td>
+                <td>
+                  <p [ngSwitch]="order.productType">
+                    <span *ngSwitchCase="1">试用套餐</span>
+                    <span *ngSwitchCase="2">包时套餐</span>
+                    <span *ngSwitchCase="3">计时套餐</span>
+                    <span *ngSwitchCase="4">附加包套餐</span>
+                  </p>
+                </td>
+                <td>{{order.orderTime | slice:0:19}}</td>
+                <td>{{order.receivable}}</td>
+                <td>{{order.receipts}}</td>
+                <!-- 订单状态 -->
+                <td>
+                  <p [ngSwitch]="order.orderState">
+                    <span *ngSwitchCase="1" class="error">未支付</span>
+                    <span *ngSwitchCase="2" class="green">部分支付</span>
+                    <span *ngSwitchCase="3" class="green">已支付</span>
+                    <span *ngSwitchCase="4">已取消</span>
+                    <span *ngSwitchCase="5">已关闭</span>
+                    <span *ngSwitchCase="7" class="green">服务中</span>
+                    <span *ngSwitchCase="8">服务已完成</span>
+                  </p>
+                  <a [routerLink]="['/page/order-detail',order.orderNo]" class="noPayInfo">订单详情</a>
+                </td>
+                <!-- 操作 -->
+                <td>
+                  <!-- 支付状态 orderState==1 未支付 -->
+                  <div class="text-left" *ngIf="order.orderState==1">
+                    <p>{{order.remainingTime}}</p>
+
+                    <a [routerLink]="['/page/payinfo',order.orderNo]" *ngIf="order.productType!='3'" class="btn btn-svoc btn-svoc-lg">支付</a>
+                    <a [routerLink]="['/page/recharge',order.receivable]" *ngIf="order.productType=='3' && order.showRecharge" class="btn btn-svoc btn-svoc-lg">充值</a>
+
+										<a href="javascript:;" class="btn btn-svoc btn-svoc-lg" (click)="cancelOrderFn(order.orderNo)">取消订单</a>
+                  </div>
+                  <!-- 支付状态 orderState==2已付款 部分支付 || orderState==3已付款 全部支付 || orderState==7服务中-->
+                  <!-- productType==1 试用套餐 -->
+                  <div class="text-left" *ngIf="(order.orderState==2 || order.orderState==3 || order.orderState==7) && order.productType==1 && order.canDelay == false">
+                    <a href="javascript:;" class="btn btn-svoc btn-svoc-lg" (click)="deleteOrderFn(order.orderNo)">删除订单</a>
+                  </div>
+                  <!-- productType !=1 其他套餐 -->
+                  <div class="text-left" *ngIf="(order.orderState==2 || order.orderState==3 || order.orderState==7) && order.productType!=1">
+                    <!-- serviceState==1 服务状态 开通 -->
+                    <span *ngIf="order.serviceState==1">
+											<!-- 服务结束时间大于当前时间 *ngIf="order.finishServiceTime > nowFormatTimes"-->
+												<a href="javascript:;" *ngIf="order.canDelay==true && order.productType == 2" class="btn btn-svoc btn-svoc-lg renewals-btn" (click)="renewalsFn(order.orderNo,order.productId)">续费</a>
+											<!-- 服务结束时间小于等于当前时间 *ngIf="order.finishServiceTime <= nowFormatTimes"-->
+												<a href="javascript:;"  *ngIf="order.canDelay==false && order.productType != 3 && order.productType != 1" class="btn btn-svoc btn-svoc-lg buy-btn" (click)="buyAgainFn(order.orderNo,order.productId)">再次购买</a>
+                        												<a href="javascript:;"  *ngIf="order.canDelay==false && order.productType == 3" class="btn btn-svoc btn-svoc-lg buy-btn" (click)="buyAgainFn(order.orderNo,order.productId)">再次购买</a>
+										</span>
+                    <!-- serviceState!=1 服务状态 未开通 -->
+										<span *ngIf="order.serviceState!=1">
+											<a href="javascript:;" class="btn btn-svoc-lg btn-disabled" disabled>续费</a>
+										</span>
+                  </div>
+                  <!-- 支付状态 orderState==4 未支付 || orderState==5 已关闭  || orderState==8服务已完成-->
+                  <div class="text-left" *ngIf="order.orderState==4 || order.orderState==5">
+										<a href="javascript:;" class="btn btn-svoc btn-svoc-lg buy-btn"  (click)="buyAgainFn(order.orderNo,order.productId)">再次购买</a>
+										<a href="javascript:;" class="btn btn-svoc btn-svoc-lg dele-btn" (click)="deleteOrderFn(order.orderNo)">删除订单</a>
+									</div>
+                </td>
+              </tr>
+            </tbody>
+        </table>
+      </div>
+      <!-- 分页 -->
+      <div class="text-right">
+        <nz-pagination [(nzPageIndex)]="tableData.currentPage" [nzTotal]="tableData.totalPages" (click)="pageChanged(tableData.currentPage)" [nzShowTotal]="tableData.totalPages" [nzPageSize]="10"></nz-pagination>
+      </div>
+
+    </div>
+ </div>
+
+
+ <!-- 删除/取消 confirm-->
+ <nz-modal [nzVisible]="deleteModal" [nzTitle]="'Modal'" [nzContent]="deleteContent" (nzOnCancel)="handleCancel($event)" (nzOnOk)="handleOk($event)">
+   <ng-template #deleteContent>
+   </ng-template>
+ </nz-modal>

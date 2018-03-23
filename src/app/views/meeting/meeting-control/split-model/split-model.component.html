@@ -1,0 +1,114 @@
+<div class="">
+  <!-- 分屏 -->
+  <div class="row">
+    <!-- 屏幕设置 -->
+  	<div class="split-box col-xs-6">
+      <div class="clearfix">
+        <div class="pull-left">
+          <label for="">
+            <input type="checkbox" name="sameSplit" value="" [(ngModel)]="splitModeSubmitData.isSame" (click)="setSameSplit(splitModeSubmitData.isSame)"> 相同分屏
+          </label>
+        </div>
+        <div class="pull-right font16" style="">
+          <span>轮询</span>
+          <!-- <input type="checkbox" [(ngModel)]="Polling"/> -->
+          <nz-switch [(ngModel)]="splitModeSubmitData.polling" (click)="changePolling()" [nzDisabled]="isAutoSplit">
+            <span checked>开</span>
+            <span unchecked>关</span>
+          </nz-switch>
+        </div>
+      </div>
+      <div class="marginTB10">
+        <div class="split-item">
+          <span class="item-list" [ngClass]="splitModeSubmitData.splitMode==5?'item-list5-checked':'item-list5'" (click)="splitWayFn(5);"></span>
+          <span class="item-list" [ngClass]="splitModeSubmitData.splitMode==0?'item-list0-checked':'item-list0'" (click)="splitWayFn(0);"></span>
+          <span class="item-list" [ngClass]="splitModeSubmitData.splitMode==3?'item-list1-checked':'item-list1'" (click)="splitWayFn(3);"></span>
+          <span class="item-list" [ngClass]="splitModeSubmitData.splitMode==1?'item-list2-checked':'item-list2'" (click)="splitWayFn(1);"></span>
+          <span class="item-list" [ngClass]="splitModeSubmitData.splitMode==2?'item-list3-checked':'item-list3'" (click)="splitWayFn(2);"></span>
+          <span class="item-list" [ngClass]="splitModeSubmitData.splitMode==4?'item-list4-checked':'item-list4'" (click)="splitWayFn(4);"></span>
+        </div>
+        <input type="hidden" [(ngModel)]="splitMode" [value]="splitWay"/>
+      </div>
+
+  		<div class="split-box1 split-box-color" *ngFor="let n of splitBox1">
+  			<span class="screen-num screen_{{n}}">{{n}}</span>
+  			<select name="SingleSelect" class="model-select" id="select_{{n}}" [(ngModel)]="selectModel[n-1]" (change)="changeUser($event,n)" [disabled]="splitModeSubmitData.polling && splitModeSubmitData.mode_show==n">
+  				<option value="">自动</option>
+  				<option *ngFor="let option of splitModeSubmitData.selectAttendeData" [value]="option.puuid">{{option.displayName}}</option>
+  			</select>
+  			<span *ngIf="splitModeSubmitData.polling && splitModeSubmitData.mode_show==n" class="isPolling"></span>
+  		</div>
+
+  		<div>
+  			<div class="split-box2 split-box-color" *ngFor="let n of splitBox2">
+  				<span class="screen-num screen_{{n}}">{{n}}</span>
+  				<select name="SingleSelect" class="model-select" id="select_{{n}}" [(ngModel)]="selectModel[n-1]" (change)="changeUser($event,n)" [disabled]="splitModeSubmitData.polling && splitModeSubmitData.mode_show==n">
+  					<option value="">自动</option>
+  					<option *ngFor="let option of splitModeSubmitData.selectAttendeData" [value]="option.puuid">{{option.displayName}}</option>
+  				</select>
+  				<span *ngIf="splitModeSubmitData.polling && splitModeSubmitData.mode_show == n" class="isPolling"></span>
+  			</div>
+  		</div>
+
+  		<div class="split-box3 split-box-color" *ngFor="let n of splitBox3">
+  			<span class="screen-num screen_{{n}}">{{n}}</span>
+  			<select name="SingleSelect" class="model-select" id="select_{{n}}" [(ngModel)]="selectModel[n-1]" (change)="changeUser($event,n)" [disabled]="splitModeSubmitData.polling && splitModeSubmitData.mode_show==n">
+  				<option value="">自动</option>
+  				<option *ngFor="let option of splitModeSubmitData.selectAttendeData" [value]="option.puuid">{{option.displayName}}</option>
+  			</select>
+  			<span *ngIf="splitModeSubmitData.polling && splitModeSubmitData.mode_show==n" class="isPolling"></span>
+  		</div>
+  		<div class="split-box1 split-box-color" *ngIf="isAutoSplit" style="padding-top:18px;">
+  			<img src="assets/img/icon/autosplit_bg.png">
+  		</div>
+  	</div>
+
+    <!-- 轮询列表 -->
+    <div class="pollingDiv col-xs-6" style="display:inline-block;">
+      <div class=""  *ngIf="splitModeSubmitData.polling; else offPolling">
+        <form action="" class="form-inline">
+  	    	<div class="form-group">
+            <label for="">轮询屏幕：</label>
+            <select id="ModeSelect_show" name="mode_show" class="form-control" [(ngModel)]="splitModeSubmitData.mode_show"  (change)="changeModeShow(splitModeSubmitData.mode_show)">
+                <option value="">请选择...</option>
+                <option *ngFor="let option of modeSelectArr" [value]="option">{{option}}</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="">轮询间隔：</label>
+            <select name="pollingtime" id="pollingTimeSelect" class="form-control " [(ngModel)]="splitModeSubmitData.pollingtime">
+              <option value="15">15秒</option>
+              <option value="30">30秒</option>
+              <option value="60">60秒</option>
+            </select>
+          </div>
+        </form>
+        <div class="">
+          <nz-transfer
+            [nzDataSource]="splitModeSubmitData.leftSelectData"
+            [nzTitles]="['不参与轮询', '参与轮询']"
+            [nzItemUnit]="'人'"
+            [nzListStyle]="{'width.px': 180, 'height.px': 300}"
+            (nzSelectChange)="select($event)"
+            (nzChange)="change($event)">
+            <ng-template #render let-item>
+              {{item.displayName}}
+            </ng-template>
+          </nz-transfer>
+        </div>
+      </div>
+
+      <ng-template #offPolling>
+        <div class="" style="text-align:center;margin:20% 0;color:#bbb;">
+          开启轮询后可设置轮询列表
+        </div>
+      </ng-template>
+
+    </div>
+  </div>
+
+  <!-- <div class="text-center marginTB10">
+    <button nz-button [nzType]="'default'" [nzSize]="'large'" (click)="splitModeModal=false"> 返 回 </button>
+    <button nz-button [nzType]="'primary'" [nzSize]="'large'" (click)="handleOk($event)"> 确 定 </button>
+  </div> -->
+</div>

@@ -1,0 +1,440 @@
+<nz-spin [nzSpinning]="_isEndingLoading" [nzTip]="'正在结束会议...'">
+<div class="page-heading">{{conferenceData.conferenceName}}</div>
+<div class="meetingControl">
+
+  <div class="">
+    <div class="white-bg marginTB10">
+      <div class="second-title">会议号：<span class="color-svoc">{{conferenceData.vmrNumber}}</span></div>
+      <div class="second-title">密码：<span class="color-svoc">{{conferenceData.hostPwd}}</span></div>
+      <!-- <div class="second-title">预约参会方数：<span class="color-svoc">{{conferenceData.maxNumber}}</span> 方</div> -->
+      <div class="second-title">在线方数：<span class="color-svoc">{{conferenceData.actualOnLine}}</span> 方</div>
+      <div class="second-title">会议开始时间：<span
+        class="color-svoc">{{conferenceData.startTime | date:'yyyy-MM-dd HH:mm'}}</span></div>
+      <div class="second-title">会议已进行：<span class="color-svoc">{{meetingLongTime}}</span></div>
+      <div class="second-title" *ngIf="isTimeOut">
+        <div class="timeout-bg">
+          <div class="circle"></div>
+          <div class="circle2"></div>
+          <p class="text-center"><span class="icon-time"></span> 会议已超时<span>{{meetingTimeOut}}</span></p>
+        </div>
+      </div>
+
+      <div class="second-title pull-right right-update">
+        <nz-tooltip [nzTitle]="'投票'">
+          <a nz-tooltip href="javascript:;" (click)="modal_info_vote=true"><i class="fa icon-control-vote"></i></a>
+        </nz-tooltip>
+        <!--<nz-tooltip [nzTitle]="'入会申请'">
+          <a nz-tooltip href="javascript:;" (click)="meetingRequestModal=true"><i class="fa icon-control-request"></i></a>
+        </nz-tooltip>-->
+        <nz-tooltip [nzTitle]="audioTitle">
+          <a nz-tooltip href="javascript:;" (click)="openAudioFn()"><i class="fa fa-bell-o"
+                                                                       [ngClass]="isopenAudio?'error':'color-svoc'"></i></a>
+        </nz-tooltip>
+        <!-- <a href="javascript:;" (click)="openAudioFn()" title="入会申请"><i class="fa icon-control-request"></i></a>
+        <a href="javascript:;" (click)="openAudioFn()" title="投票"><i class="fa icon-control-vote"></i></a>
+        <a href="javascript:;" (click)="openAudioFn()" title="{{audioTitle}}"><i class="fa fa-bell-o" [ngClass]="isopenAudio?'error':'color-svoc'"></i></a> -->
+      </div>
+    </div>
+
+    <div class="white-bg">
+      <div class="log-tip">
+        <h5 class="">最新动态：
+          <span class="icon-volume-up"></span>
+          <span class="record-new" id="newRecord">
+                <span class="record-time"
+                      [hidden]="!SSE_LogView.time"> {{SSE_LogView.time}}  {{SSE_LogView.content}}</span>
+              </span>
+          <a href="javascript:;" class="show-detail" style="display:inline-block;" (click)="showMoreLog()">详情 <i
+            [ngClass]="isshowlog?'fa-double-angle-up':'fa-double-angle-down'"></i></a>
+        </h5>
+        <div class="meeting-record" [hidden]="isshowlog" style="" id="meetingRecord">
+          <p *ngFor="let log of moreLogData"><span class="record-time">{{log.Date | date:'HH:mm:ss'}}</span>
+            {{log.result}}</p>
+          <!-- <div style="padding-left:10px;" *ngIf='moreLogData.busy'>会议详情加载中......</div> -->
+        </div>
+      </div>
+      <div class="action-div">
+        <div class="action-items">
+          <div class="attendee">
+            <span class="items-bg attendee-bg" (click)="addAttendees()"></span>
+            <p class="items-name">添加参会者</p>
+          </div>
+          <p class="items-remark"></p>
+        </div>
+        <div class="action-items">
+          <div class="call">
+            <span class="items-bg call-bg" (click)="callByState()"></span>
+            <p class="items-name">
+              <select name="state" [(ngModel)]="_dialStatus" style="border-radius: 3px;">
+                <option value="" hidden></option>
+                <option value="5">未在线</option>
+                <option value="3">未呼入</option>
+                <option value="2">离线</option>
+                <!-- <option value="4">离线</option> -->
+              </select>
+            </p>
+          </div>
+          <p class="items-remark"></p>
+        </div>
+        <div class="action-items">
+          <div class="screen" style="border-right:2px solid #ddd;">
+            <span class="items-bg screen-bg" (click)="splitModeFn()"></span>
+            <p class="items-name">屏幕设置</p>
+          </div>
+          <p class="items-remark"></p>
+        </div>
+        <div class="action-items">
+          <div class="voice">
+            <span class="items-bg" (click)="voiceBtnFn()"
+                  [ngClass]="participantData.muteAll?'voice-bg-off':'voice-bg'"></span>
+            <p class="items-name">{{participantData.muteAll?'解除参会者静音':'参会者静音'}}</p>
+          </div>
+          <p class="items-remark"></p>
+        </div>
+        <div class="action-items">
+          <div class="live" *ngIf="conferenceRoleData.isCanLive">
+            <span class="items-bg" (click)="liveBtnFn()"
+                  [ngClass]="conferenceData.isLive==false?'live-bg':'live-bg-off'"></span>
+            <p class="items-name">{{conferenceData.isLive==false?'开启直播':'关闭直播'}}</p>
+          </div>
+          <div class="live" *ngIf="!conferenceRoleData.isCanLive"><!-- 企业未购买直播 -->
+            <span class="disabled items-bg live-bg-disabled"></span>
+            <p class="items-name">开启直播</p>
+          </div>
+          <p class="items-remark marginTB10" *ngIf="conferenceData.isLive">
+            <span class="red-star">直播中</span>
+            <a href="javascript:;" class="" (click)="selectLiveAddress()">查看</a>
+          </p>
+        </div>
+        <div class="action-items">
+          <div class="record" *ngIf="conferenceRoleData.isCanRecord">
+            <!-- "recordOn==false?'record-bg':'record-bg-off'" -->
+            <span class="items-bg" (click)="recordBtnFn()"
+                  [ngClass]="{'record-bg':!conferenceData.isRecord,'record-bg-off':conferenceData.isRecord,'disabled':waitingOpen}"></span>
+            <p class="items-name">{{conferenceData.isRecord==false?'开启录制':'关闭录制'}}</p>
+          </div>
+          <div class="record" *ngIf="!conferenceRoleData.isCanRecord"><!-- 企业未购买录播 -->
+            <span class="disabled items-bg record-bg-disabled"></span>
+            <p class="items-name">开启录制</p>
+          </div>
+          <p class="items-remark" *ngIf="conferenceData.isRecord"><span class="red-star">录制中</span></p>
+        </div>
+        <div class="action-items">
+          <div class="lock">
+            <span class="items-bg" (click)="lockBtnFn()"
+                  [ngClass]="conferenceData.isLocked?'lock-bg-off':'lock-bg'"></span>
+            <p class="items-name">{{conferenceData.isLocked?'解锁会议':'锁定会议'}}</p>
+          </div>
+          <!-- <p class="items-remark">还可以进入<span class="red-star">{{residueAttend}}</span>方</p> -->
+        </div>
+      </div>
+    </div>
+
+    <!-- 参会者表格 -->
+    <div class="table-list" style="width:100%;max-height: 350px;overflow-y: auto;">
+      <table class="table table-hover" id="SalesTable" style="border-bottom: 1px solid #ddd;">
+        <!-- <col width="20%" />
+        <col width="20%" />
+        <col width="12%" />
+        <col width="12%" />
+        <col width="12%" />
+        <col width="12%" />
+        <col width="12%" /> -->
+        <thead>
+        <tr>
+          <th class="sortTh">
+            <input type="text" class="theadSearch" (keyup)="searchByName('displayName',search)" (blur)="nameInput=false"
+                   [(ngModel)]="search" *ngIf="nameInput" placeholder="姓名" autofocus maxlength="20">
+            <p *ngIf="!nameInput"><span (click)="nameInput=true" class="fa fa-search color-svoc"></span> 姓名 <b
+              class="fa color-svoc font14" [ngClass]="orderName===''?'fa-sort-alpha-desc':'fa-sort-alpha-asc'"
+              (click)="orderByName('displayName')"></b></p>
+          </th>
+          <th>使用终端</th>
+          <th class="dropdown-link-th">
+            <nz-dropdown>
+              <span class="ant-dropdown-link" nz-dropdown> {{theadStatus.statusTxt}} <i
+                class="fa fa-caret-down"></i> </span>
+              <ul nz-menu>
+                <li nz-menu-item (click)="orderByStatus('status','','在线状态')">在线状态</li>
+                <li nz-menu-item (click)="orderByStatus('status',3,'未呼入')">未呼入</li>
+                <!-- <li nz-menu-item (click)="orderByStatus('掉线')">掉线</li> -->
+                <li nz-menu-item (click)="orderByStatus('status',4,'等待')">等待</li>
+                <li nz-menu-item (click)="orderByStatus('status',2,'离线')">离线</li>
+                <li nz-menu-item (click)="orderByStatus('status',1,'网络差')">网络差</li>
+                <li nz-menu-item (click)="orderByStatus('status',0,'在线')">在线</li>
+              </ul>
+            </nz-dropdown>
+          </th>
+          <th class="dropdown-link-th">
+            <nz-dropdown>
+              <span class="ant-dropdown-link" nz-dropdown> {{theadStatus.roleTxt}} <i
+                class="fa fa-caret-down"></i>  </span>
+              <ul nz-menu>
+                <li nz-menu-item (click)="orderByRole('role','','主讲人/参会者')">主讲人/参会者</li>
+                <li nz-menu-item (click)="orderByRole('role',4001,'主讲人')">主讲人</li>
+                <li nz-menu-item (click)="orderByRole('role',4002,'参会者')">参会者</li>
+              </ul>
+            </nz-dropdown>
+          </th>
+          <th>邀请对话</th>
+          <th class="dropdown-link-th">
+            <nz-dropdown>
+              <span class="ant-dropdown-link" nz-dropdown>{{theadStatus.isMutedTxt}} <i
+                class="fa fa-caret-down"></i> </span>
+              <ul nz-menu>
+                <li nz-menu-item (click)="orderByisMuted('isMuted','','语音开/关')">语音开/关</li>
+                <li nz-menu-item (click)="orderByisMuted('isMuted',false,'语音开')">语音开</li>
+                <li nz-menu-item (click)="orderByisMuted('isMuted',true,'语音关')">语音关</li>
+              </ul>
+            </nz-dropdown>
+          </th>
+          <th class="dropdown-link-th">
+            <nz-dropdown>
+              <span class="ant-dropdown-link" nz-dropdown>{{theadStatus.isCallTxt}} <i
+                class="fa fa-caret-down"></i> </span>
+              <ul nz-menu>
+                <li nz-menu-item (click)="orderByisCall('status','','呼叫/挂断')">呼叫/挂断</li>
+                <li nz-menu-item (click)="orderByisCall('status',1,'呼叫')">呼叫</li>
+                <li nz-menu-item (click)="orderByisCall('status',2,'挂断')">挂断</li>
+              </ul>
+            </nz-dropdown>
+          </th>
+          <!-- <th>共享/屏蔽</th> -->
+        </tr>
+        </thead>
+        <tbody id="appendtbody">
+        <tr *ngFor="let attendee of attendListData | searchBykey:searchId:searchKeyWord">
+          <td *ngIf="attendee.status==0 || attendee.status==1" style="border-left: 5px solid #00CC00">
+            <span nz-tooltip="入会时长：{{attendee.intTime | getLongTimes}}"><a href="javascript:;" *ngIf="attendee.handsUp"
+                                                                           class="color-svoc icon-hand-up"
+                                                                           (click)="handsUpFn(attendee)"></a> {{attendee.displayName}}</span>
+          </td>
+          <td *ngIf="attendee.status==2" style="border-left: 5px solid #999999">
+            <span nz-tooltip="离线时长：{{attendee.outTime | getLongTimes}}">{{attendee.displayName}}</span>
+            <!-- <bubble *ngIf="hover" for="displayName{{attendee.userId}}">离线时长：{{attendee.outTime|getLongTimes}}</bubble> -->
+          </td>
+          <td *ngIf="attendee.status==3||attendee.status==4" style="border-left: 5px solid #7E80F7">
+            {{attendee.displayName}}
+          </td>
+
+          <td>{{attendee.source}}</td>
+          <td>
+            <span *ngIf="attendee.status==0"><span class="cire cire-green"></span>在线</span>
+            <span *ngIf="attendee.status==1"><span class="cire cire-yellow"></span>网络差</span>
+            <span *ngIf="attendee.status==2"><span class="cire cire-gray"></span>离线</span>
+            <span *ngIf="attendee.status==3"><span class="cire cire-purple"></span>未呼入</span>
+            <span *ngIf="attendee.status==4"><span class="cire cire-red"></span>等待</span>
+          </td>
+          <td>
+                  <span *ngIf="attendee.status==2 || attendee.status==3 || attendee.status==4">
+                    <span class="attend-disabled-icon icon-attend-visitors"></span>
+                  </span>
+            <span *ngIf="attendee.status==0 || attendee.status==1">
+                    <span *ngIf="attendee.role==4002">
+                      <span class='data-txt'>参会者</span>
+                      <nz-tooltip [nzTitle]="'点击切换参会者为主讲人'" [nzPlacement]="'rightTop'">
+                        <span nz-tooltip class="attend-icon icon-attend-visitors"
+                              (click)="changeHostFn(attendee,1)"></span>
+                      </nz-tooltip>
+                    </span>
+                    <span *ngIf="attendee.role!=4002">
+                      <span class='data-txt'>主讲人</span>
+                      <nz-tooltip [nzTitle]="'点击切换主讲人为参会者'" [nzPlacement]="'rightTop'">
+                        <span nz-tooltip class="attend-icon icon-attend-host" (click)="changeHostFn(attendee,0)"></span>
+                      </nz-tooltip>
+                    </span>
+                  </span>
+          </td>
+          <td>
+            <!--  *ngIf="isHaveHost==true" -->
+            <div *ngIf="onlineHostNum">
+              <div *ngIf="attendee.status==2 || attendee.status==3 || attendee.status==4"><!-- 未在线的 -->
+                <span class="attend-disabled-icon icon-control-talking-off"></span>
+              </div>
+              <div *ngIf="attendee.status==0 || attendee.status==1"><!-- 在线的 -->
+                <span *ngIf="attendee.role==4002"><span class="attend-icon"
+                                                        [ngClass]="conferenceRoleData.isTalkingId == attendee.puuid?'icon-control-talking-on':'icon-control-talking-off'"
+                                                        (click)="changeDialogue(attendee)"></span></span>
+                <span *ngIf="attendee.role!=4002"><span
+                  class="attend-disabled-icon icon-control-talking-off"></span></span>
+              </div>
+            </div>
+            <div *ngIf="!onlineHostNum">
+              <span class="attend-disabled-icon icon-control-talking-off"></span>
+            </div>
+
+          </td>
+          <td>
+                  <span *ngIf="attendee.status==2 || attendee.status==3 ||attendee.status==4">
+                    <span class="attend-disabled-icon icon-voice-off"></span>
+                  </span>
+            <span *ngIf="attendee.status==0 || attendee.status==1">
+                    <span *ngIf="attendee.isMuted == true">
+                      <span class='data-txt'>语音关</span>
+                      <nz-tooltip [nzTitle]="'开启语音'" [nzPlacement]="'rightTop'">
+                        <span nz-tooltip class="attend-icon red icon-voice-off"
+                              (click)="changeMuteFn(attendee,1)"></span>
+                      </nz-tooltip>
+                    </span>
+                    <span *ngIf="attendee.isMuted == false">
+                      <span class='data-txt'>语音开</span>
+                      <nz-tooltip [nzTitle]="'关闭语音'" [nzPlacement]="'rightTop'">
+                        <span nz-tooltip class="attend-icon green icon-voice-on"
+                              (click)="changeMuteFn(attendee,0)"></span>
+                      </nz-tooltip>
+
+                    </span>
+                  </span>
+          </td>
+          <td>
+                  <span *ngIf="attendee.isAnonymous==0 && (attendee.status == 2 || attendee.status==3)">
+                    <span class='data-txt'>呼叫</span>
+                    <nz-tooltip [nzTitle]="'呼叫'" [nzPlacement]="'rightTop'">
+                      <span nz-tooltip class="attend-icon green icon-call-on" (click)="changeCallFn(attendee,1)"></span>
+                    </nz-tooltip>
+                  </span>
+            <span *ngIf="attendee.status==0 || attendee.status==1">
+                    <span class='data-txt'>挂断</span>
+                    <nz-tooltip [nzTitle]="'挂断'" [nzPlacement]="'rightTop'">
+                      <span nz-tooltip class="attend-icon red icon-call-off" (click)="changeCallFn(attendee,0)"></span>
+                    </nz-tooltip>
+                  </span>
+            <!-- 等待入会 -->
+            <span *ngIf="attendee.status==4">
+                    <nz-tooltip [nzTitle]="'拒绝'" [nzPlacement]="'leftTop'">
+                      <span nz-tooltip class="attend-icon red icon-call-off"
+                            (click)="handleWaitFn(attendee,false)"></span>
+                    </nz-tooltip>
+
+                    <nz-tooltip [nzTitle]="'允许'" [nzPlacement]="'rightTop'">
+                      <span nz-tooltip class="attend-icon green icon-call-on"
+                            (click)="handleWaitFn(attendee,true)"></span>
+                    </nz-tooltip>
+                  </span>
+
+          </td>
+        </tr>
+        </tbody>
+      </table>
+      <!--  -->
+    </div>
+    <label for="isenterMute"><input type="checkbox" name="enterMute" id="isenterMute"
+                                    [(ngModel)]="conferenceData.isMute" (change)="changeEnterMuteFn($event)">
+      入会时静音</label>
+
+    <div class="text-center">
+      <a href="javascript:;" class="btn btn-svoc-border" style="padding:10px 50px;color:#f00;"
+         nz-tooltip="结束会议之后，所有参会方都将会退出房间" (click)="stopConferenceFn()">结束会议</a>
+      <a href="javascript:history.back(-1)" class="btn btn-svoc" style="padding:10px 50px;">返 回</a>
+    </div>
+
+  </div>
+
+</div>
+<div id="audioDiv" [innerHtml]="audioHtml">
+  <!-- <audio controls autoplay="autoplay"> -->
+  <!-- <source src="{{audioSrc}}.ogg" type="audio/ogg"> -->
+  <!-- <source src="{{audioSrc}}" type="audio/mpeg"> -->
+  <!-- <source src="{{audioSrc}}.wav" type="audio/wav"> -->
+  <!-- </audio> -->
+</div>
+</nz-spin>
+
+<!-- 设置直播密码 -->
+<nz-modal [nzVisible]="livePwdModal" [nzTitle]="'设置直播密码'" [nzContent]="livePwdContent" [nzFooter]="livePwdFooter"
+          (nzOnCancel)="livePwdModal=false">
+  <ng-template #livePwdContent>
+    <form class="">
+      <p>直播链接：<a href="javascript:;">{{openliveData.openliveAddress}}</a></p>
+      <p>直播密码： <input type="text" name="livePwd" [(ngModel)]="openliveData.openlivePwd" maxlength="20"></p>
+    </form>
+  </ng-template>
+  <ng-template #livePwdFooter>
+    <button nz-button [nzType]="'primary'" [nzSize]="'large'" (click)="updateLiveAddress(openliveData.openlivePwd)"> 确
+      定
+    </button>
+  </ng-template>
+</nz-modal>
+
+<!-- 查看直播密码 -->
+<nz-modal [nzVisible]="copyLivePwdModal" [nzTitle]="'复制直播链接'" [nzContent]="copyLivePwdContent"
+          [nzFooter]="copyLivePwdFooter" (nzOnCancel)="copyLivePwdModal=false">
+  <ng-template #copyLivePwdContent>
+    <p>直播链接：<a href="javascript:;">{{liveInfoData.srcContent}}</a></p>
+    <p>直播密码：<span>{{liveInfoData.srclivePwd}}</span></p>
+  </ng-template>
+  <ng-template #copyLivePwdFooter>
+    <button nz-button [nzType]="'primary'" [nzSize]="'large'" ngxClipboard [cbContent]="liveContent"
+            (cbOnSuccess)="toClipboardLive()"> 复制链接
+    </button>
+  </ng-template>
+</nz-modal>
+
+
+<!--添参会者 -->
+<!-- <nz-modal [nzVisible]="addAttendModal" [nzTitle]="'添加参会者'" [nzContent]="addAttendContent" [nzFooter]="addAttendFooter" (nzOnCancel)="addAttendModal=false" [nzWidth]="'800px'" >
+  <ng-template #addAttendContent>
+    <add-attend [inputParentData]="conferenceCid" (outPutAttendData)="getAttendData($event)"></add-attend>
+  </ng-template>
+  <ng-template #addAttendFooter>
+    <button nz-button [nzType]="'default'" [nzSize]="'large'" (click)="addAttendModal=false"> 返 回 </button>
+    <button nz-button [nzType]="'primary'" [nzSize]="'large'" (click)="handleOk($event)"> 确 定 </button>
+  </ng-template>
+</nz-modal> -->
+
+<!-- 添加参会者 modal 组件add-attend -->
+<div *ngIf="modal_info_add">
+  <add-attend [commonId]="conferenceCid" [addAttendModal]="modal_info_add" [modalType]="2"
+              (outPutAttendData)="getAttendData($event)" (hide_emitter)="getHideEmitter($event)"></add-attend>
+</div>
+
+<!--屏幕设置 分屏模式/轮询屏 -->
+<div *ngIf="splitModeModal">
+  <nz-modal [nzVisible]="splitModeModal" [nzTitle]="'屏幕设置'" [nzContent]="splitModeContent" [nzFooter]="splitModeFooter"
+            [nzWidth]="'980px'" (nzOnCancel)="splitModeModal=false" [nzMaskClosable]="false">
+    <ng-template #splitModeContent>
+      <split-model [inputParentData]="conferenceCid" (outPutSplitData)="getSplitData($event)"></split-model>
+    </ng-template>
+    <ng-template #splitModeFooter>
+      <button nz-button [nzType]="'default'" [nzSize]="'large'" (click)="sureSplitFn()"> 应 用</button>
+      <button nz-button [nzType]="'primary'" [nzSize]="'large'" (click)="sureSplitFn();splitModeModal=false"> 确 定
+      </button>
+    </ng-template>
+  </nz-modal>
+</div>
+
+
+<!-- 入会请求 -->
+<nz-modal [nzVisible]="meetingRequestModal" [nzTitle]="'入会请求'" [nzContent]="meetingRequestContent"
+          [nzFooter]="meetingRequestFooter" (nzOnCancel)="meetingRequestModal=false">
+  <ng-template #meetingRequestContent>
+    <div class="">
+      <meeting-request [cid]="conferenceCid" (outPutRequestData)="getRequestData($event)"></meeting-request>
+    </div>
+  </ng-template>
+  <ng-template #meetingRequestFooter>
+    <button nz-button [nzType]="'default'" [nzSize]="'large'" (click)="handleApplyFn(false)"> 拒绝进入</button>
+    <button nz-button [nzType]="'primary'" [nzSize]="'large'" (click)="handleApplyFn(true)"> 允许进入</button>
+  </ng-template>
+</nz-modal>
+
+<!-- 投票 -->
+<div *ngIf="modal_info_vote">
+  <meeting-vote [cid]="conferenceCid" [meetingVoteModal]="modal_info_vote" (outPutVoteData)="getVoteData($event)"
+                (hide_emitter)="getHideVoteModel($event)"></meeting-vote>
+</div>
+
+<!-- <nz-modal [nzVisible]="meetingVoteModal" [nzTitle]="'投票'" [nzContent]="meetingVoteContent" [nzFooter]="false" (nzOnCancel)="meetingVoteModal=false">
+  <ng-template #meetingVoteContent>
+    <div class="">
+      <meeting-vote [cid]="conferenceCid" (outPutVoteData)="getVoteData($event)"></meeting-vote>
+    </div>
+  </ng-template>
+</nz-modal> -->
+
+<!-- 结束会议 -->
+<nz-modal [nzVisible]="alertModal" [nzTitle]="'Modal'" [nzContent]="alertContent" (nzOnCancel)="handleCancel($event)"
+          (nzOnOk)="handleOk($event)">
+  <ng-template #alertContent>
+  </ng-template>
+</nz-modal>

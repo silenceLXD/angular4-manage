@@ -1,0 +1,347 @@
+/* UC 公共样式文件定义 */
+*{
+    font-size: 12px;
+    font-family: "Microsoft YaHei","iconfont","FontAwesome";
+    box-sizing: border-box;
+    -webkit-font-smoothing:antialiased
+}
+html, body, div, span, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+abbr, address, cite, code,
+del, dfn, em, img, ins, kbd, q, samp,
+small, strong, sub, sup, var,
+b, i,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section, summary,
+time, mark, audio, video {
+    margin:0;
+    padding:0;
+    border:0;
+    outline:0;
+    /*font-size:100%;*/
+    vertical-align:baseline;
+    background:transparent;
+    list-style: none;
+}
+a,
+a:hover,
+a:active,
+a:link,
+a:visited{
+    text-decoration: none;
+}
+body{
+  background-color: rgb(237, 244, 245)!important;
+}
+/* 白色背景 卡片式 */
+.white-bg{
+	  background: #fbfbfb;
+    padding: 15px;
+    border-radius: 3px;
+    box-shadow: 2px 2px 5px #ddd;
+}
+/*页面标题*/
+.page-heading{
+	  font-size: 18px;
+    border-left: 2px solid #07a2e8;
+    padding-left: 8px;
+    margin: 15px 0;
+}
+/*圆角form输入框*/
+.form-radius{
+	  display: block;
+    width: 100%;
+    height: 36px;
+    padding: 6px 12px;
+    font-size: 12px;
+    line-height: 1.42857143;
+    color: #555;
+    background-color: #fff;
+    background-image: none;
+    border: 1px solid #efefef;
+    border-radius: 20px;
+    -webkit-box-shadow: 1px 1px 5px rgba(0,0,0,.075);
+    box-shadow: 1px 1px 5px rgba(0,0,0,.075);
+    -webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
+    -o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+    transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+}
+/*行高*/
+.lh25{
+    line-height: 25px;
+}
+.lh32{
+    line-height: 32px;
+}
+.lh40{
+    line-height: 40px;
+}
+
+/*圆角样式*/
+.radius20{
+	border-radius:20px!important;
+}
+/* 分割线 */
+.line{
+	border-bottom:1px solid #ddd;
+	margin:5px 0;
+}
+/*3px圆角的灰色边框线*/
+.border3{
+    border: 1px solid #e6e6e6;
+    border-radius: 3px;
+    padding: 10px;
+}
+/*字体大小*/
+.font14{
+    font-size: 14px;
+}
+.font16{
+    font-size: 16px;
+}
+.font18{
+    font-size: 18px;
+}
+.font20{
+	font-size: 20px;
+}
+/* margin值 */
+.margin10{
+	margin:10px;
+}
+.marginTB10{
+	margin:10px 0;
+}
+.marginT20{
+    margin-top:20px;
+}
+.marginLR10{
+	margin:0 10px;
+}
+/* padding值 */
+.padding15{
+	padding:15px;
+}
+/* 常用颜色 */
+.orange{
+    color: #ff9900;
+}
+.green{
+    color:#009900;
+}
+.gray{
+	color:#999999;
+}
+.red{
+    color: #f00;
+}
+.error{
+    color: #f00;
+    font-size: 12px;
+}
+.color-svoc{
+    color: #00a0e9;
+}
+
+/*
+ *  表格样式 定义
+*/
+.table-list{
+    margin: 20px 0;
+}
+table.table>tbody>tr>td,
+table.table>thead>tr>th{
+    text-align: center;
+    vertical-align: middle;
+    border-top: 1px solid #f1eeee;
+    border-bottom: none;
+    line-height: 26px;
+}
+table.table>thead>tr{
+    background-color: #F0F2F4;
+}
+table.table>tbody>tr:nth-of-type(odd) {
+    background-color: #fff;
+}
+table.table> tbody > tr:nth-child(even) {
+    background-color: rgba(0, 160, 233, 0.05);
+}
+
+/* form */
+form label {
+    line-height: 32px;
+    text-align: right;
+    font-size: 14px;
+    font-weight: 100;
+}
+.form-group-inline{
+  display: inline-block;
+}
+/* 自定义复选框样式 */
+.checkbox{
+    display: none!important;
+}
+.checkbox + label{
+    background-color: white;
+    border-radius: 3px;
+    border:1px solid #d3d3d3;
+    width:16px;
+    height:16px;
+    display: inline-block;
+    text-align: center;
+    vertical-align: middle;
+    line-height: 16px;
+    margin: 0 5px;
+}
+.checkbox:checked + label{
+    /*background-color: #eee;*/
+    border:1px solid #00a0e9;
+}
+.checkbox:checked + label:after{
+    content:"\2714";
+    color: #00a0e9;
+}
+/* 复选框样式 END*/
+
+
+/* 自定义单选框样式 */
+.radio{
+    display: none!important;
+}
+.radio + label{
+    background-color: white;
+    border-radius: 50%;
+    border:1px solid #d3d3d3;
+    width:16px;
+    height:16px;
+    display: inline-block;
+    text-align: center;
+    vertical-align: middle;
+    line-height: 16px;
+    margin: 0 5px;
+}
+.radio:checked + label{
+    /*background-color: #eee;*/
+    border:1px solid #00a0e9;
+}
+.radio:checked + label:after{
+    content:"\2714";
+    color: #00a0e9;
+}
+
+/* 单选框样式 END*/
+/* tab页标签头 */
+/* .nav-tabs>li>a {
+    margin-right: 2px;
+    line-height: 1.42857143;
+    border: 1px solid transparent;
+    border-radius: 4px 4px 0 0;
+    background-color: #f2f2f2;
+    padding: 10px 35px;
+}
+.nav-tabs>li.active>a,
+.nav-tabs>li.active>a:focus,
+.nav-tabs>li.active>a:hover {
+    color: #555;
+    cursor: default;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-bottom-color: transparent;
+} */
+ul.nav-tabs > li:hover > a,
+ul.nav-tabs > li.active > a,
+ul.nav-tabs > li.active > a:hover {
+    border-color: transparent;
+    background:transparent;
+    border:none;
+    border-bottom:2px solid #07a2e8 !important;
+    color:#07a2e8;
+}
+ul.nav-tabs > li.active > a,
+ul.nav-tabs > li.active > a:hover,
+ul.nav-tabs > li.active > a:focus {
+    background:transparent;
+    border:none;
+     color:#07a2e8;
+}
+.tab-content{
+    border-top: none;
+    background: #fff;
+}
+
+/* 分页 */
+.table-page li a{
+  border-radius: 3px;
+  margin-right: 5px;
+  border: none;
+}
+
+.table-page>.table-page-total{
+  vertical-align: top;
+  font-size: 12px;
+  line-height: 5.5;
+}
+.pagination > li > a:hover, .pagination > li > a:focus {
+    background-color: #07a2e8;
+    border-color: #07a2e8;
+    color: #fff;
+}
+
+/* btn */
+.btn-svoc-border {
+    border: 1px solid #0A98E8!important;
+}
+
+
+
+/*状态 圆点*/
+.cire{
+    width: 8px;
+    height: 8px;
+    display: inline-block;
+    border-radius: 50%;
+    background-color: transparent;
+    margin:0 5px;
+
+}
+/*方块*/
+.square{
+    width: 20px;
+    height: 12px;
+    display: inline-block;
+    margin-right: 10px;
+}
+
+.cire-red,
+.square-red{
+    background-color: #FF3333 !important;
+    border: transparent !important;
+}
+.cire-yellow,
+.square-yellow{
+    background-color: #FF9900 !important;
+    border: transparent !important;
+}
+.cire-green,
+.square-green{
+    background-color: #AEDF7F  !important;
+    border: transparent !important;
+}
+.cire-gray,
+.square-gray{
+    background-color: #999999 !important;
+    border: transparent !important;
+}
+.cire-purple,
+.square-purple{
+    background-color: #7E80F7 !important;
+    border: transparent !important;
+}
+.cire-lightpurple,
+.square-lightpurple{
+    background-color: #79A4EA !important;
+    border: transparent !important;
+}

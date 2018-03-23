@@ -1,0 +1,37 @@
+.footer{
+     border-top: 1px solid #ccc ;
+     padding: 20px 0;
+ }
+ .link li a{
+     font-size: 14px;
+     color: #747474;/* #747474 */
+     padding-right: 15px;
+     border-right: 1px solid #ccc;
+ }
+
+ .link li:last-child a{
+     border-right: none;
+ }
+ .link p{
+     font-size: 12px;
+     color: #747474;/* #747474; */
+     margin: 15px 0;
+ }
+
+ .dropdown .dropdown-menu a{
+ 	color:#000!important;
+ }
+
+
+.white-footer .link p{
+    font-size: 12px;
+    color: #fff!important;/* #747474; */
+    margin: 15px 0;
+}
+.white-footer .link li a{
+  font-size: 14px;
+  color: #fff!important;/* #747474 */
+  padding-right: 15px;
+  border-right: 1px solid #ccc;
+}
+/***** end *****/

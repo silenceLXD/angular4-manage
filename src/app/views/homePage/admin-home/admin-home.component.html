@@ -1,0 +1,184 @@
+<div class="margin10 index-con">
+  <div class="row">
+    <!-- 待办事项 -->
+    <div class="col-lg-4 col-md-6 col-xs-12 marginTB10 todo indexpart">
+      <div class="white-bg" style="min-height:160px;">
+        <h5><i class="fa icon-home-matter color-svoc"></i> 待办事项</h5>
+        <div class="marginTB10">
+          <ul>
+            <li style="border-left:1px solid #00a0e9">
+              <div class=" col-xs-5 text-left">待处理订单</div>
+              <div class=" col-xs-4 text-left" id="order">{{serviceData.orderCount}}</div>
+              <div class=" col-xs-3 text-right">
+                <a routerLink="/page/order-list" [queryParams]="{orderStateValue:'1'}"
+                   class="color-svoc">详情</a>
+              </div>
+            </li>
+            <li style="border-left:1px solid #00a0e9">
+              <div class=" col-xs-5  text-left">进行中的会议</div>
+              <div class=" col-xs-4 text-left">{{serviceData.conferenceCount}}</div>
+              <div class=" col-xs-3 text-right">
+                <a routerLink="/page/conference-management" class="color-svoc">详情</a>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <!-- /待办事项 -->
+
+    <!-- 服务状态 -->
+    <div class="col-lg-4 col-md-6 col-xs-12 marginTB10 indexpart service-status ">
+      <div class="white-bg" style="height:160px;">
+        <h5><i class="fa icon-home-service color-svoc"></i> 服务状态</h5>
+        <div [ngSwitch]="serviceState">
+          <span *ngSwitchCase="2">
+            <span *ngIf='serviceData.productType == 3'>服务已终止，请购买！</span>
+            <span *ngIf='serviceData.productType != 3'>服务已到期，请购买！</span>
+          </span>
+          <span *ngSwitchCase="3">已购买，未支付！<a routerLink="/page/order-list" [queryParams]="{orderStateValue:'1'}"
+                                             class="color-svoc">去支付</a></span>
+          <span *ngSwitchCase="4">服务未开通。请等待服务开通！</span>
+          <span *ngSwitchCase="5">无！</span>
+          <span *ngSwitchCase="6">
+            <span *ngIf="serviceData.productType == 3">服务已终止，请购买。</span>
+            <span *ngIf="serviceData.productType != 3">服务已到期，请购买。</span>
+          </span>
+          <div *ngIf='serviceData.productType == 3'>
+            <ul *ngSwitchCase="0">
+              <li>
+                已使用时间：<span>{{serviceData.usedTime}}</span>
+              </li>
+              <li>已使用流量：{{serviceData.usedFlow}} GB</li>
+              <li>云存储空间：{{serviceData.usedSpace}}GB / {{serviceData.cloudSpace}}GB</li>
+            </ul>
+          </div>
+          <div *ngIf='serviceData.productType != 3'>
+            <ul *ngSwitchCase="0">
+              <li>
+                有效期时间：<span>{{serviceData.startServiceTime | date:'yyyy-MM-dd HH:mm'}}</span>&nbsp;&nbsp;至&nbsp;&nbsp;<span>{{serviceData.finishServiceTime | date:'yyyy-MM-dd HH:mm'}}</span>
+              </li>
+              <li>有效期时间剩余：{{serviceData.servicesDay}} 天</li>
+              <li>云存储空间：{{serviceData.usedSpace}}GB / {{serviceData.cloudSpace}}GB</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- /服务状态 -->
+
+    <!-- 账户余额 -->
+    <div class=" col-lg-4 col-md-6 col-xs-12 marginTB10 indexpart service-status ">
+      <div class="white-bg" style="min-height:160px;">
+        <h5><i class="fa icon-home-account color-svoc"></i> 账户余额</h5>
+        <div style="overflow:hidden;margin:20px 0;">
+          <div class="col-xs-6">
+            <span class="price orange">¥ {{serviceData.account}} 元</span>
+          </div>
+          <div class="col-xs-3">
+            <a class="btn btn-svoc radius20 font16 rechargeBtn" [routerLink]="['/page/recharge','']"
+               (click)="toReCharge()">充值</a>
+          </div>
+          <div class="col-xs-3">
+            <a [routerLink]="'/page/account-balance'" class="lookInfo">查看</a>
+          </div>
+        </div>
+        <p style="padding-left:20px;">如需退款请联系客服：010-58734583</p>
+      </div>
+    </div>
+    <!-- ／账户余额 -->
+  </div>
+
+
+  <!-- 使用中的产品 -->
+  <div class="row">
+    <h4 class="part-tit font16">使用中的产品</h4>
+    <div class="col-xs-12 " *ngIf="serviceData.inServiceOrder.length>0; else elseBlock">
+      <nz-tabset class="white-bg">
+        <nz-tab *ngFor="let tab of serviceData.inServiceOrder">
+          <ng-template #nzTabHeading>
+            {{tab.productName}}
+          </ng-template>
+          <ul>
+            <li class="marginTB10 col-xs-4" *ngIf='tab.productType != 3'>
+              <h5>服务有效期</h5>
+              <div class="choose-back">
+                <span class="fa fa-calendar font16"></span>
+                <p><span id="startTime">{{tab.startServiceTime | date:'yyyy-MM-dd HH:mm'}}</span> 至 <span id="endTime">{{tab.finishServiceTime | date:'yyyy-MM-dd HH:mm'}}</span>
+                </p>
+              </div>
+            </li>
+            <li class="marginTB10 col-xs-4" *ngIf='tab.productType != 3'>
+              <h5>价格</h5>
+              <div class="choose-back">
+                <span class="fa fa-rmb font16"></span>
+                <p><span>{{tab.receivable?tab.receivable:0}}</span> 元</p>
+              </div>
+            </li>
+            <li *ngIf="tab.product">
+              <ul>
+                <li class="marginTB10 col-xs-4" *ngFor="let detail of tab.product.detailList">
+                  <h5>{{detail.resourceName}}</h5>
+                  <div class="choose-back">
+                    <span class="fa fa-tags"></span>
+                    <p>
+                      <span>{{detail.count==-1?'不限':detail.count}}</span>
+                      <span>{{detail.flagName=='flow'||detail.flagName=='cloudSpace'||detail.flagName=='vodFlow'?'GB':'个'}}</span>
+                    </p>
+                  </div>
+                </li>
+              </ul>
+            </li>
+            <li *ngIf="tab.productType==2||tab.productType==3" class="marginTB10 col-xs-4">
+              <h5>视频类型</h5>
+              <div class="choose-back">
+                <span class="fa fa-desktop font16"></span>
+                <p><span>{{tab.videoType == 1?'720P':'1080P'}}</span>高清视频</p>
+              </div>
+            </li>
+            <li *ngIf="tab.productType==3" class="marginTB10 col-xs-4">
+              <h5>月租</h5>
+              <div class="choose-back">
+                <span class="fa fa-desktop font16"></span>
+                <p><span>{{tab.product.costPrice}}</span>元/月</p>
+              </div>
+            </li>
+            <!--<li class="marginTB10 col-xs-4" *ngIf='tab.productType != 3'>-->
+            <li class="marginTB10 col-xs-4"
+                *ngIf="!(tab.productType==3||(tab.productType==4&&tab.product.detailList[0].flagName=='flow'))">
+              <h5>时长</h5>
+              <div class="choose-back">
+                <span class="fa fa-clock-o font16"></span>
+                <p>
+                  <span *ngIf="tab.productType==1">{{tab.useLength}}天</span>
+                  <span *ngIf="tab.productType!=1 && tab.productType!=3">{{tab.useLength==3650?'畅享不限时':tab.useLength+'个月'}}</span>
+                </p>
+              </div>
+            </li>
+            <li *ngIf="tab.product.communicationPrice!=null&&tab.productType==3" class="marginTB10 col-xs-4">
+              <h5>通讯单价</h5>
+              <div class="choose-back">
+                <span class="fa fa-desktop font16"></span>
+                <p><span>{{tab.product.communicationPrice}}.00/分钟/方</span></p>
+              </div>
+            </li>
+            <li *ngIf="tab.product.livePrice!=0&&tab.productType==3" class="marginTB10 col-xs-4">
+              <h5>流量单价</h5>
+              <div class="choose-back">
+                <span class="fa fa-desktop font16"></span>
+                <p><span>{{tab.product.livePrice}}元/GB</span></p>
+              </div>
+            </li>
+          </ul>
+        </nz-tab>
+      </nz-tabset>
+    </div>
+  </div>
+  <ng-template #elseBlock>
+    <div class="text-center" style="margin-top:5%;">
+      <img src="assets/img/no_data.png" width="20%"/>
+    </div>
+  </ng-template>
+
+  <!-- /使用中的产品 -->
+</div>

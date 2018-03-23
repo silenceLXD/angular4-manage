@@ -1,0 +1,106 @@
+<div class="page-heading">视频列表</div>
+
+<div class="white-bg videoEnt">
+  <!-- 占用空间百分比 -->
+  <div class="progressBar">
+    <div class="barBox" style="overflow:hidden;">
+      <div class="pull-left">
+        <div class="bg">
+          <div class="progress" [ngStyle]="progressWidth"></div>
+        </div>
+      </div>
+      <div class="pull-left marginLR10" style="color:#337ab7">{{recordsCount.percentage}}</div>
+    </div>
+    <div class="marginTB10"><span>{{recordsCount.count?recordsCount.count:'0'}}</span>GB/<span>{{recordsCount.sumCount?recordsCount.sumCount:'0'}}</span>GB
+    </div>
+  </div>
+
+  <!-- 查询 -->
+  <div class="clearfix" style="overflow:hidden;">
+    <a href="javascript:;" class="dele btn btn-svoc pull-left" [class.disabled]="isAvailableOne"
+       (click)="deleMultipleVideo()">
+      <i class="icon-trash font16"></i>
+      <span class="marginLR10 font14">删除</span>
+    </a>
+    <form action="" class="form-inline pull-right" id="videoEntForm">
+      <div class="pull-right has-feedback">
+        <input class="form-radius" name="fileName" [(ngModel)]="searchData.keywords" placeholder="文件名" type="text"
+               (keyup)="dataSearchFn()">
+      </div>
+    </form>
+  </div>
+  <!-- 列表 -->
+  <div class="table-list">
+    <table class="table ">
+      <thead>
+      <tr>
+        <th>
+          <!-- <input type="checkbox" [(ngModel)]="selectAll" (change)="selectAllList()"> -->
+          <input type="checkbox" name="checkedAll" [checked]="isSelectedAll()" (click)="_allchecked($event)">
+        </th>
+        <th>文件名</th>
+        <th>操作</th>
+        <!-- <th>点播数</th>
+        <th>消耗流量</th> -->
+        <th>发起人</th>
+        <th>大小</th>
+        <th>时长</th>
+        <th>创建时间</th>
+        <th>状态</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let video of tableData.list">
+        <td>
+          <!-- <input type="checkbox" [(ngModel)]="video.isChecked" (change)="chooseFn(video,video.isChecked)"> -->
+          <input type="checkbox" name="setState" [checked]="isSelected(video)" (click)="updateSelection($event,video)">
+        </td>
+        <td class="text-center">{{video.fileName}}</td>
+        <td>
+          <!-- href="/play?address={{address}}{{video.fileId}}/play&cid={{video.fileId}}"  -->
+          <a [routerLink]="['/play',video.livePath]" target="_blank" [class.disabled]="isAvailableOne" title="播放"
+             class="fa-play-circle font16 color-svoc fa"></a>
+          <a href="{{video.livePath}}" download="" title="下载" class="fa-download font16 color-svoc marginLR10 fa"
+             [class.disabled]="isAvailableOne"></a>
+          <!-- <span class="font16 color-svoc more fa" (click)="operate(video)"></span> -->
+          <nz-dropdown [nzTrigger]="'click'" [class.disabled]="isAvailableOne">
+                <span class="ant-dropdown-link" nz-dropdown>
+                  <span class="font16 color-svoc fa-ellipsis-h fa"></span>
+                </span>
+            <ul nz-menu>
+              <li nz-menu-item *ngIf="video.common==false"><a href="javascript:;" (click)="updateState(video)">公开</a>
+              </li>
+              <li nz-menu-item *ngIf="video.common==true"><a href="javascript:;" (click)="updateState(video)">私密</a>
+              </li>
+              <li nz-menu-item><a href="javascript:;" (click)="deleSingleVideo(video.fileId)">删除</a></li>
+            </ul>
+          </nz-dropdown>
+        </td>
+        <!-- <td>{{video.playNumber}}</td>
+        <td>{{video.recordPlayTraffic/1024/1024/1024 | number:'1.2-2'}}G</td> -->
+        <td>{{video.userName}}</td>
+        <td>{{video.fileSize/1024/1024 | number:'1.2-2'}}M</td>
+        <td>{{video.fileDuration*1000 | toSwitchTime}}</td>
+        <td>{{video.createTime | slice:0:19}}</td>
+        <td>{{video.common?'公开':'私密'}}</td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+  <!-- 分页 -->
+  <div class="text-right">
+    <!-- <pagination [totalItems]="tableData.totalPages" [(ngModel)]="tableData.currentPage" [maxSize]="maxSize" class="pagination-sm m-t-none m-b"
+            boundaryLinks="true" [rotate]="false" (pageChanged)="pageChanged($event)" nextText="下一页" previousText="上一页" firstText="第一页" lastText="最后一页"></pagination>
+    <span class="table-page-total">共{{tableData.totalPages}}条数据</span> -->
+    <nz-pagination [(nzPageIndex)]="tableData.currentPage" [nzTotal]="tableData.totalPages"
+                   (click)="pageChanged(tableData.currentPage)" [nzShowTotal]="tableData.totalPages"
+                   [nzPageSize]="10"></nz-pagination>
+  </div>
+</div>
+
+<!-- 删除视频 confirm-->
+<nz-modal [nzVisible]="deleteModal" [nzTitle]="'Modal'" [nzContent]="deleteContent" (nzOnCancel)="handleCancel($event)"
+          (nzOnOk)="handleOk($event)">
+  <ng-template #deleteContent>
+  </ng-template>
+</nz-modal>

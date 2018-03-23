@@ -1,0 +1,58 @@
+
+<div class="page-heading">操作日志</div>
+
+<div class="white-bg">
+  <!--查询 -->
+    <!-- <form [formGroup]="searchForm" class="form-inline">
+        <div class="pull-left">
+          <div class="form-group-inline">
+            <input type="text" class="form-control" placeholder="按日期筛选" bsDaterangepicker formControlName="searchDate" [(ngModel)]="bsRangeValue" style="width:210px;"/>
+          </div>
+        </div>
+        <div class="pull-right log-down-load">
+            <input type="text" class="form-radius" placeholder="操作人员、操作人角色" formControlName="searchStr" (keyup)="dataSearchFn()">
+        </div>
+        <a href="javascript:;" class="pull-right" title="下载操作日志" id ="downloadExcel" (click)="downExcel()" style="margin-right: 10px;"><i class="fa fa-download"></i></a>
+    </form> -->
+    <form  class="form-inline" name="searchForm">
+      <div class="pull-left">
+        <div class="form-group-inline">
+          <nz-datepicker style="width: 40%;" name="startTime" (ngModelChange)="_startDate=$event;_startValueChange()" [(ngModel)]="_startDate" [nzDisabledDate]="_disabledStartDate" [nzPlaceHolder]="'开始时间'" [nzAllowClear]="false"></nz-datepicker>
+          <nz-datepicker style="width: 40%;" name="endTime" (ngModelChange)="_endDate=$event;_endValueChange()" [(ngModel)]="_endDate" [nzDisabledDate]="_disabledEndDate" [nzPlaceHolder]="'结束时间'" [nzAllowClear]="false"></nz-datepicker>
+        </div>
+        </div>
+        <div class="pull-right has-feedback">
+          <a href="javascript:;" class="pull-right" title="下载操作日志" id ="downloadExcel" (click)="downExcel()" style="margin-right: 10px;"><i class="fa fa-download"></i></a>
+            <input type="text" class="form-radius" name="appointmentName" [(ngModel)]="searchData.searchStr" placeholder="操作人员、操作人角色" (keyup)="dataSearchFn()">
+        </div>
+     </form>
+    <div class="clearfix"></div>
+    <!-- 列表 -->
+		<div class="table-list">
+			<table class="table ">
+				<thead>
+					<tr>
+						<th>操作人员</th>
+						<th>操作人角色</th>
+						<th>操作人IP</th>
+						<th>操作内容</th>
+						<th>操作时间</th>
+					</tr>
+				</thead>
+				<tbody id="tbody">
+					<tr *ngFor="let log of tableData.list">
+						<td>{{log.operatorUser}}</td>
+						<td>{{log.operatorRole}}</td>
+						<td>{{log.operatorIp}}</td>
+						<td>{{log.operatorCon}}</td>
+						<td>{{log.operatorTime.substring(0,19)}}</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+
+    <!-- 分页 -->
+    <div class="text-right">
+      <nz-pagination [(nzPageIndex)]="tableData.currentPage" [nzTotal]="tableData.totalPages" (click)="pageChanged(tableData.currentPage)" [nzShowTotal]="tableData.totalPages" [nzPageSize]="searchData.pageSize"></nz-pagination>
+    </div>
+</div>

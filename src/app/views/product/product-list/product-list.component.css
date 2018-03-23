@@ -1,0 +1,90 @@
+.buy-con .tryout-con {
+  line-height: 60px;
+  height: 60px;
+}
+
+.buy-con .choose-service {
+  position: relative;
+  min-height: 500px;
+}
+
+.buy-con .packages {
+  padding: 20px;
+}
+
+.buy-con .package {
+  border: 1px solid #ccc;
+  width: 250px;
+  margin: 20px;
+  float: left;
+  background: #fff;
+  border-radius: 5px;
+  padding-bottom: 15px;
+  height: 410px;
+  position: relative;
+}
+
+.buy-con .package:hover {
+  transform: scale(1.1);
+  transition: all 0s ease 0s;
+  -webkit-transform: scale(1.1);
+  -webkit-transform: all 0s ease 0s;
+  -ms-transform: scale(1.1);
+  -ms-transform: all 0s ease 0s;
+  -moz-transform: scale(1.1);
+  -moz-transform: all 0s ease 0s;
+  -o-transform: scale(1.1);
+  -o-transform: all 0s ease 0s;
+  -webkit-box-shadow: 0 0 20px #4d8bca;
+  -moz-box-shadow: 0 0 20px #4d8bca;
+  box-shadow: 0 0 20px #4d8bca;
+}
+
+.buy-con .package .tit {
+  background: #4d8bca;
+  color: #fff;
+  text-align: center;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+}
+
+.buy-con .package .tit p {
+  line-height: 30px;
+}
+
+.buy-con .package .con {
+  padding: 1px 30px;
+}
+
+.buy-con .package .con .btn {
+  margin: 20px 0;
+}
+
+.buy-con .package .footerbtn {
+  position: absolute;
+  bottom: 10px;
+  left: 75px;
+}
+
+.buy-con .icon-goods {
+  /* background: url("../images/icons.png") -58px 0  no-repeat; */
+  width: 76px;
+  height: 48px;
+}
+
+.tryout-cons {
+  width: 800px;
+}
+
+.tryout-cons .btn {
+  margin-top: 40px;
+}
+
+.package-cons .open {
+  margin-top: 20px;
+}
+
+.con {
+  height: 270px;
+  overflow-y: auto;
+}

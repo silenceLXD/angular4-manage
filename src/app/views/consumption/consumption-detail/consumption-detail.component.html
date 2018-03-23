@@ -1,0 +1,241 @@
+<div class="page-heading">消费明细</div>
+
+<div class="white-bg">
+  <!-- tab标签页 -->
+  <ul class="nav nav-tabs" style="margin-bottom:10px;">
+    <li [ngClass]="{'active':isActive==1}" (click)="isActive=1;changeTab(1)">
+      <a href="javascript:void(0);">企业详单</a>
+    </li>
+    <li [ngClass]="{'active':isActive==2}" (click)="isActive=2;changeTab(2)">
+      <a href="javascript:void(0);">个人详单</a>
+    </li>
+  </ul>
+
+
+  <div class="tab-pane" *ngIf="!isViewDetail">
+    <div class="">
+      <form id="entForm" class="form-inline clearfix">
+        <select class="form-control" name="month" id="monSelect" [(ngModel)]="monthSt"
+                (change)="SelectMonthFn(monthSt)">
+          <option *ngFor="let month of sixMonthArr">{{month.date}}</option>
+        </select>
+        <a title="下载消费明细" (click)="downEntExcel()"><span><i class="fa icon-download"></i>下载消费明细</span></a>
+        <!--<div class="pull-right" *ngIf="isEntActive == 4">
+            <input type="text" id="entSearch" placeholder="会议名称" name="meetingName" class="form-radius" [(ngModel)]="monSelectName" (keyup)="changeSearchFn()">
+        </div>-->
+        <!-- 1asc升序；0desc降序 -->
+        <input type="hidden" name="sort" id="sortId">
+        <!-- 排序列 duration：时长排序；consume_time：消耗分钟数排序序-->
+        <input type="hidden" name="property" id="propertyId" ng-value="property">
+      </form>
+      <div class="entsumCout" style="padding-top: 10px;">
+        <ul>
+          <li [ngClass]="{'active':isEntActive==3}" (click)="isEntActive=3;changeEntTab(3)">
+            <a href="javascript:void(0);">月租费用详单</a>
+          </li>
+          <li [ngClass]="{'active':isEntActive==4}" (click)="isEntActive=4;changeEntTab(4)">
+            <a href="javascript:void(0);">会议详单</a>
+          </li>
+          <li [ngClass]="{'active':isEntActive==5}" (click)="isEntActive=5;changeEntTab(5)">
+            <a href="javascript:void(0);">直播详单</a>
+          </li>
+          <!--<li [ngClass]="{'active':isEntActive==6}" (click)="isEntActive=6;changeEntTab(6)">
+              <a href="javascript:void(0);">点播详单</a>
+          </li>-->
+        </ul>
+      </div>
+      <div
+        style="clear:both;clear: both;margin-top: 40px;height: 40px;line-height: 40px;background: #fff;border-radius: 5px;box-shadow: 0px 0px 10px 2px #ccc;">
+        <span style="margin-left:30px;">{{ ConsumeMinutes.minutes }}</span>
+        <span style="margin-left:30px;">{{ ConsumeMinutes.amount }}</span>
+      </div>
+      <!-- 列表 -->
+      <div class="table-list" style="overflow: hidden; clear: both;   ">
+        <table class="table" *ngIf="isEntActive == 3">
+          <thead>
+          <tr>
+            <th>时间</th>
+            <th>套餐名称</th>
+            <th>金额</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let entlist of monthList">
+            <td>{{entlist.startTime}}</td>
+            <td>{{entlist.productName}}</td>
+            <td>{{entlist.billAmount}}</td>
+          </tr>
+          </tbody>
+        </table>
+        <table class="table" *ngIf="isEntActive == 4">
+          <thead>
+          <tr>
+            <th>开始时间</th>
+            <th>会议名称</th>
+            <th>参会方数（方）</th>
+            <th>套餐名称</th>
+            <th>分辨率</th>
+            <!--<th>时长（分）<span class="color-svoc sorttd" [ngClass]="!sortByduration?'fa-arrow-up':'fa-arrow-down'"
+                    (click)="sortEnt('duration')"></span></th>
+            <th>消耗分钟数<span class="color-svoc sorttd" [ngClass]="!sortByconsume?'fa-arrow-up':'fa-arrow-down'"
+                    (click)="sortEnt('consume_time')"></span></th>-->
+            <th>时长</th>
+            <th>消耗分钟数</th>
+            <th>计费金额（元）</th>
+            <th>操作</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let entlist of ConsumerDetailsList.list">
+            <td>{{entlist.startTime | date:'yyyy-MM-dd HH:mm:ss'}}</td>
+            <td>{{entlist.conferenceName}}</td>
+            <td>{{entlist.concurrenceCount}}</td>
+            <td>{{entlist.productName}}</td>
+            <td>{{entlist.resolution}}</td>
+            <td>{{entlist.duration*1000 | toSwitchTime}}</td>
+            <td>{{entlist.consumeTime*1000 | toSwitchTime}}</td>
+            <td>{{entlist.billAmount}}</td>
+            <td><a href="javascript:" class="btn btn-svoc btn-svoc-lg entLookBtn" (click)="entLookBtn(entlist)">查看</a>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+        <table class="table" *ngIf="isEntActive == 5">
+          <thead>
+          <tr>
+            <th>开始时间</th>
+            <th>名称</th>
+            <th>观看人次</th>
+            <th>套餐名称</th>
+            <th>时长</th>
+            <th>直播流量</th>
+            <th>金额（元）</th>
+            <!--<th>操作</th>-->
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let entlist of ConsumerDetailsList.list">
+            <td>{{entlist.startTime | date:'yyyy-MM-dd HH:mm:ss' }}</td>
+            <td>{{entlist.conferenceName}}</td>
+            <td>{{entlist.playNumber}}</td>
+            <td>{{entlist.productName}}</td>
+            <td>{{entlist.duration*1000 | toSwitchTime:'minutes'}}</td>
+            <td>{{entlist.liveConsumingTraffic | bateBySize}}</td>
+            <td>{{entlist.liveAmount}}</td>
+            <!--<td><a href="javascript:;" class="btn btn-svoc btn-svoc-lg entLookBtn" (click)="entLookBtn(entlist)">查看</a></td>-->
+          </tr>
+          </tbody>
+        </table>
+        <table class="table" *ngIf="isEntActive == 6">
+          <thead>
+          <tr>
+            <th>名称</th>
+            <th>点播人次</th>
+            <th>套餐名称</th>
+            <th>点播流量</th>
+            <th>金额（元）</th>
+            <!--<th>操作</th>-->
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let entlist of ConsumerDetailsList.list">
+            <td>{{entlist.conferenceName}}</td>
+            <td>{{entlist.playNumber}}</td>
+            <td>{{entlist.productName}}</td>
+            <td>{{entlist.recordPlayTraffic}}</td>
+            <td>{{entlist.fileAmount}}</td>
+            <!--<td><a href="javascript:;" class="btn btn-svoc btn-svoc-lg entLookBtn" (click)="entLookBtn(entlist)">查看</a></td>-->
+          </tr>
+          </tbody>
+        </table>
+        <!-- 分页 -->
+        <div class="text-right" *ngIf="isEntActive != 3">
+          <nz-pagination [(nzPageIndex)]="ConsumerDetailsList.currentPage" [nzTotal]="ConsumerDetailsList.totalPages"
+                         (click)="pageChanged(ConsumerDetailsList.currentPage)"
+                         [nzShowTotal]="ConsumerDetailsList.totalPages" [nzPageSize]="10"></nz-pagination>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!--查看详情-->
+  <div *ngIf="isViewDetail">
+    <div class="personLook">
+      <form id="lookPersonForm" class="form-inline clearfix">
+        <div class="row">
+          <div class="permsgdiv col-xs-3">
+            <p>开始时间：<span class="perspan0">{{ ConsumerDetailsEcho.startTime | date:'yyyy-MM-dd HH:mm:ss' }}</span></p>
+          </div>
+          <div class="permsgdiv col-xs-3">
+            <p>会议名称：<span class="perspan1">{{ ConsumerDetailsEcho.conferenceName }}</span></p>
+          </div>
+          <div class="permsgdiv col-xs-3">
+            <p>参会方数（方）：<span class="perspan3">{{ ConsumerDetailsEcho.concurrenceCount }}</span></p>
+          </div>
+          <div class="permsgdiv col-xs-3">
+            <p>套餐名称：<span class="perspan4">{{ ConsumerDetailsEcho.productName }}</span></p>
+          </div>
+          <div class="permsgdiv col-xs-3">
+            <p>分辨率：<span class="perspan1">{{ ConsumerDetailsEcho.resolution }}</span></p>
+          </div>
+          <div class="permsgdiv col-xs-3">
+            <p>时长：<span class="perspan2">{{ durationDetal }}</span></p>
+          </div>
+          <div class="permsgdiv col-xs-3">
+            <p>消耗分钟数：<span class="perspan3">{{ consumeTimeDetal }}</span></p>
+          </div>
+          <div class="permsgdiv col-xs-3">
+            <p>计费金额（元）：<span class="perspan4">{{ ConsumerDetailsEcho.billAmount }}</span></p>
+          </div>
+          <div class="pull-right clearfix">
+            <input type="text" id="lookPersonSearch" [(ngModel)]="getUserDataDetail.realName" placeholder="姓名"
+                   name="meetingName" class="form-radius" (keyup)="searchDetailByName()" style="width: 90%;">
+          </div>
+        </div>
+      </form>
+      <div class="table-list" style="overflow: hidden;">
+        <table class="table ">
+          <thead>
+          <tr>
+            <th>进入时间</th>
+            <th>姓名</th>
+            <th>一级部门</th>
+            <th>二级部门</th>
+            <!-- <th>三级部门</th> -->
+            <th>登录地区</th>
+            <th>呼叫方式</th>
+            <th>使用终端</th>
+            <th>消耗分钟数</th>
+            <th>计费金额(元)</th>
+          </tr>
+          </thead>
+          <tbody id="personLookTbody">
+          <tr *ngFor="let item of ConsumerDetailsListDetail.list">
+            <td>{{ item.startTime | date:'yyyy-MM-dd HH:mm:ss' }}</td>
+            <td>{{ item.realName }}</td>
+            <td>{{ item.deptName }}</td>
+            <td>{{ item.subdeptName }}</td>
+            <!-- <td></td> -->
+            <td>{{ item.location }}</td>
+            <td>{{ item.isInternal == 0? '外部' : '内部' }} {{ item.callWay == 'in'? '主叫' : '被叫' }}</td>
+            <td>{{ item.terminal }}</td>
+            <td>{{ item.consumeTime*1000 | toSwitchTime }}</td>
+            <td>{{ item.billAmount }}</td>
+          </tr>
+          </tbody>
+        </table>
+        <!-- 分页 -->
+        <div class="text-right">
+          <nz-pagination [(nzPageIndex)]="ConsumerDetailsListDetail.currentPage"
+                         [nzTotal]="ConsumerDetailsListDetail.totalPages"
+                         (click)="pageChangedDetails(ConsumerDetailsListDetail.currentPage)"
+                         [nzShowTotal]="ConsumerDetailsListDetail.totalPages" [nzPageSize]="10"></nz-pagination>
+        </div>
+      </div>
+      <div class="text-center" style="margin-bottom: 20px;">
+        <a class="btn btn-svoc personLookBack" style="width: 80px;" (click)="isViewDetail=false">返回</a>
+      </div>
+    </div>
+  </div>
+</div>

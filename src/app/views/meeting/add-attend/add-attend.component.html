@@ -1,0 +1,104 @@
+<!-- <add-attend [inputParentData]="conferenceCid" (outPutAttendData)="getAttendData($event)" (click)="getAttendChildFn()"></add-attend> -->
+<nz-modal [nzVisible]="addAttendModal" [nzTitle]="'添加参会者'" [nzContent]="addAttendContent" [nzFooter]="addAttendFooter"
+          [nzWidth]="'700px'" (nzOnCancel)="handCancle()">
+  <ng-template #addAttendContent>
+    <!-- <p class="alert alert-success" style="padding:8px 10px;">可邀请 <strong class="color-svoc">10</strong>方参会</p> -->
+    <div class="row" style="min-height: 320px;">
+      <div class="col-xs-12">
+        <ul class="nav nav-pills nav-border">
+          <li [ngClass]="{active:1 == isActiveTab}" (click)="isActiveTab=1"><a href="javascript:;">用 户</a></li>
+          <li [ngClass]="{active:2 == isActiveTab}" (click)="isActiveTab=2"><a href="javascript:;">会议室</a></li>
+        </ul>
+      </div>
+      <div class="col-lg-4 col-xs-5">
+        <!-- 用户 -->
+        <div *ngIf="isActiveTab==1">
+          <form name="queryForm" id="queryForm">
+            <div class="marginTB10 has-feedback">
+              <input type="text" id="" placeholder="姓名、职务" name="search" class="form-control" [(ngModel)]="searchByName"
+                     (change)="searchUserFn(searchByName)">
+              <span class="glyphicon glyphicon-search form-control-feedback"></span>
+            </div>
+          </form>
+          <div id="memberList" style="max-height: 420px;min-width:200px;overflow: auto;">
+            <attend-tree [treelists]="theUserListData" (outPutCheckedItem)="getCheckedItem($event)"
+                         (outPutTreeData)="getTreeItemData($event)"></attend-tree>
+          </div>
+        </div>
+
+        <!-- 会议室 -->
+        <div *ngIf="isActiveTab == 2">
+          <form name="queryRoomForm" id="">
+            <div class="marginTB10 has-feedback">
+              <input type="text" id="" placeholder="会议室" name="search" class="form-control" [(ngModel)]="searchByName"
+                     (change)="searchRoomFn(searchByName)">
+              <span class="glyphicon glyphicon-search form-control-feedback"></span>
+            </div>
+          </form>
+          <div>
+            <ul class="room-content">
+              <li class="room-list" *ngFor="let room of theRoomListData">
+                <label for="room{{room.userId}}">
+                  <input type="checkbox" class="checkbox roomuser" id="room{{room.userId}}" [(ngModel)]="room.checked"
+                         (click)="selRoomFn($event,room)"/>
+                  <label for="room{{room.userId}}"></label>
+                  {{ room.realName}}
+                </label>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-8 col-xs-7">
+        <div class="marginTB10 clearfix">
+          <span class="pull-left font14">已选参会方（ <b>{{roomListData.length + userListData.length}}</b> ）</span>
+          <a href="javascript:;" class="pull-right" (click)="emptyUserFn()">清空参会方</a>
+        </div>
+        <div class="right-box-border">
+
+        </div>
+        <div class="border3" style="height:300px;overflow-y:auto;">
+          <!-- <div class="userList-box">
+             <dl>
+               <dd class="user-selected" id="" *ngFor="let user of userListData"><a href="javascript:;">{{user.realName}} <i class="fa fa-close removeUser" (click)="removeUser(user)"></i></a></dd>
+               <dd class="user-selected" id="" *ngFor="let room of roomListData"><a href="javascript:;">{{room.realName}} <i class="fa fa-close removeUser" (click)="removeRoom(room)"></i></a></dd>
+             </dl>
+           </div> -->
+          <table class="table">
+            <thead>
+            <tr>
+              <th>姓名</th>
+              <th *ngIf="modalType==1">主讲人</th>
+              <th>操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let user of userListData">
+              <td>{{user.realName}}</td>
+              <td *ngIf="modalType==1"><input type="radio" name="isHost" (change)="chooseHostFn(user,$event)"></td>
+              <td><a href="javascript:;" class="fa fa-close removeUser" (click)="removeUser(user)"></a></td>
+            </tr>
+            <tr *ngFor="let room of roomListData">
+              <td>{{room.realName}}</td>
+              <td *ngIf="modalType==1"><input type="radio" name="isHost" (change)="chooseHostFn(room,$event)"></td>
+              <td><a href="javascript:;" class="fa fa-close removeUser" (click)="removeRoom(room)"></a></td>
+            </tr>
+            </tbody>
+          </table>
+
+
+        </div>
+
+      </div>
+    </div>
+
+
+    <!-- <div class="marginTB10">
+      <button nz-button [nzType]="'primary'" [nzSize]="'large'" (click)="sureAttendFn($event)"> 确 定 </button>
+    </div> -->
+  </ng-template>
+  <ng-template #addAttendFooter>
+    <button nz-button [nzType]="'default'" [nzSize]="'large'" (click)="handCancle()"> 取 消</button>
+    <button nz-button [nzType]="'primary'" [nzSize]="'large'" (click)="sureAttendFn($event)"> 确 定</button>
+  </ng-template>
+</nz-modal>

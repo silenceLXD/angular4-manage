@@ -1,0 +1,84 @@
+.link-other li a {
+  font-size: 14px;
+  color: #747474;
+  padding-right: 15px;
+  border-right: 1px solid #ccc;
+  text-decoration: none;
+}
+
+.forget-pass-box {
+  width: 700px;
+  margin: 80px auto;
+  clear: both;
+  overflow: hidden;
+}
+
+.input-radius {
+  border-radius: 50px;
+  background-color: #ffffff;
+  border: none;
+}
+
+.verifycode > img {
+  border-radius: 20px;
+  width: 150%;
+}
+
+.setup-title {
+  color: #333333;
+  font-size: 16px;
+  text-align: center;
+  margin-bottom: 55px;
+}
+
+.setup-btn {
+  width: 100%;
+  border-radius: 20px;
+  margin-top: 30px;
+}
+
+.msg-code {
+  /* position: absolute; */
+}
+
+.get-msg-code {
+  position: absolute;
+  top: 10px;
+  right: 30px;
+  border-left: 2px solid #00a0e9;
+  padding-left: 5px;
+  /* cursor: pointer; */
+  color: #00a0e9;
+  border-bottom: none;
+  border-top: none;
+  border-right: none;
+}
+
+.setup-icon {
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  vertical-align: middle;
+}
+
+.setup-lock-icon {
+  background: url("../../../../assets/img/forget_lock.png") no-repeat;
+  background-size: contain;
+}
+
+.setup-phone-icon {
+  background: url("../../../../assets/img/forget_phone.png") no-repeat;
+  background-size: contain;
+}
+
+.setup-email-icon {
+  background: url("../../../../assets/img/forget_mail.png") no-repeat;
+  background-size: contain;
+  margin: 5px 8px 0 0;
+}
+
+.setup-edit-icon {
+  background: url("../../../../assets/img/forget_edit.png") no-repeat;
+  background-size: contain;
+
+}

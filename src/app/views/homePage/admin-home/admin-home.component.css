@@ -1,0 +1,80 @@
+.index-page .date {
+  color: #999;
+}
+
+.index-page .alert {
+  padding: 7px 10px;
+}
+
+.index-page .alert .message {
+  margin-right: 40px;
+}
+
+.index-con {
+  padding: 10px;
+}
+
+.index-con .tit {
+  margin: 10px 10px 20px 10px;
+}
+
+.index-con .indexpart .border3 {
+  padding-bottom: 20px;
+}
+
+.index-con .indexpart h4 {
+  margin: 10px;
+}
+
+.index-con .indexpart li {
+  /*line-height: 32px;*/
+  padding-top: 8px;
+  border-bottom: 1px solid #f2f2f2;
+  padding-left: 10px;
+  height: 32px;
+}
+
+.index-con .service-status li {
+  border-bottom: none;
+}
+
+/* .index-con .service-status .btn{
+    background: #ff9900;
+    border-color: #ff9900;
+} */
+.index-con .service-status .cash-coupon {
+  margin: 0 20px;
+}
+
+.index-con .part-tit {
+  margin: 10px 20px;
+}
+
+.index-con .choose-package {
+  margin-left: 15px;
+}
+
+.index-con .choose-package .tab-pane li {
+  margin-top: 10px;
+}
+
+.index-con .choose-back {
+  background: #f2f2f2;
+  height: 36px;
+  line-height: 36px;
+  margin: 10px 0;
+  padding-left: 20px;
+}
+
+.index-con .choose-back p {
+  display: inline-block;
+  margin-left: 20px;
+}
+
+.index-con .choose-item {
+
+}
+
+.index-con .choose-package .nav-tabs {
+  height: 39px;
+}

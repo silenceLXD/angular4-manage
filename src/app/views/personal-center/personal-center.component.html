@@ -1,0 +1,291 @@
+<div id="personalMsg">
+  <div class="ent-user" style="overflow:hidden;">
+    <div class="personalMsg-title">
+      <div class="text-center">
+        <span class="personalMsg-name">{{personalData.user.realName | slice:0:1}}</span>
+      </div>
+    </div>
+
+    <div style="width:700px;margin:-15px auto;">
+      <ul class="list-group">
+        <li class="list-group-item">
+          <div class="col-xs-3"><i class="fa color-svoc fa-user font16"></i> 姓名</div>
+          <div class="col-xs-7">{{personalData.user.realName}}</div>
+          <div class="col-xs-2"><a href="javascript:;" (click)="updateNameFn(personalData.user.realName)">修改</a></div>
+        </li>
+        <!-- 企业用户 显示信息 / 个人用户不显示一下字段-->
+        <li *ngIf="roleType!=8">
+          <ul>
+            <li class="list-group-item">
+              <div class="col-xs-3 "><i class="fa color-svoc fa-home font16"></i> 公司/单位</div>
+              <div class="col-xs-7 ">{{personalData.user.company}}</div>
+            </li>
+            <li class="list-group-item">
+              <!--<div class="col-xs-3 "><i class="fa color-svoc fa-address-card font16"></i> 工号</div>-->
+              <div class="col-xs-3 "><i class="fa color-svoc fa-suitcase font16"></i> 工号</div>
+              <div class="col-xs-7 ">{{personalData.user.empno}}</div>
+            </li>
+            <li class="list-group-item">
+              <div class="col-xs-3 "><i class="fa color-svoc fa-align-justify font16"></i> 一级部门</div>
+              <div class="col-xs-7 ">{{personalData.user.deptName}}</div>
+            </li>
+            <li class="list-group-item">
+              <div class="col-xs-3 "><i class="fa color-svoc fa-th-large font16"></i> 二级部门</div>
+              <div class="col-xs-7 ">{{personalData.user.subdeptName}}</div>
+            </li>
+            <li class="list-group-item">
+              <div class="col-xs-3 "><i class="fa color-svoc fa-th font16"></i> 三级部门</div>
+              <div class="col-xs-7 ">{{personalData.user.threedeptName}}</div>
+            </li>
+            <li class="list-group-item">
+              <div class="col-xs-3 "><i class="fa color-svoc fa-suitcase font16"></i> 职务</div>
+              <div class="col-xs-7 ">{{personalData.user.position}}</div>
+            </li>
+            <li class="list-group-item">
+              <div class="col-xs-3 "><i class="fa color-svoc  fa-envelope font16"></i> 邮箱</div>
+              <div class="col-xs-7 ">{{personalData.user.email}}</div>
+            </li>
+          </ul>
+        </li>
+        <!-- /企业用户 显示信息 end -->
+
+        <li class="list-group-item">
+          <div class="col-xs-3 "><i class="fa color-svoc fa-phone font16"></i> 手机号</div>
+          <div class="col-xs-7 ">
+            <span>{{personalData.user.mobilePhone}}</span>
+          </div>
+          <!--2018-1-11晚九点注释-->
+          <div class="col-xs-2"><a href="javascript:;" (click)="updateNumberIphoneFn()">修改</a></div>
+
+          <!--<div class="col-xs-2">
+							<a href="javascript:;" (click)="bindPhoneFn(personalData.user.mobilePhone)" *ngIf="personalData.user.isBinding==0">立即绑定</a>
+							<a href="javascript:;" *ngIf="personalData.user.isBinding==1" (click)="updatePhone(personalData.user.mobilePhone)">修改</a>
+						</div>-->
+        </li>
+        <li class="list-group-item">
+          <div class="col-xs-3 "><i class="fa color-svoc fa-lock font16"></i> 登录密码</div>
+          <div class="col-xs-7 " id="">********</div>
+          <div class="col-xs-2"><a href="javascript:;" (click)="updatePsdFn()">修改密码</a></div>
+        </li>
+        <li class="list-group-item">
+          <div class="col-xs-3 "><i class="fa color-svoc fa-table font16"></i> SIP账号</div>
+          <div class="col-xs-7 ">
+            <span name="sipNumber">{{personalData.sipList.sipNumber}}</span>
+          </div>
+          <!-- <div class="col-xs-2"><a href="javascript:;" *ngIf="personalData.sipList[0]" (click)="SIPpsdDialog.open=true">修改密码</a></div> -->
+        </li>
+        <li class="list-group-item" *ngIf="roleType!=8">
+          <div class="col-xs-3 "><i class="fa color-svoc fa-unlock-alt font16"></i> SIP密码</div>
+          <div class="col-xs-7 ">{{personalData.sipList.sipPassword}}</div>
+          <div class="col-xs-2"><a href="javascript:;" (click)="updateSipPsdFn()">修改密码</a></div>
+        </li>
+        <li class="list-group-item" style="margin-top:20px;">
+          <div class="col-xs-3 font14">账号绑定</div>
+        </li>
+        <!--<li class="list-group-item">
+          	<div class="col-xs-3 clearfix"><span class="pull-left"><i class="fa color-svoc fa-phone font16"></i>  手机号</span></div>
+						<div class="col-xs-7"><span [ngClass]="personalData.user.isBinding==0?'error':'green'">{{personalData.user.isBinding==0?'未绑定':'已绑定'}}</span></div>
+						<div class="col-xs-2"><a href="javascript:;">绑定</a></div>
+          </li>-->
+        <li class="list-group-item">
+          <div class="col-xs-3 clearfix">
+            <span class="pull-left"><i class="fa color-svoc fa-weixin font16"></i>  微信号</span>
+          </div>
+          <div class="col-xs-7" id="bindBlog"><span [ngClass]="personalData.user.isBindWechat==0?'error':'green'">{{personalData.user.isBindWechat==0?'未绑定':'已绑定'}}</span>
+          </div>
+          <div class="col-xs-2"><a href="javascript:;" *ngIf="personalData.user.isBindWechat==0"
+                                   (click)="bindWeChatFn()">绑定</a></div>
+        </li>
+      </ul>
+    </div>
+    <!-- 退出企业 (企业用户和管理员 才显示退出企业) -->
+    <div class="text-center marginTB10" style="margin-top:20px;overflow:hidden;"
+         *ngIf="roleType==3||roleType==1||roleType==2">
+      <!--<a *ngIf="roleType==2 || roleType==3" href="javascript:;" (click)="quitEntFn()">退出企业</a>-->
+      <a href="javascript:;" (click)="quitEntFn()">退出企业</a>
+    </div>
+  </div>
+</div>
+
+
+<!--修改姓名 Model-->
+<nz-modal [nzVisible]="updateNameModal" [nzTitle]="'修改姓名'" [nzContent]="updateNameContent" [nzFooter]="updateNameFooter"
+          (nzOnCancel)="updateNameModal=false">
+  <ng-template #updateNameContent>
+    <form action="" id="realNameForm" name="realNameForm" class="form-horizontal">
+      <!-- <input type="hidden" class="form-control" id="id" name="id" ng-value="id"> -->
+      <div class="form-group" style="margin-bottom: 0;">
+        <label class="col-xs-3">姓名</label>
+        <div class="col-xs-6">
+          <input type="text" class="form-control" name="realName" required="" [(ngModel)]="updateRealName"
+                 placeholder="请输入新姓名"/>
+        </div>
+      </div>
+    </form>
+  </ng-template>
+  <ng-template #updateNameFooter>
+    <button nz-button [nzType]="'default'" [nzSize]="'large'" (click)="updateNameModal=false"> 取 消</button>
+    <button nz-button [nzType]="'primary'" [nzSize]="'large'" (click)="saveEditRealName()"> 确 定</button>
+  </ng-template>
+</nz-modal>
+
+<!--修改手机号-->
+<nz-modal [nzVisible]="updateNumberIphoneModal" [nzTitle]="'修改手机号'" [nzContent]="updateNumberIphoneContent"
+          [nzFooter]="updateNumberIphoneFooter"
+          (nzOnCancel)="updateNumberIphoneModal=false">
+  <ng-template #updateNumberIphoneContent>
+    <form class="form-horizontal " name="relievePhoneForm">
+
+      <div *ngIf="!isUpdatePhone" class="form-group row setup-row">
+        <label class="col-xs-4">手机号码</label>
+        <div class="col-xs-8">
+          <label id="telephone">{{ personalData.user.mobilePhone }}</label>
+          <!-- <input name="mobilePhone" class="col-xs-8 form-control" type="hidden" (ngValue)="oldPhone" id="oldPhone"> -->
+        </div>
+      </div>
+      <div *ngIf="isUpdatePhone" class="form-group row setup-row">
+        <label class="col-xs-4">新绑定手机号</label>
+        <div class="col-xs-6" style="margin-left:-16px;">
+          <input name="mobilePhone" class="col-xs-4 form-control" style="width:174px;" placeholder="输入新绑定手机号"
+                 [(ngModel)]="oldPhone" id="oldPhone" maxlength="11">
+        </div>
+      </div>
+      <div class="form-group row setup-row">
+        <label class="col-xs-4">短信验证码</label>
+        <div>
+          <div style="overflow:hidden;">
+            <input id="verifyIdentMCode" name="msgCode" class="col-xs-6 form-control" [(ngModel)]="phoneCode"
+                   placeholder="6位数字验证码" maxlength="6"
+                   type="text">
+            <!-- <input id="Number" name="Number" class="col-xs-8" type="hidden"> -->
+            <div class="col-xs-6">
+              <a href="javascript:;" style="display: inline-block;" class="btn btn-svoc" (click)="getPhoneCode()"
+                 id="getNumber">{{ paracont }}</a>
+              <!-- <timer-button class="btn btn-svoc" [sendType]="2" [phoneNum]="personalData.user.mobilePhone"></timer-button> -->
+            </div>
+          </div>
+          <p class="error" style="margin-top:10px;" id="messCodeError">{{messCodeError}}</p>
+        </div>
+      </div>
+      <div class="form-group row setup-row">
+        <label class="col-xs-4">验证码</label>
+        <div class="col-xs-8">
+          <div>
+            <div class="row">
+              <input id="vIdentPicCode" name="picCode" class="col-xs-6 form-control" [(ngModel)]="imgCode"
+                     placeholder="请输入验证码" maxlength="4"
+                     type="text">
+              <div class="col-xs-6">
+                <div class="verifycode" id="verifycode">
+                  <img style="display:block;height:40px;" id="imgId" [src]="oImgSrc" alt="验证码" (click)="changeImg()">
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <p id="picCodeError" class="error" style="margin-top:10px;"></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </ng-template>
+  <ng-template #updateNumberIphoneFooter>
+    <button nz-button [nzType]="'default'" [nzSize]="'large'" (click)="updateNumberIphoneModal=false"> 取 消</button>
+    <button nz-button [nzType]="'primary'" [nzSize]="'large'" (click)="relievePhone()"> 确 定</button>
+  </ng-template>
+</nz-modal>
+
+<!--绑定微信账号-->
+<nz-modal [nzVisible]="bindWeChatModal" [nzTitle]="'绑定微信账号'" [nzContent]="bindWeChatContent" [nzFooter]="false"
+          (nzOnCancel)="bindWeChatModal=false" [nzWidth]="'324px'">
+  <ng-template #bindWeChatContent>
+    <div class="qrcode">
+      <div id="login_container"></div>
+      <!-- <div class="text-center">
+        <span>请使用微信扫描二维码绑定"云起云平台"账号</span>
+      </div> -->
+    </div>
+  </ng-template>
+  <!-- <ng-template #bindWeChatFooter>
+    <button nz-button [nzType]="'default'" [nzSize]="'large'" (click)="bindWeChatModal=false"> 取 消</button>
+  </ng-template> -->
+</nz-modal>
+
+<!--修改登录密码-->
+<nz-modal [nzVisible]="userPsdModal" [nzTitle]="'修改登录密码'" [nzContent]="userPsdContent" [nzFooter]="userPsdFooter"
+          (nzOnCancel)="userPsdModal=false">
+  <ng-template #userPsdContent>
+    <form action="" id="userPassForm" name="userPassForm" class="form-horizontal" novalidate>
+      <div class="form-group">
+        <label class="col-xs-3">当前密码：</label>
+        <div class="col-xs-8">
+          <input type="password" class="form-control" name="oldPsaaword" required="" [(ngModel)]="PassWord.oldPassword"
+                 maxlength="20"
+                 minlength="6" placeholder="当前密码">
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-xs-3">新密码：</label>
+        <div class="col-xs-8">
+          <input type="password" class="form-control" name="newPassword" placeholder="新密码 " id="password" required=""
+                 maxlength="20"
+                 minlength="6" [(ngModel)]="PassWord.newPassword">
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-xs-3">确认密码：</label>
+        <div class="col-xs-8">
+          <input type="password" class="form-control" name="verifyPassword" placeholder="确认新密码" id="repass" required=""
+                 maxlength="20"
+                 minlength="6" [(ngModel)]="PassWord.repeatPassword">
+        </div>
+      </div>
+      <div class="error"> {{psdErrorMsg}}</div>
+    </form>
+  </ng-template>
+  <ng-template #userPsdFooter>
+    <button nz-button [nzType]="'default'" [nzSize]="'large'" (click)="userPsdModal=false"> 取 消</button>
+    <button nz-button [nzType]="'primary'" [nzSize]="'large'" (click)="saveEditPw()"> 确 定</button>
+  </ng-template>
+</nz-modal>
+
+<!--修改Sip密码-->
+<nz-modal [nzVisible]="SIPpsdModal" [nzTitle]="'修改Sip密码'" [nzContent]="SIPpsdContent" [nzFooter]="SIPpsdFooter"
+          (nzOnCancel)="SIPpsdModal=false">
+  <ng-template #SIPpsdContent>
+    <form action="" id="sipPassForm" name="sipPassForm" class="form-horizontal" novalidate>
+      <div class="form-group">
+        <label class="col-xs-3">当前密码：</label>
+        <div class="col-xs-8">
+          <input type="password" class="form-control" name="oldPassword" required="" [(ngModel)]="SipPassWord.oldPwd"
+                 placeholder="当前密码">
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-xs-3">新密码：</label>
+        <div class="col-xs-8">
+          <input type="password" class="form-control" name="newPassword" required="" [(ngModel)]="SipPassWord.newPwd"
+                 placeholder="新密码">
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-xs-3">确认密码：</label>
+        <div class="col-xs-8">
+          <input type="password" class="form-control" name="verifyPassword" required=""
+                 [(ngModel)]="SipPassWord.verifyPwd" placeholder="确认新密码">
+        </div>
+      </div>
+    </form>
+  </ng-template>
+  <ng-template #SIPpsdFooter>
+    <button nz-button [nzType]="'default'" [nzSize]="'large'" (click)="SIPpsdModal=false"> 取 消</button>
+    <button nz-button [nzType]="'primary'" [nzSize]="'large'" (click)="saveEditSIP()"> 确 定</button>
+  </ng-template>
+</nz-modal>
+
+<!--提示框弹出-->
+<nz-modal [nzVisible]="deleteModal" [nzTitle]="'Modal'" [nzContent]="deleteContent" (nzOnCancel)="handleCancel($event)"
+          (nzOnOk)="handleOk($event)">
+  <ng-template #deleteContent>
+  </ng-template>
+</nz-modal>

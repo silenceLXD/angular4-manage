@@ -1,0 +1,114 @@
+.sidebar-menu{
+  color: #fff;
+  /* position: absolute; */
+  position: fixed;
+  top: 0;
+  left: 0;
+  padding-top: 50px;
+  min-height: 100%;
+  width: 230px;
+  z-index: 810;
+}
+/*默认*/
+.navbarHeaderBlack{
+	background-color:#313848;
+}
+/*科技蓝*/
+.navbarHeaderTechBlur{
+	background-color:#0299CC;
+}
+/*深调蓝*/
+.navbarHeaderBlur{
+	background-color:#2A4795;
+}
+/*稳重暗*/
+.navbarHeaderDark{
+	background-color:#333969;
+}
+/*淡雅绿*/
+.navbarHeaderGreen{
+	background-color:#51AF79;
+}
+
+.sidebar-menu a{
+  color: #fff;
+  text-decoration: none;
+}
+/*.nav>li>a:focus, .nav>li>a:hover {
+    text-decoration: none;
+    background-color: #515865;
+    color: #0299CC;
+}*/
+.navbarHeaderBlack .nav>li>a:hover {
+    text-decoration: none;
+    background-color: #515865;
+    color: #fff;
+}
+.navbarHeaderTechBlur .nav>li>a:hover {
+    text-decoration: none;
+    /*background-color: #fbfbfb;*/
+    color: #0299CC;
+}
+.navbarHeaderBlur .nav>li>a:hover {
+    text-decoration: none;
+    /*background-color: #fbfbfb;*/
+    color: #2A4795;
+}
+.navbarHeaderDark .nav>li>a:hover {
+    text-decoration: none;
+    /*background-color: #fbfbfb;*/
+    color: #333969;
+}
+.navbarHeaderGreen .nav>li>a:hover {
+    text-decoration: none;
+    /*background-color: #fbfbfb;*/
+    color: #51AF79;
+}
+.navbarHeaderBlack .nav>li>a:focus {
+    text-decoration: none;
+    background-color: #515865;
+    color: #fff;
+}
+.navbarHeaderTechBlur .nav>li>a:focus {
+    text-decoration: none;
+    /*background-color: #fbfbfb;*/
+    color: #0299CC;
+}
+.navbarHeaderBlur .nav>li>a:focus {
+    text-decoration: none;
+    /*background-color: #fbfbfb;*/
+    color: #2A4795;
+}
+.navbarHeaderDark .nav>li>a:focus {
+    text-decoration: none;
+    /*background-color: #fbfbfb;*/
+    color: #333969;
+}
+.navbarHeaderGreen .nav>li>a:focus {
+    text-decoration: none;
+    /*background-color: #fbfbfb;*/
+    color: #51AF79;
+}
+
+
+
+.sidebar-menu .menu-header{
+  color: #4b646f;
+}
+.sidebar-menu .menu-view .child-menu{
+   margin: 0 1px;
+   display: none;
+   background: #2c3b41;
+   list-style: none;
+   padding: 0;
+    /*padding-left: 0px;*/
+    padding-left: 5px;
+}
+.sidebar-menu li.active > .child-menu {
+    display: block;
+}
+.sidebar-menu .menu-view ul > li > a {
+    padding: 5px 5px 5px 15px;
+    display: block;
+    font-size: 14px;
+  }

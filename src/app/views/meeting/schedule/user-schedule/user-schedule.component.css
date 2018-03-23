@@ -1,0 +1,45 @@
+.schedule-list{
+	background: #fbfbfb;
+    padding: 20px 10px;
+    overflow: hidden;
+    border-radius: 45px;
+    box-shadow: 1px 1px 1px 1px #ccc;
+    margin: 20px 0;
+}
+
+.schedule-date{
+	color: #ff7989;
+    text-align: center;
+    margin: 10px 0;
+}
+.schedule-date p{
+	font-size:16px;
+}
+
+.schedule-content{
+	border-left: 1px solid #07a2e8;
+}
+.schedule-content-list{
+	margin:10px 0
+}
+p.schedule-content-list>span{
+	display: inline-block;
+    margin-right: 25px;
+}
+
+.schedule-update{
+	line-height:55px;
+}
+
+.del-time-box{
+	margin-left: 40px;
+}
+.del-time-item{
+	max-height: 300px;
+	overflow-y: auto;
+
+}
+.del-time-item>div{
+	display: inline-block;
+	margin-right: 10px;
+}

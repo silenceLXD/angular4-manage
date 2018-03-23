@@ -1,0 +1,14 @@
+<!-- 首页根据登录用户的角色展示不同的页面 -->
+<!--
+roleId==1 企业管理员
+roleId==2 企业用户
+roleId==3 个人用户／微信用户
+ -->
+<h1 class="font16 marginTB10"> 欢迎，<span class="font16">{{loginUserData.realName}}</span></h1>
+
+
+<app-admin-home *ngIf="switchPageFlag == 0"></app-admin-home>
+
+<app-user-home *ngIf="switchPageFlag == 1"></app-user-home>
+
+<app-personal-home *ngIf="switchPageFlag == 2"></app-personal-home>

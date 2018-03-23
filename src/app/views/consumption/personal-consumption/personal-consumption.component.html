@@ -1,0 +1,70 @@
+<div class="page-heading">
+
+  消费详单</div>
+
+
+<!--<div class="btn-group marginTB10">
+  <a href="javascript:;" class="btn btn-svoc-border">会议详单</a>
+  <a href="javascript:;" class="btn btn-svoc-border">直播详单</a>
+  <a href="javascript:;" class="btn btn-svoc-border">点播详单</a>
+</div>-->
+<div style="margin-bottom: 10px">
+  <form id="entForm" class="form-inline clearfix">
+    <select class="form-control" name="month" id="monSelect" [(ngModel)]="monthSt" (change)="SelectMonthFn(monthSt)">
+			     <option *ngFor="let month of sixMonthArr">{{month.date}}</option>
+		        </select>
+    <div class="pull-right" *ngIf="isEntActive == 4">
+      <input type="text" id="entSearch" placeholder="姓名" name="meetingName" class="form-radius" [(ngModel)]="monSelectName" (keyup)="changeSearchFn()">
+    </div>
+    <!-- 1asc升序；0desc降序 -->
+    <input type="hidden" name="sort" id="sortId">
+    <!-- 排序列 duration：时长排序；consume_time：消耗分钟数排序序-->
+    <input type="hidden" name="property" id="propertyId" ng-value="property">
+  </form>
+</div>
+
+<div class="white-bg">
+  <p>总消耗分钟数：{{ allTimeAmount.allTime }} 总金额（元）：{{ allTimeAmount.allAmount }}</p>
+</div>
+
+<div class="">
+  <div class="table-list marginTB10">
+    <table class="table ">
+      <thead>
+        <tr>
+          <th>进入时间</th>
+          <th>会议名称</th>
+          <th>套餐名称</th>
+          <th>分辨率</th>
+          <th>登录地区</th>
+          <th>呼叫方式</th>
+          <th>使用终端</th>
+          <th>消耗分钟数</th>
+          <th>金额(元)</th>
+        </tr>
+      </thead>
+      <tbody id="detailTbody">
+        <tr *ngFor="let list of ConsumerDetailsList.list">
+          <td>{{list.startTime | date:'yyyy-MM-dd HH:mm:ss' }}</td>
+          <td>{{list.conferenceName}}</td>
+          <td>{{list.productName}}</td>
+          <td>{{list.resolution}}</td>
+          <td>{{list.location}}</td>
+          <td>
+            <span *ngIf="list.callWay=='in'">内部主叫</span>
+            <span *ngIf="list.callWay=='out'">内部被叫</span>
+          </td>
+          <td>{{list.terminal}}</td>
+          <td>{{list.consumeTime | toSwitchTime:'minutes'}}</td>
+          <td>{{list.billAmount}}</td>
+        </tr>
+      </tbody>
+    </table>
+    <!-- 分页 -->
+    <div class="text-right">
+      <nz-pagination [(nzPageIndex)]="ConsumerDetailsList.currentPage" [nzTotal]="ConsumerDetailsList.totalPages" (click)="pageChanged(ConsumerDetailsList.currentPage)"
+        [nzShowTotal]="ConsumerDetailsList.totalPages" [nzPageSize]="10"></nz-pagination>
+    </div>
+  </div>
+
+</div>

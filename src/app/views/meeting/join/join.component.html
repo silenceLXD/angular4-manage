@@ -1,0 +1,43 @@
+<div class="">
+  <div class="page-heading">加入会议</div>
+  <div id="join">
+    <div class="join-img-bg">
+      <form class="" style="max-width:800px;" [formGroup]="joinFormModel">
+        <div calss="row" style="padding:50px 100px;">
+          <div class="col-xs-2">
+            <span class="lh40 font16">会议号</span>
+          </div>
+          <div class="col-xs-9">
+            <input type="text" class="form-radius" placeholder="请输入会议号" formControlName="vmrNumber"/>
+          </div>
+        </div>
+        <!--<div *ngIf="isAvailableOne" class="row marginTB10 text-center">
+          <a [href]="webRtcUrl" class="btn btn-svoc font16 radius20" [ngClass]="!isCanJoin?'disabled':''"
+             style="padding:10px 50px;" (click)="sureJoinFn(joinFormModel.get('vmrNumber').value)"
+             target="_blank">加入会议</a>
+        </div>
+        <div *ngIf="isAvailableTwo" class="row marginTB10 text-center">
+          <a [href]="webRtcUrl" class="btn btn-svoc font16 radius20" [ngClass]="!isCanJoin?'disabled':''"
+             style="padding:10px 50px;" (click)="sureJoinFn(joinFormModel.get('vmrNumber').value)"
+             target="_blank">加入会议</a>
+        </div>
+        <div *ngIf="isAvailableThree" class="row marginTB10 text-center">
+          <a [href]="webRtcUrl" class="btn btn-svoc font16 radius20" [ngClass]="!isCanJoin?'disabled':''"
+             style="padding:10px 50px;" (click)="sureJoinFn(joinFormModel.get('vmrNumber').value)"
+             target="_blank">加入会议</a>
+        </div>
+        <div *ngIf="!isAvailableOne&&!isAvailableTwo&&!isAvailableThree" class="row marginTB10 text-center">
+          <a [href]="webRtcUrl" class="btn btn-svoc font16 radius20" [ngClass]="!isCanJoin?'disabled':''"
+             style="padding:10px 50px;" (click)="sureJoinFn(joinFormModel.get('vmrNumber').value)"
+             target="_blank">加入会议</a>
+        </div>-->
+        <div class="row marginTB10 text-center">
+          <a href="/webrtc?conference={{joinFormModel.get('vmrNumber').value}}" class="btn btn-svoc font16 radius20"
+             [ngClass]="!isCanJoin?'disabled':''"
+             style="padding:10px 50px;" (click)="sureJoinFn(joinFormModel.get('vmrNumber').value)"
+             target="_blank">加入会议</a>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

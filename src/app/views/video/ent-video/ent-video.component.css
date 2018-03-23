@@ -1,0 +1,12 @@
+.progressBar .bg{
+	width:240px;
+	height:15px;
+	border:1px solid #ddd;
+	border-radius:5px;
+}
+.progressBar .progress{
+	background:#07a2e8;
+	border-radius:5px;
+	height:100%;
+	width:0%;
+}

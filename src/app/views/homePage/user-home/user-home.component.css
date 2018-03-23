@@ -1,0 +1,52 @@
+.title-icon {
+    width: 45px;
+    height: 45px;
+    display: inline-block;
+    background: url(../../../../assets/img/icon/icons1_4.png) no-repeat;
+    background-size: cover;
+    vertical-align: -webkit-baseline-middle;
+}
+.title-icon-instant{
+	background-position:0 -44px;
+}
+.title-icon-schedule{
+	background-position:0 -88px;
+}
+.title-icon-book{
+	background-position:0 -135px;
+}
+
+
+/* 会议日程 */
+.schedule-list{
+  background: #fbfbfb;
+  padding: 8px 0px;
+  overflow: hidden;
+  border-radius: 45px;
+  box-shadow: 1px 1px 1px 1px #ccc;
+  margin: 10px 0;
+}
+
+.schedule-date{
+	color: #ff7989;
+    text-align: center;
+    margin: 10px 0;
+}
+.schedule-date p{
+	font-size:16px;
+}
+
+.schedule-content{
+	border-left: 1px solid #07a2e8;
+}
+.schedule-content-list{
+	margin:10px 0
+}
+p.schedule-content-list>span{
+	display: inline-block;
+    margin-right: 25px;
+}
+
+.schedule-update{
+	line-height:55px;
+}

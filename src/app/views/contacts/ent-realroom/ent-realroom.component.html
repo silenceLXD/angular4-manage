@@ -1,0 +1,118 @@
+<div class="page-heading">会议室</div>
+
+<div class="white-bg">
+  <ul class="nav nav-tabs">
+    <li><a routerLink="/page/ent-contacts">通讯录</a></li>
+    <li><a routerLink="/page/ent-group">企业群组</a></li>
+    <li class="active"><a href="javascript:void(0);">会议室</a></li>
+  </ul>
+
+  <div class="marginTB10">
+    <form id="queryForm" class="form-inline" style="overflow: hidden;">
+      <div class="pull-left">
+        <button type="button" [class.disabled]="isAvailableOne" class="btn btn-svoc" (click)="AddMeetingRoom()">添加会议室
+        </button>
+      </div>
+      <div class="pull-right">
+        <input type="text" id="searchInput" placeholder="云会议室名称、SIP账号" [(ngModel)]="searchData.queryStr"
+               (keyup)="searchMeetingRoom()" name="queryKey" class="form-radius">
+      </div>
+    </form>
+  </div>
+
+  <div class="clearfix table-list">
+    <table class="table ">
+      <thead>
+      <tr>
+        <th>云会议室名称</th>
+        <th>SIP账号</th>
+        <th>SIP账号密码</th>
+        <th>操作</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let list of tableData.list">
+        <td>{{list.realName}}</td>
+        <td>{{list.sipNumber}}</td>
+        <td>{{list.sipPassword}}</td>
+        <td>
+          <button type="button" [class.disabled]="isAvailableOne" class="btn btn-svoc" (click)="editRoomFn(list)">编辑
+          </button>
+          <button type="button" [class.disabled]="isAvailableOne" class="btn btn-svoc"
+                  (click)="deleteRoomFn(list.userId)">
+            删除
+          </button>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+  <!-- 分页 -->
+  <div class="text-right">
+    <nz-pagination [(nzPageIndex)]="tableData.currentPage" [nzTotal]="tableData.totalPages"
+                   (click)="pageChanged(tableData.currentPage)"
+                   [nzShowTotal]="tableData.totalPages" [nzPageSize]="10"></nz-pagination>
+  </div>
+
+</div>
+
+<!-- 添加会议室 -->
+<nz-modal [nzVisible]="AddMeetingModal" [nzTitle]="'添加会议室'" [nzContent]="AddMeetingContent"
+          [nzFooter]="AddMeetingFooter" (nzOnCancel)="AddMeetingModal=false" [nzMaskClosable]="false">
+  <ng-template #AddMeetingContent>
+    <form class="form-horizontal" id="firstDepatForm">
+      <div class="form-group">
+        <div class="lh32 col-xs-3 text-right"><span class="red">*</span>会议室名称</div>
+        <div class="col-xs-8">
+          <input type="text" class="form-control" name="orgName" [(ngModel)]="meetingName">
+        </div>
+      </div>
+    </form>
+  </ng-template>
+  <ng-template #AddMeetingFooter>
+    <button nz-button [nzType]="'default'" [nzSize]="'large'" (click)="AddMeetingModal=false"> 取 消</button>
+    <button nz-button [nzType]="'primary'" [nzSize]="'large'" (click)="saveBtn_ok()"> 保 存</button>
+  </ng-template>
+</nz-modal>
+
+<!--  编辑会议室 -->
+<nz-modal [nzVisible]="editRoomModal" [nzTitle]="'编辑会议室'" [nzContent]="editRoomContent" [nzFooter]="editRoomFooter"
+          (nzOnCancel)="editRoomModal=false">
+  <ng-template #editRoomContent>
+    <form class="form-horizontal">
+      <div class="form-group">
+        <div class="lh32 col-xs-3 text-right"><span class="red">*</span>会议室名称</div>
+        <div class="col-xs-8">
+          <input type="text" class="form-control" name="orgName" (ngModelChange)="inputValidatorsFn()"
+                 [(ngModel)]="editRoomData.realName">
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="lh32 col-xs-3 text-right">SIP账号</div>
+        <div class="col-xs-8">
+          <input type="text" class="form-control" name="sipNumber" [(ngModel)]="editRoomData.sipNumber" disabled>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="lh32 col-xs-3 text-right"><span class="red">*</span>SIP账号密码</div>
+        <div class="col-xs-8">
+          <input type="text" class="form-control" name="sipPassword" (ngModelChange)="inputValidatorsFn()"
+                 [(ngModel)]="editRoomData.sipPassword">
+        </div>
+      </div>
+    </form>
+  </ng-template>
+  <ng-template #editRoomFooter>
+    <button nz-button [nzType]="'default'" [nzSize]="'large'" (click)="editRoomModal=false"> 取 消</button>
+    <button [disabled]="isSureEditRoomFn" nz-button [nzType]="'primary'" [nzSize]="'large'"
+            (click)="sureEditRoomFn(editRoomData)"> 保 存
+    </button>
+  </ng-template>
+</nz-modal>
+
+<!-- 删除confirm-->
+<nz-modal [nzVisible]="deleteModal" [nzTitle]="'Modal'" [nzContent]="deleteContent" (nzOnCancel)="handleCancel($event)"
+          (nzOnOk)="handleOk($event)">
+  <ng-template #deleteContent>
+  </ng-template>
+</nz-modal>

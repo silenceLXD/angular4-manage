@@ -1,0 +1,166 @@
+<div class="page-heading">消费总览</div>
+<div class="">
+  <form id="queryForm" class="form-inline marginTB10">
+    <select class="form-control" name="month" id="monSelect" [(ngModel)]="monthSt" (change)="SelectMonthFn(monthSt)">
+      <option *ngFor="let month of sixMonthArr">{{month.date}}</option>
+    </select>
+  </form>
+  <!-- 本月消费 -->
+  <div class="white-bg marginTB10">
+    <div class="row">
+      <div class="col-xs-4">
+        <img src="assets/img/consumptionAll.jpg" alt=""
+             style="display: inline-block;width: 96px;height: 96px; float: left;margin-left: 31px;margin-right: 15px;">
+        <p style="margin-top: 31px;font-size: 18px;">本月消费 <span class="orange font18"><span class="span_amout">{{ ConsumptionCosts.amount|toSwitchNumberAbs }}</span>.00元</span>
+        </p>
+      </div>
+      <div class="col-xs-3" style="padding-left:78px;">
+        <!--<p style="font-size:18px;margin-top:20px">直播费 <span class="orange font18"><span class="span_amout">{{ ConsumptionCosts.liveAmount }}</span>.00元</span></p>-->
+        <p style="font-size:18px;margin-top:31px;">月租费 <span class="orange font18"><span class="span_amout">{{ ConsumptionCosts.monthlyAmount|toSwitchNumberAbs }}</span>.00元</span>
+        </p>
+      </div>
+      <div class="col-xs-3">
+        <p style="font-size:18px;margin-top:31px;padding-left: 50px;">会议费 <span class="orange font18"><span
+          class="span_amout">{{ ConsumptionCosts.conferenceAmount|toSwitchNumberAbs }}</span>.00元</span>
+        </p>
+        <!--<p style="font-size:18px;">点播费 <span class="orange font18"><span class="span_amout">{{ ConsumptionCosts.recordAmount }}</span>.00元</span></p>-->
+      </div>
+      <div class="col-xs-2">
+        <p style="font-size:18px;margin-top:31px">直播费 <span class="orange font18"><span class="span_amout">{{ ConsumptionCosts.liveAmount |toSwitchNumberAbs}}</span>.00元</span>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="row marginTB10">
+    <!-- 概览 -->
+    <div class="col-xs-12 col-md-6">
+      <div class="white-bg clearfix" style="height:328px;">
+        <p style="font-size:18px;">概览</p>
+        <div class="col-xs-6 conference">
+          <div><img src="assets/img/icon/u13284.png" alt=""></div>
+          <p>{{ conferenceMap.conferenceNumber }} 场会议</p>
+          <div><img src="assets/img/icon/u13058.png" alt=""></div>
+          <p>{{ conferenceMap.consumeTime }}</p>
+        </div>
+        <div class="col-xs-6 conference" style="border-right:0;">
+          <div><img src="assets/img/icon/u13289.png" alt=""></div>
+          <p>{{ liveMap.liveNumber }} 场直播</p>
+          <div><img src="assets/img/icon/u13294.png" alt=""></div>
+          <p>{{ liveMap.watchPerson }} 观看直播人次</p>
+          <div><img src="assets/img/icon/u13299.png" alt=""></div>
+          <p>{{ liveMap.liveConsumingTraffic }} 直播流量</p>
+        </div>
+        <!--<div class="col-xs-4 conference" style="border-right:0;">
+          <div><img src="assets/img/icon/u13294.png" alt=""></div><p>{{ fileMap.count }}点播人次</p>
+          <div><img src="assets/img/icon/u13299.png" alt=""></div><p>{{ fileMap.traffic }}点播流量</p>
+        </div>-->
+      </div>
+    </div>
+
+    <!-- 各部门使用情况 -->
+    <div class="col-xs-12 col-md-6">
+      <div class="white-bg clearfix">
+        <p style="font-size:18px;">各部门使用情况</p>
+        <div class="col-xs-6">
+          <p class="font14 marginTB10">预约会议次数TOP5</p>
+          <!-- <div id="numbersBar" style="height: 310px;"></div> -->
+          <div echarts [options]="numbersBarOption" [loading]="showloading" class="" style="height: 230px;"></div>
+        </div>
+        <div class="col-xs-6">
+          <p class="font14 marginTB10">总消耗分钟数TOP5</p>
+          <!-- <div id="minutesBar" style="height: 310px;"></div> -->
+          <div echarts [options]="minutesBarOption" [loading]="showloading" class="" style="height: 230px;"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 会议分布 -->
+  <div class="white-bg marginTB10">
+    <p style="font-size:18px;">会议分布</p>
+    <div class="row">
+      <div echarts [options]="meetingRadarOption" [loading]="showloading" class="" style="height: 250px;"></div>
+    </div>
+  </div>
+  <!--本月消耗分钟数-->
+  <div class="white-bg marginTB10">
+    <p style="font-size:18px;">消耗分钟数</p>
+    <div class="row">
+      <div echarts [options]="meetingListOption" [loading]="showloading" class="" style="height: 250px;"></div>
+    </div>
+  </div>
+  <!--本月消耗 直播流量-->
+  <div class="white-bg marginTB10">
+    <p style="font-size:18px;">直播流量</p>
+    <div class="row">
+      <div echarts [options]="meetingLiveOption" [loading]="showloading" class="" style="height: 250px;"></div>
+    </div>
+  </div>
+
+  <!-- 本月消耗 -->
+  <!--<div class="white-bg marginTB10">
+    <div class="row">
+      <div echarts [options]= "minutesLineOption" [loading]="showloading" class="" style="height: 250px;"></div>
+    </div>
+  </div>-->
+
+
+  <!-- <div class="row">
+		<div class="col-xs-6">
+			<div class="panel panel-default">
+				<div class="panel-heading">会议概览</div>
+				<div class="panel-body">
+					<div class="meeting-summary">
+						<div class="col-xs-6"><p>共召开了</p><p><span class="span1">1</span>场会议</p></div>
+						<div class="col-xs-6"><p>共消耗了</p><p><span class="span2">1</span>分钟</p></div>
+						<div class="col-xs-6"><p>公司共有</p><p><span class="span3">1</span>人参会</p></div>
+						<div class="col-xs-6"><p>平均每天召开<br/><span class="span4">1</span>分钟</p></div>
+						<div class="summary-img"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-xs-6">
+			<div class="panel panel-default">
+				<div class="panel-heading">会议分布</div>
+				<div class="panel-body">
+					<div class="col-xs-5">
+						<div class="meeting-distr">
+							<p><img src="assets/img/overview_2.png" alt=""></p>
+							<p class="text-center" ng-show="isshowScoreTime"><span class="scoreTime">12</span><br/>为会议高峰期</p>
+						</div>
+
+					</div>
+					<div class="col-xs-7">
+            <div echarts [options]= "meetingRadarOption" [loading]="showloading" class="" style="height: 350px;"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-xs-6">
+			<div class="panel panel-default">
+				<div class="panel-heading">各部门使用情况</div>
+				<div class="panel-body">
+					<div class="col-xs-6">
+						<p class="font14 marginTB10">预约会议次数TOP5</p>
+            <div echarts [options]= "numbersBarOption" [loading]="showloading" class="" style="height: 310px;"></div>
+					</div>
+					<div class="col-xs-6">
+						<p class="font14 marginTB10">总消耗分钟数TOP5</p>
+            <div echarts [options]= "minutesBarOption" [loading]="showloading" class="" style="height: 310px;"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-xs-6">
+			<div class="panel panel-default">
+				<div class="panel-heading">本月消耗分钟数情况（日）</div>
+				<div class="panel-body">
+          <div echarts [options]= "minutesLineOption" [loading]="showloading" class="" style="height: 350px;"></div>
+				</div>
+			</div>
+		</div>
+
+	</div> -->
+</div>

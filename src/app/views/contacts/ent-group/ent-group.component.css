@@ -1,0 +1,64 @@
+.pGroup:hover{
+    background: #F0F2F4;
+}
+.edit-group {
+    width: 28px;
+    height: 28px;
+    display: inline-block;
+    background: url(../../../../assets/img/icon/editGroup_icon.png) no-repeat;
+    margin: -4px 8px;
+    cursor: pointer;
+}
+.edit-group-icon {
+    background-position: 0 -28px;
+}
+.edit-user-icon {
+    background-position: 0 -56px;
+}
+
+.appendContent{
+    height: 30px;
+    line-height: 30px;
+    display: inline-block;
+    border: 1px solid #ccc;
+    padding: 0px 10px 0px 10px;
+    margin-bottom: 10px;
+    position: relative;
+    margin-right: 20px;
+}
+.close-square{
+    position: absolute;
+    right: -7px;
+    top: -11px;
+    font-size: 21px;
+    font-weight: bold;
+    cursor: pointer;
+    background: #00A0E9;
+    color: #fff;
+    height: 24px;
+    line-height: 24px;
+}
+
+/* 参会者 */
+.userList-box .user-selected a {
+	color: #fff;
+	 /* border: 1px solid #00a0e9; */
+	line-height: 25px;
+   /*  padding-right: 20px; */
+    background: #00a0e9;
+}
+.userList-box dd {
+    float: left;
+    display: inline;
+    margin: 0 0 5px 5px;
+}
+.user-selected a {
+    display: inline-block;
+    white-space: nowrap;
+    height: 24px;
+    padding: 0 10px;
+        padding-right: 10px;
+    text-decoration: none;
+    color: #039;
+    border-radius: 2px;
+}

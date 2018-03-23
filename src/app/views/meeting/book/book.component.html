@@ -1,0 +1,289 @@
+<div class="page-heading">
+  <span class="appoint-header font18">发起会议</span>
+  <span class="pull-right" style="margin-right:15px;" *ngIf="!showDetails"><a
+    [routerLink]="['/page/history-schedule','user']">历史预约</a> | <a routerLink="/page/user-group">群组</a></span>
+</div>
+
+<div class="white-bg">
+  <div class="appointment">
+    <!-- [formGroup]="appointmentForm" (ngSubmit)="postFormData(appointmentForm.value)" -->
+    <form class="form-inline select-form" name="appointmentForm" id="appointmentForm" novalidate>
+      <div class="bookpart">
+        <!-- 会议名称 -->
+        <div class="row bookrow bookborder">
+          <div class="pull-left">
+            <div class="pull-left font14 lh32"><i class="icon-bookmark font16 color-svoc marginLR10"></i>会议名称：</div>
+            <input type="text" class="form-control" [(ngModel)]="appointFormData.appointmentName" name="appointmentName"
+                   style="width:210px;" maxlength="40">
+          </div>
+        </div>
+
+        <!-- 会议类型 -->
+        <div class="row bookrow bookborder">
+          <div class="pull-left font14 lh32"><i class="icon-bookmark font16 color-svoc marginLR10"></i>会议类型：</div>
+          <div class="pull-left" style="">
+            <label for="singleMeeting">
+              <input type="radio" class="radio" [(ngModel)]="appointFormData.appointmentType" name="appointmentType"
+                     [disabled]="isNotEdit" value="2" id="singleMeeting"> <label for="singleMeeting"></label>
+              <span class="font14">实时</span>
+            </label>
+
+            <label for="cycleMeeting">
+              <input type="radio" class="radio" [(ngModel)]="appointFormData.appointmentType" name="appointmentType"
+                     [disabled]="isNotEdit" value="0" id="cycleMeeting"> <label for="cycleMeeting"></label>
+              <span class="font14">预约</span>
+            </label>
+            <!-- <input type="hidden" name="appointmentType" value="appointmentType"> -->
+          </div>
+        </div>
+
+        <!-- ================== 预约会议显示项 begin============== -->
+        <div class="bookpart" *ngIf="appointFormData.appointmentType==0">
+          <!-- 参会方数/会议密码 -->
+          <div class="row bookrow bookborder">
+            <div class="pull-left font14 lh32"><i class=" icon-group font16 color-svoc marginLR10"></i>会议密码：</div>
+            <nz-popover [nzPlacement]="'right'">
+              <input type="text" nz-popover name="hostPwd" class="form-control" id="speakerPsd"
+                     [(ngModel)]="appointFormData.hostPwd" (focus)="showPsdTip=true" (blur)="showPsdTip=false"
+                     maxlength="4" style="width:120px;">
+              <ng-template #nzTemplate>
+                <div>
+                  <p><span class="red">* </span> 密码可设置为4位数字;</p>
+                  <p><span class="red">* </span> 密码为空存在风险;</p>
+                </div>
+              </ng-template>
+            </nz-popover>
+          </div>
+
+          <!-- 会议开始时间 -->
+          <div class="row bookrow bookborder">
+            <div class="pull-left">
+              <div class="pull-left font14 lh32"><i class="icon-time font16 color-svoc marginLR10"></i>会议开始时间：</div>
+              <div class="pull-left" style="margin-right:10px;">
+                <!-- <input type="text" class="form-control" name="date" formControlName="selectedDate" [minDate]="minDate" showWeekNumbers="false" #dp="bsDatepicker" bsDatepicker [(bsValue)]="bsValue"> -->
+                <nz-datepicker name="date" [(ngModel)]="appointFormData.selectedDate"></nz-datepicker>
+              </div>
+
+              <div class="pull-left">
+                <nz-timepicker name="hours" [(ngModel)]="appointFormData.selectedHour" nzHideDisabledOptions
+                               [nzDisabledMinutes]="disabledMinutes" [nzFormat]="'HH:mm'"></nz-timepicker>
+
+                <!-- <div class="pull-left">
+                                    <select name="hour" id="startHours" class="form-control" formControlName="selectedHour">
+                                          <option *ngFor="let hour of startHoursArr" [value]="hour">{{hour}}</option>
+                                    </select>
+                                </div>
+                                <span class="pull-left lh32 marginLR10" > 时 </span>
+                                <div class="pull-left">
+                                    <select name="minute" id="startminutes" class="form-control" formControlName="selectedMinute">
+                                          <option *ngFor="let minute of startMinutesArr" [value]="minute">{{minute}}</option>
+                                    </select>
+                                </div>
+                                <span class="pull-left lh32 marginLR10"> 分 </span> -->
+              </div>
+            </div>
+            <input type="hidden" name="startTime" [(ngModel)]="appointFormData.startTime"/>
+          </div>
+
+          <!-- 会议时长 -->
+          <div class="row bookrow">
+            <div class="pull-left">
+              <div class="font14 pull-left lh32"><i class="icon-time font16 color-svoc marginLR10"></i>会议时长：</div>
+              <div class="pull-left">
+                <input type="text" name="appointmentPeriod" class="form-control" id="meetingTimeLong"
+                       [(ngModel)]="appointFormData.appointmentPeriod"
+                       (blur)="checkPeriod(appointFormData.appointmentPeriod)" style="width:120px;">
+              </div>
+              <span class="pull-left lh32"> 小时 <span class="timelong-tip" style="color:#a5a5a5;margin-left:10px;"> 最小单位0.5小时</span> </span>
+            </div>
+          </div>
+
+          <!-- 周期会议 -->
+          <div>
+            <label for="repeatMeeting">
+              <input type="checkbox" name="isRepeat" class="checkbox" id="repeatMeeting"
+                     [(ngModel)]="appointFormData.isRepeat" [disabled]="isNotEdit"> <label for="repeatMeeting"></label>
+              <span class="font14">周期会议</span>
+            </label>
+          </div>
+          <!-- 周期会议 展开-->
+          <div *ngIf="appointFormData.isRepeat">
+            <div class="row">
+              <div class="col-xs-5">
+                <div class="lh32 pull-left font14">周期开始：</div>
+                <!-- <input type="text" name="repeatStartTime" class="form-control" id="repeatStartTime" placeholder="请选择日期" formControlName="repeatStartTime"> -->
+                <nz-datepicker name="repeatStartTime" [(ngModel)]="appointFormData.repeatStartTime"
+                               [nzDisabledDate]="_disabledStartDate" [nzPlaceHolder]="'请选择日期'"></nz-datepicker>
+              </div>
+              <div class="col-xs-5">
+                <div class="lh32 pull-left font14">周期结束：</div>
+                <!-- <input type="text" name="repeatEndTime" class="form-control" id="repeatEndTime" placeholder="请选择日期" formControlName="repeatEndTime"> -->
+                <nz-datepicker name="repeatEndTime" [(ngModel)]="appointFormData.repeatEndTime"
+                               [nzDisabledDate]="_disabledEndDate" [nzPlaceHolder]="'请选择日期'"></nz-datepicker>
+
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-xs-12">
+                <div class="lh32 pull-left font14">周期选择：</div>
+                <label for="isWeek">
+                  <input type="radio" name="cycleMode" id="isWeek" class="radio" value="0"
+                         [(ngModel)]="appointFormData.cycleMode" (click)="changeCycle(0)"> <label for="isWeek"></label>
+                  <span class="font14">周</span>
+                </label>
+                <label for="isMonth">
+                  <input type="radio" name="cycleMode" id="isMonth" class="radio" value="1"
+                         [(ngModel)]="appointFormData.cycleMode" (click)="changeCycle(1)"> <label for="isMonth"></label>
+                  <span class="font14">月</span>
+                </label>
+              </div>
+            </div>
+            <!-- 按周重复 -->
+            <div class="row" *ngIf="appointFormData.cycleMode==0">
+              <div class="col-xs-12">
+                <div class="pull-left" id="weekChoose">
+                  <div class="pull-left font14 lh32">重复周期：</div>
+                  <label class="marginLR10" for="week{{i+1}}" *ngFor="let week of repeatWeeks; let i = index">
+                    <input type="checkbox" name="workday" [value]="i+1" id="week{{i+1}}" class="week-date checkbox"
+                           [checked]="isCheckedWeek(i+1)" (click)="chooseWeekFn($event,i+1)"><label
+                    for="week{{i+1}}"></label>
+                    <span class="font14">{{week}}</span>
+                  </label>
+                </div>
+                <div class="pull-left" style="margin-left: 20px;">
+                  <input type="button" name="workDay" id="workDay" class="btn btn-svoc" value="工作日"
+                         (click)="workDayFn()">
+                  <input type="button" name="allWeek" id="allWeek" class="btn btn-svoc" [value]="weektext"
+                         (click)="allWeekFn()">
+                </div>
+                <input type="hidden" name="repeatRule" id="repeatRule" ng-value="repeatByWeekStr">
+              </div>
+            </div>
+            <!-- 按月重复 -->
+            <div class="row" *ngIf="appointFormData.cycleMode==1">
+              <div class="col-xs-12">
+                <div class="pull-left font14 lh32">重复周期：</div>
+                <div class="select-result clearfix">
+                  <span class="pull-left lh32 marginLR10">每月</span>
+                  <ul>
+                    <li *ngFor="let day of selectMonthDate"><a href="javascript:;"
+                                                               (click)="deleteThisDay(day)">{{day}}</a></li>
+                  </ul>
+                  <div class="" style="display:inline-block;">
+                    <span class="lh32">号</span>
+                    <a href="javascript:;" (click)="isshowbox=!isshowbox">
+                      <span>{{ isshowbox?'收起选择面板':'展开选择面板' }}</span></a>
+                  </div>
+                </div>
+                <div class="updown_box" *ngIf="isshowbox">
+                  <ul id="select2">
+                    <li *ngFor="let day of oneMonthDate" (click)="selectMonth(day)" [ngClass]="day.type?'selected':''">
+                      <a href="javascript:">{{day.day}}</a></li>
+                  </ul>
+                </div>
+                <input type="hidden" name="repeatRule" value="{{repeatByMonthStr}}">
+              </div>
+            </div>
+          </div>
+          <!-- /周期会议 -->
+        </div>
+      </div>
+      <!-- ================== /预约会议显示项 end============== -->
+      <div class="" style="border-top:transparent;overflow: hidden;">
+        <!-- 参会者 -->
+        <div class="row">
+          <div class="col-xs-12">
+            <div class="font14 pull-left lh32">参会者：</div>
+            <div class="pull-left">
+              <div class="userList-box">
+                <dl>
+                  <!-- <dd class="user-selected" id="" *ngFor="let user of showUserListData"><a href="javascript:;">{{user.name || user.realName}} <i class="fa fa-close removeUser" (click)="removeUser(user)"></i></a></dd> -->
+                  <dd class="user-selected" id="" *ngFor="let user of showUserListData"><a href="javascript:;"><i
+                    *ngIf="user.isHost" class="fa fa-user-secret"></i> {{user.realName}} <i
+                    class="fa fa-close removeUser" (click)="removeUser(user)"></i></a></dd>
+                  <dd><a href="javascript:" class="fa fa-user-plus color-svoc font16 lh32"
+                         (click)="chooseUserFn()"></a></dd>
+                </dl>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- 参会者进入时静音 -->
+        <div class="row ">
+          <label for="defaultMute">
+            <input type="checkbox" name="isMute" id="defaultMute" class="checkbox" [(ngModel)]="appointFormData.isMute">
+            <label for="defaultMute"></label>
+            <span class="font14">参会者进入时静音</span>
+          </label>
+        </div>
+        <!-- 会议开始开启直播 -->
+        <div class="row ">
+          <label for="defaultLive">
+            <input type="checkbox" name="isLive" id="defaultLive" class="checkbox"
+                   [disabled]="!appointFormData.isCanLive" [(ngModel)]="appointFormData.isLive"> <label
+            for="defaultLive"></label>
+            <span class="font14" [ngClass]="!appointData.isCanLive?'gray':''">会议开始开启直播</span>
+          </label>
+
+          <label *ngIf="appointFormData.isLive" class="lh32 font14" style="margin-left:50px;">直播密码
+            <input type="text" name="livePwd" class="form-control" [(ngModel)]="appointFormData.livePwd" maxlength="20"
+                   style="width:100px;"/>
+          </label>
+        </div>
+        <!-- 会议开始开启录制 -->
+        <div class="row">
+          <label for="openRecord">
+            <input type="checkbox" name="isRecord" id="openRecord" class="checkbox"
+                   [disabled]="!appointFormData.isCanRecord" [(ngModel)]="appointFormData.isRecord"> <label
+            for="openRecord"></label>
+            <span class="font14" [ngClass]="!appointData.isCanRecord?'gray':''">会议开始开启录制</span>
+          </label>
+        </div>
+        <!-- 会议描述 -->
+        <div class="row">
+          <div class="font14 pull-left lh32">会议描述：</div>
+          <div class="pull-left">
+            <textarea name="appointmentDesc" cols="100" rows="4" maxlength="100" class="form-control"
+                      [(ngModel)]="appointFormData.appointmentDesc"></textarea>
+          </div>
+        </div>
+      </div>
+      <!-- </div> -->
+      <!-- 提交 -->
+      <div class="row">
+        <div class="text-center">
+          <!-- <button type="submit" id="submitAppointment" class="btn btn-svoc font14" [ngClass]="isdisabled?'btn-disabled':'btn-svoc'" (click)="postFormData(appointFormData)" style="padding: 12px 80px;">提 交</button> -->
+          <!-- (click)="submitAppointmentFn()"  -->
+          <!-- <button type="button" id="returnAppointment" class="btn btn-svoc font14" style="padding: 12px 80px;display:none;">返 回</button> -->
+          <button nz-button [nzType]="'primary'" [class.disabled]="isAvailableOne"
+                  style="padding: 21px 87px;line-height: 0.15;"
+                  (click)="postFormData(appointFormData)" [nzLoading]="isLoadingSubmit">
+            <span>提 交</span>
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- 预约详情 -->
+<!-- <div class="" *ngIf="showDetails">
+	<book-detail [detailsData]="inputParentData" (isShow)="getIsShow($event)"></book-detail>
+</div> -->
+
+<!-- 添加参会者 modal 组件add-attend -->
+<add-attend [commonId]="appointmentId" [addAttendModal]="modal_info_add" [modalType]="1"
+            (outPutAttendData)="getAttendData($event)" (hide_emitter)="getHideEmitter($event)"></add-attend>
+
+
+<!-- 添加参会者 modal -->
+<!-- <nz-modal [nzVisible]="addAttendModal" [nzTitle]="'添加参会者'" [nzContent]="addAttendContent" [nzFooter]="addAttendFooter" [nzWidth]="'700px'" (nzOnCancel)="addAttendModal=false">
+  <ng-template #addAttendContent>
+    <add-attend [inputParentData]="conferenceCid" (outPutAttendData)="getAttendData($event)" (click)="getAttendChildFn()"></add-attend>
+  </ng-template>
+  <ng-template #addAttendFooter>
+    <button nz-button [nzType]="'default'" [nzSize]="'large'" (click)="addAttendModal=false"> 取 消 </button>
+    <button nz-button [nzType]="'primary'" [nzSize]="'large'" (click)="getAttendChildFn($event)"> 确 定 </button>
+  </ng-template>
+</nz-modal> -->

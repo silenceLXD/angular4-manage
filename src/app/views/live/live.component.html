@@ -1,0 +1,35 @@
+<div class="page-heading">观看直播</div>
+<div id="live" class="white-bg" *ngIf="isHaveData && !isAvailableOne; else elseBlock">
+  <div class="">
+    <div class="media live-list" *ngFor="let list of liveListData">
+      <div class="media-left media-middle">
+        <b *ngIf="list.pwd" class="error fa-lock"></b>
+        <a href="javascript:;"><img class="media-object" src="assets/img/live_media.png"></a>
+      </div>
+      <div class="media-body media-middle">
+        <div class="col-xs-3">
+          <h4 class="media-heading">{{list.name}}</h4>
+          <p class="gray">{{list.startTime | date:'yyyy-MM-dd HH:mm'}}</p>
+        </div>
+        <div class="col-xs-3">
+          <h4 *ngIf="list.type==1" class="color-svoc">未开始</h4>
+          <h4 *ngIf="list.type==0" class="error">直播中</h4>
+          <p class="gray">发起人：{{list.user}}</p>
+        </div>
+        <div class="col-xs-3">
+          <p class="gray" *ngIf="list.type==1">距离直播开始：{{list.startTime | getLongTimes }}</p>
+        </div>
+        <div class="col-xs-3">
+          <a [routerLink]="['/watch-live',list.vmrNumberCry]" target="_blank" class="btn btn-svoc radius20">观看直播</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+<!-- 无数据 -->
+<ng-template #elseBlock>
+  <div class="text-center" style="margin-top:15%;">
+    <img src="assets/img/no_live_data.png"/>
+  </div>
+</ng-template>

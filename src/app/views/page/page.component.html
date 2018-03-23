@@ -1,0 +1,33 @@
+<!-- ==================== header ==================== -->
+<app-header (emitAccountStatus)="emitAccountStatus($event)"></app-header>
+<!-- ===================== section ==================== -->
+<section style="margin-top: 50px;">
+  <!-- nav -->
+  <app-sidebar></app-sidebar>
+  <!-- aside -->
+  <aside class="col-md-10" class="main-content">
+    <div style="position:relative;top:-10px;" *ngIf="switchPageFlag != 2 && ServiceAlertTip">
+      <nz-alert [nzType]="'error'" nzShowIcon>
+          <span alert-body>
+            {{entServiceAlert}}
+          </span>
+      </nz-alert>
+    </div>
+    <router-outlet></router-outlet>
+  </aside>
+</section>
+
+<nz-modal [nzVisible]="CallModal" [nzTitle]="'呼叫信息'" [nzContent]="CallContent" [nzFooter]="CallFooter"
+          (nzOnCancel)="CallModal=false">
+  <ng-template #CallContent>
+    <div class="">
+      <h4 class="text-center font18">{{conferenceName}}</h4>
+      <p class="text-center" style="margin:20px;">邀请您加入会议......</p>
+    </div>
+  </ng-template>
+  <ng-template #CallFooter>
+    <button nz-button [nzType]="'default'" [nzSize]="'large'" (click)="CallModal=false"> 拒 绝</button>
+    <a href="/webrtc?conference={{roomNum}}&pin={{hostPin}}&realName={{loginUserData?.realName}}" target="_blank"
+       style="padding: 7px 13px;" nz-button [nzType]="'primary'" [nzSize]="'large'" (click)="acceptCallFn()"> 同 意 </a>
+  </ng-template>
+</nz-modal>

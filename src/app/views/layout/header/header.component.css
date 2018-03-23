@@ -1,0 +1,61 @@
+/*
+* Created by lixuedan on 2017/12/04.
+*/
+/*.navbar-header{
+	background-color:#303847;
+	border: transparent !important;
+  border-radius: 0 !important;
+  color:#fff;
+}*/
+.navbar-header{
+	border: transparent !important;
+  border-radius: 0 !important;
+  color:#fff;
+}
+/*默认*/
+.navbarHeaderBlack{
+	background-color:#313848;
+}
+/*科技蓝*/
+.navbarHeaderTechBlur{
+	background-color:#0299CC;
+}
+/*深调蓝*/
+.navbarHeaderBlur{
+	background-color:#2A4795;
+}
+/*稳重暗*/
+.navbarHeaderDark{
+	background-color:#333969;
+}
+/*淡雅绿*/
+.navbarHeaderGreen{
+	background-color:#51AF79;
+}
+
+.navbar-nav>li>a{
+	color: #fff;
+}
+
+
+li.user-name ul{
+	position:absolute;
+}
+ul.user-menu{
+background-color: #f5f5f5 !important;
+}
+li.user-name ul.user-menu li a{
+	margin:10px 20px;
+	border-bottom:1px solid #dcd8d8;
+	color:#000 !important;
+}
+.navborderR,
+.navbar-nav>li>a.navborderR{
+	border-right: 1px solid #ececec;
+    padding: 0 8px;
+    margin: 15px 5px;
+  }
+
+	.navbar-inverse .navbar-nav>.open>a, .navbar-inverse .navbar-nav>.open>a:focus, .navbar-inverse .navbar-nav>.open>a:hover {
+	    background-color: transparent!important;
+	}

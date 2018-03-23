@@ -1,0 +1,110 @@
+<div class="page-heading">企业定制</div>
+
+<div class="white-bg">
+  <ul class="nav nav-tabs">
+    <li [ngClass]="{active:isActive==1}" (click)="isActive=1;changeTab(1)"><a href="javascript:;">企业模板</a></li>
+    <li [ngClass]="{active:isActive==2}" (click)="isActive=2;changeTab(2)"><a href="javascript:;">企业配置</a></li>
+  </ul>
+
+  <div class="tab-content">
+    <!-- 企业模板 -->
+    <div id="entTemplate" class="tab-pane" [ngClass]="{active:isActive==1}">
+      <h4 style="margin:20px 10px;padding: 10px 0; border-bottom: 1px solid #07A2E8;font-size:18px">所有主题</h4>
+      <div class="tpl-width defaultTpl" [ngClass]="{'tpl-border':istpl==0}" (click)="istpl=0;chooseTplFn(0)">
+        <p class="header-tpl"></p>
+        <p class="content-tpl"></p>
+        <p class="text-center font16">默认</p>
+      </div>
+      <div class="tpl-width blueTpl" [ngClass]="{'tpl-border':istpl==1}" (click)="istpl=1;chooseTplFn(1)">
+        <p class="header-tpl"></p>
+        <p class="content-tpl"></p>
+        <p class="text-center font16">科技蓝</p>
+      </div>
+      <div class="tpl-width purpleTpl" [ngClass]="{'tpl-border':istpl==2}" (click)="istpl=2;chooseTplFn(2)">
+        <p class="header-tpl"></p>
+        <p class="content-tpl"></p>
+        <p class="text-center font16">深调蓝</p>
+      </div>
+      <div class="tpl-width darkTpl" [ngClass]="{'tpl-border':istpl==3}" (click)="istpl=3;chooseTplFn(3)">
+        <p class="header-tpl"></p>
+        <p class="content-tpl"></p>
+        <p class="text-center font16">稳重暗</p>
+      </div>
+      <div class="tpl-width greyTpl" [ngClass]="{'tpl-border':istpl==4}" (click)="istpl=4;chooseTplFn(4)">
+        <p class="header-tpl"></p>
+        <p class="content-tpl"></p>
+        <p class="text-center font16">淡雅绿</p>
+      </div>
+
+      <div class="text-center" style="margin:100px 0">
+        <a href="javascript:;" class="btn btn-svoc" [class.disabled]="isAvailableOne"
+           style="padding:10px 50px;font-size:16px;" (click)="applyTemplateFn()">应用</a>
+      </div>
+    </div>
+
+    <!-- 企业配置-->
+    <div id="entConfig" class="tab-pane" [ngClass]="{active:isActive==2}">
+      <div class="alert alert-warning" style="padding:12px">
+        <span style="color:#666;"><span
+          class="alert-icon tip-icon"></span> 需先将域名指向到<span>{{entData.entDomainName}}</span>，再进行绑定</span>
+      </div>
+      <form class="form-inline select-form clearfix" id="configForm" name="configForm" enctype="multipart/form-data"
+            method="post" action="" style="padding-left:20px;">
+        <div class="row marginTB10">
+          <label class="label-title pull-left">显示名称</label>
+          <div class="pull-left">
+            <input type="hidden" name="entId">
+            <input type="text" class="form-control" name="entShowName" [(ngModel)]="entData.entShowName"
+                   style="width:310px;"/>
+          </div>
+        </div>
+        <div class="row marginTB10">
+          <label class="label-title pull-left">绑定域名</label>
+          <div class="pull-left">
+            <input type="url" class="form-control" id="domainUrl" name="entDomain" [(ngModel)]="entData.entDomain"
+                   style="width:310px;"/>
+          </div>
+          <div class="pull-left">
+            <a href="javascript:;" class="btn btn-svoc marginLR10" [class.disabled]="isAvailableOne"
+               (click)="checkDomain()">检测</a>
+          </div>
+        </div>
+        <div class="row marginTB10">
+          <label class="label-title pull-left">企业Logo</label>
+          <div class="pull-left">
+            <!-- <input type="text" class="form-control" name="logoUrl" [(ngModel)]="entData.ent.logoUrl" style="width:310px;"> -->
+            <span class="lh32">{{entData.logoUrl}}</span>
+            <div class="marginTB10">
+              <input type="button" id="ChooseImg" class="btn btn-svoc" [class.disabled]="isAvailableOne"
+                     onclick="upFile.click();" value="选择图片"><span>{{imgUrlName}}</span>
+              <input type="file" id="upFile" name="upFile" (change)="previewImage($event)" accept="image/png"
+                     style="display:none"/>
+              <!--       <input type="button" name="UploadImg" id="UploadImg" class="btn btn-svoc" value="上传图片" (click)="UploadImg()">  -->
+              <p>支持png格式（尺寸大小为 100*50，不能超过<span style="color: #f00;">200k</span>）</p>
+              <img src="" alt="">
+              <div id="preview" class="imgdiv box-border" style="text-align: center;"></div>
+              <!-- <input type="hidden" name="url" [(ngModel)]="imgurl"> -->
+            </div>
+          </div>
+          <!-- <div class="pull-left">
+                        <input type="button" id="ChooseImg" class="btn btn-svoc" onclick="upFile.click();" value="选择图片">
+                        <input type="file"  id="upFile" class="btn btn-svoc" ng-src={{files[0].name}} onchange='angular.element(this).scope().fileChanged(this)' accept="image/png, image/gif, image/jpg, image/jpeg" style="display:none"/>
+                        <p>支持png格式（尺寸大小为 100*50，不能超过<span style="color: #f00;">200k</span>）</p>
+                        <div id="preview" class="imgdiv box-border" style="text-align: center;"></div>
+                    </div> -->
+
+        </div>
+        <div class="row marginTB10">
+          <label class="label-title pull-left">企业Slogan</label>
+          <div class="pull-left">
+            <input type="text" class="form-control" name="slogan" [(ngModel)]="entData.slogan" style="width:310px;"/>
+          </div>
+        </div>
+        <div class="row">
+          <a href="javascript:;" class="btn btn-svoc" [class.disabled]="isAvailableOne" (click)="updateConfigFn()"
+             style="padding:8px 40px;font-size:16px;margin-left:120px;">保存</a>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

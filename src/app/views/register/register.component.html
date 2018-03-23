@@ -1,0 +1,46 @@
+<div class="loginPage-bg">
+  <app-header-un></app-header-un>
+  <div class="container">
+        <!-- 第一步 -->
+        <div class="col-md-offset-3 col-md-6">
+            <div class="EnterpriseForm form-bg">
+                <div class="login-heading">
+	        		    <span class="heading" [ngClass]="registertype=='per'?'active':''" (click)="registertype='per'"><a href="javascript:">个人注册</a></span>
+	                <span class="heading" [ngClass]="registertype=='ent'?'active':''" (click)="registertype='ent'"><a href="javascript:">企业注册</a></span>
+	        	    </div>
+
+                <div class="">
+                  <!--============ 个人注册 ==========-->
+                  <div class="" *ngIf="registertype=='per'">
+                    <per-register></per-register>
+                  </div>
+                  <!-- ======== 企业注册 ==========-->
+                  <div class="" *ngIf="registertype=='ent'">
+                    <ent-register></ent-register>
+                  </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- 第二步 -->
+        <!-- 企业注册 第二步  登录邮箱进行验证-->
+        <div class="text-center" [hidden]="true">
+          <h4 class="setup-title"><span class="setup-icon setup-email-icon"></span> 邮箱验证后，即可完成注册</h4>
+          <form class="form-horizontal" name="setupTwoForm">
+            <div class="form-group ">
+              <p>只需要登录邮箱<span>{{email}}</span>点击链接激活即可，验证后成为云起云用户，可登录使用，账号更安全！</p>
+            </div>
+            <div class="form-group">
+              <div class="col-xs-12">
+                  <button type="submit" name="button" class="btn btn-svoc setup-btn" (click)="loginEmail()">立即登录邮箱验证</button>
+              </div>
+            </div>
+            <p style="margin-bottom: 30px;">若页面无法跳转，请您从邮箱官网登录！</p>
+          </form>
+        </div>
+    </div>
+
+    <app-footer class="white-footer"></app-footer>
+
+</div>

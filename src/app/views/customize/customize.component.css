@@ -1,0 +1,57 @@
+/*****************  企业定制 customize.html **********************/
+.select-form .label-title{
+    width: 120px;
+    text-align: left;
+}
+.tpl-width{
+	display:inline-block;
+	margin:10px 15px;
+	width:130px;
+	height:150px;
+	/* border:1px solid #07A2E8; */
+	padding:15px;
+}
+.tpl-border{
+	border:1px solid #07A2E8;
+}
+.header-tpl{
+	height:20px;
+}
+.content-tpl{
+	height:80px;
+}
+/*默认*/
+.defaultTpl .header-tpl{
+	background:#313848;
+}
+.defaultTpl .content-tpl{
+	background:#EDF5F7;
+}
+/*科技蓝*/
+.blueTpl .header-tpl{
+	background:#0299CC;
+}
+.blueTpl .content-tpl{
+	background:#EDEEF2;
+}
+/*深调紫*/
+.purpleTpl .header-tpl{
+	background:#2A4795;
+}
+.purpleTpl .content-tpl{
+	background:#E3E9F7;
+}
+/*稳重暗*/
+.darkTpl .header-tpl{
+	background:#333969;
+}
+.darkTpl .content-tpl{
+	background:#ECEDF1;
+}
+/*淡雅绿*/
+.greyTpl .header-tpl{
+	background:#51AF79;
+}
+.greyTpl .content-tpl{
+	background:#F1F2F7;
+}

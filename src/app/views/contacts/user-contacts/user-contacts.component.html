@@ -1,0 +1,75 @@
+<div class="page-heading">通讯录</div>
+
+<div class="white-bg">
+  <ul class="nav nav-tabs">
+    <li class="active"><a href="javascript:;">通讯录</a></li>
+    <li><a routerLink="/page/user-group">我的群组</a></li>
+  </ul>
+
+  <div class="tab-content clearfix">
+    <!--  左侧列表 -->
+    <div class="col-lg-3 col-xs-5">
+      <form name="queryForm" id="queryForm">
+        <div class="marginTB10 has-feedback">
+          <input type="text" id="searchInput" placeholder="姓名" name="searchInput" class="form-control" [(ngModel)]="searchByName" (keyup)="searchData()">
+          <span class="glyphicon glyphicon-search form-control-feedback"></span>
+        </div>
+      </form>
+      <div class="marginTB10" style="text-indent:1em;">
+        <a href="javascript:;" (click)="toUserCollection()" style="padding:10px 0;background:#f6f6f6;display: block;"><i class="fa color-svoc font16 fa-star"></i> 个人收藏</a>
+      </div>
+      <div class="contactsMenu">
+        <div>
+          <h2 class="contactsMenuTitle" (click)="searchAll(organList.value,organList.level,organList.name)">{{organList.name}} ( {{organList.count}} )</h2>
+        </div>
+        <contacts-tree [treelists]="organList.submenu" (outPutTreeData)="getTreeItemData($event)"></contacts-tree>
+      </div>
+    </div>
+
+    <!-- 右侧表格 -->
+    <div class="col-lg-9 col-xs-7" style="border-left: 1px solid #ccc;" >
+        <h2 class="font16 marginTB10">{{itemName}}</h2>
+
+        <table class="table" style="border-bottom: 1px solid #ddd;">
+            <thead>
+                <tr>
+                  <th>工号</th>
+                  <th>姓名</th>
+                  <th>一级部门/分公司</th>
+                  <th>二级部门</th>
+                  <th>三级部门</th>
+                  <th>
+                     <select name="" id="position" class="form-control" [(ngModel)]="positionSearch" (change)="searchData()" style="height:25px;width:80%;font-size: 12px;padding:0;">
+                      	<option value="">职务</option>
+                      	<option *ngFor="let position of positionList" [value]="position" >{{position}}</option>
+                  	 </select>
+                  </th>
+                  <th>邮箱</th>
+                  <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let user of userListData.list">
+                  <td>{{user.empno}}</td>
+                  <td>
+                    <i *ngIf="user.roleId==2" class="fa fa-user-md color-svoc"></i>
+                    {{user.realName}}
+                  </td>
+                  <td>{{user.deptName}}</td>
+                  <td>{{user.subdeptName}}</td>
+                  <td>{{user.threedeptName}}</td>
+                  <td>{{user.position}}</td>
+                  <td>{{user.email}}</td>
+                  <td>
+                    <span *ngIf="USERID!=user.userId" class="cursor-pointer" (click)="collectUserFn(user)"><i class="fa color-svoc font16" [ngClass]="user.isCollection?'fa-star':'fa-star-o'"></i></span>
+                  </td>
+                </tr>
+            </tbody>
+        </table>
+        <!-- 分页 -->
+        <div class="text-right">
+          <nz-pagination [(nzPageIndex)]="userListData.currentPage" [nzTotal]="userListData.totalPages" (click)="pageChanged(userListData.currentPage)" [nzShowTotal]="userListData.totalPages" [nzPageSize]="10"></nz-pagination>
+        </div>
+    </div>
+  </div>
+</div>

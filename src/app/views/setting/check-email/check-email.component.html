@@ -1,0 +1,36 @@
+<div class="">
+  <app-header-un class="black-header"></app-header-un>
+  <div class="container">
+    <div class="forget-pass-box">
+
+      <div class="col-xs-8 col-xs-offset-2">
+        <div class="text-center" *ngIf="isSuccess">
+            <div style="margin: 60px auto"><img src="assets/img/email_suc.png" alt=""></div>
+            <!-- <p>您的电子邮箱<span id="emailUrl">{{getCheckData.email}}</span>已验证成功。</p> -->
+            <p style="font-size:16px;">恭喜您验证成功，完成注册，现在即可进行登录</p>
+            <div style="margin: 50px auto;width: 300px;">
+                <a routerLink="/login" class="btn btn-svoc login-btn">立即登录</a>
+            </div>
+        </div>
+
+        <div class="text-center" *ngIf="!isSuccess">
+          <!-- <img src="assets/img/email_gray.png" alt=""> -->
+            <div style="margin: 60px auto"><img src="assets/img/email_error.png" alt=""></div>
+            <!-- <p>您的电子邮箱<span id="emailUrl">{{getCheckData.email}}</span>验证失败</p> -->
+            <div class="" *ngIf="!personSuccess">
+                <p style="font-size:16px;">验证失败，请重新登录邮箱验证！</p>
+                <div style="margin: 50px auto;width: 300px;">
+                    <!-- <a routerLink="/login" class="btn btn-svoc login-btn">立即登录</a> -->
+                    <a href="javascript:;" class="btn btn-svoc login-btn" (click)="reCheckEmail()">重新发送邮箱验证</a>
+                </div>
+            </div>
+
+            <p style="font-size:16px;" *ngIf="personSuccess">此账号已经成功创建企业</p>
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+  <app-footer></app-footer>
+</div>
